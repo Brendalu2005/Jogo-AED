@@ -1,21 +1,19 @@
 #include "raylib.h"
 #include "tela.h" 
 
-const int screenWidth = 1280;
-const int screenHeight = 720;
-
 int main(void){
-    InitWindow(screenWidth, screenHeight, "Meu Jogo AED - Batalha");
+
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Meu Jogo AED - Batalha");
     SetTargetFPS(60);
 
+    int ataqueSelecionado = 0;
     while (!WindowShouldClose()){
         
+        AtualizarTelaBatalha(&ataqueSelecionado);
+
         BeginDrawing();
-
         ClearBackground(DARKGRAY); 
-
-        DesenharTelaBatalha();
-
+        DesenharTelaBatalha(ataqueSelecionado);
         EndDrawing();
     }
 

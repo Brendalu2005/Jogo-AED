@@ -1,9 +1,11 @@
 #ifndef TELA_H
 #define TELA_H
 
-extern const int screenWidth;
-extern const int screenHeight;
+#include "raylib.h"
 
-void DesenharTelaBatalha(void);
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 720
+void AtualizarTelaBatalha(int *ataqueSelecionado);
+void DesenharTelaBatalha(int ataqueSelecionado);
 
-#endif
+#endif 
