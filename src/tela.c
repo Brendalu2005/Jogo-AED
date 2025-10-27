@@ -29,7 +29,6 @@ void DesenharTelaBatalha(int ataqueSelecionado){
     DrawRectangle(130, 10, 200, 30, GREEN); 
     DrawRectangleLines(130, 10, 200, 30, BLACK); 
     DrawText("Round", (SCREEN_WIDTH / 2) - 40, 15, 20, RAYWHITE);
-    //Vamo deixar assim por enquanto, mas depois a gente tem que ajeitar
     DrawText("3", (SCREEN_WIDTH / 2) - 10, 40, 30, RAYWHITE);
     
     int iaBarX = SCREEN_WIDTH - 20 - 200;
@@ -78,12 +77,12 @@ void DesenharTelaBatalha(int ataqueSelecionado){
 
     // Botão 1: Soco
     DrawRectangleRounded(btnSoco, 0.2f, 4, corSoco);
-    DrawRectangleRoundedLines(btnSoco, 0.2f, 4, espessuraBorda, BLACK);
+    DrawRectangleRoundedLinesEx(btnSoco, 0.2f, 4, espessuraBorda, BLACK);
     DrawText("Soco", btnSoco.x + (btnSoco.width / 2) - (MeasureText("Soco", 20) / 2), btnSoco.y + 10, 20, corTexto);
 
     // Botão 2: Cuspe
     DrawRectangleRounded(btnCuspe, 0.2f, 4, corCuspe);
-    DrawRectangleRoundedLines(btnCuspe, 0.2f, 4, espessuraBorda, BLACK);
+    DrawRectangleRoundedLinesEx(btnCuspe, 0.2f, 4, espessuraBorda, BLACK);
     DrawText("Cuspe", btnCuspe.x + (btnCuspe.width / 2) - (MeasureText("Cuspe", 20) / 2), btnCuspe.y + 10, 20, corTexto);
 
     if (ataqueSelecionado == 0){
