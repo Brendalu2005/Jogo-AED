@@ -3,7 +3,7 @@
 
 int main(void){
 
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Meu Jogo AED - Batalha");
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Ecos da infância");
     SetTargetFPS(60);
 
     int ataqueSelecionado = 0;
