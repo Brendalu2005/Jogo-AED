@@ -1,6 +1,12 @@
 #include "raylib.h"
-#include "tela.h" 
-void AtualizarTelaBatalha(int *ataqueSelecionado){
+#include "batalha.h" 
+
+void AtualizarTelaBatalha(int *ataqueSelecionado, GameScreen *telaAtual){
+    
+    if (IsKeyPressed(KEY_ESCAPE)) {
+        *telaAtual = SCREEN_MENU;
+        return; 
+    }
     
     Vector2 mousePos = GetMousePosition();
 
@@ -10,24 +16,27 @@ void AtualizarTelaBatalha(int *ataqueSelecionado){
     int textoYBase = menuY + 20;
     int colAtaquesX = 35;
 
-    Rectangle btnSoco = { colAtaquesX, textoYBase + 35, 150, 40 };
-    Rectangle btnCuspe = { colAtaquesX, textoYBase + 90, 150, 40 };
+    Rectangle btnSoco = { 
+        colAtaquesX, textoYBase + 35, 150, 40 
+    };
+    Rectangle btnCuspe = { 
+        colAtaquesX, textoYBase + 90, 150, 40 
+    };
 
     if (CheckCollisionPointRec(mousePos, btnSoco)){
-        *ataqueSelecionado = 0; 
+        *ataqueSelecionado = 0;
     }
     
     if (CheckCollisionPointRec(mousePos, btnCuspe)){
-        *ataqueSelecionado = 1; 
+        *ataqueSelecionado = 1;
     }
 }
 
 
 void DesenharTelaBatalha(int ataqueSelecionado){
-
     DrawText("Jogador 1", 20, 15, 20, RAYWHITE);
-    DrawRectangle(130, 10, 200, 30, GREEN); 
-    DrawRectangleLines(130, 10, 200, 30, BLACK); 
+    DrawRectangle(130, 10, 200, 30, GREEN);
+    DrawRectangleLines(130, 10, 200, 30, BLACK);
     DrawText("Round", (SCREEN_WIDTH / 2) - 40, 15, 20, RAYWHITE);
     DrawText("3", (SCREEN_WIDTH / 2) - 10, 40, 30, RAYWHITE);
     
@@ -35,23 +44,19 @@ void DesenharTelaBatalha(int ataqueSelecionado){
     DrawText("IA", iaBarX - 35, 15, 20, RAYWHITE);
     DrawRectangle(iaBarX, 10, 200, 30, GREEN);
     DrawRectangleLines(iaBarX, 10, 200, 30, BLACK);
-
     
     int arenaY = 80;
     int arenaHeight = 450;
     DrawRectangleLines(10, arenaY, SCREEN_WIDTH - 20, arenaHeight, LIGHTGRAY);
-
-
-
+    
     int menuY = arenaY + arenaHeight + 10;
     int menuHeight = SCREEN_HEIGHT - menuY - 10;
     Color menuBG = (Color){ 40, 40, 40, 255 };
     DrawRectangle(10, menuY, SCREEN_WIDTH - 20, menuHeight, menuBG);
     DrawRectangleLines(10, menuY, SCREEN_WIDTH - 20, menuHeight, RAYWHITE);
-
     
     int colAtaquesX = 35;
-    int colSpecsX = (SCREEN_WIDTH / 2) - 100; 
+    int colSpecsX = (SCREEN_WIDTH / 2) - 100;
     int textoYBase = menuY + 20;
 
     DrawText("Ataque:", colAtaquesX, textoYBase, 20, GREEN);
@@ -62,8 +67,12 @@ void DesenharTelaBatalha(int ataqueSelecionado){
     Color corTexto = BLACK;
     float espessuraBorda = 2.0f;
     
-    Rectangle btnSoco = { colAtaquesX, textoYBase + 35, 150, 40 };
-    Rectangle btnCuspe = { colAtaquesX, textoYBase + 90, 150, 40 };
+    Rectangle btnSoco = {
+        colAtaquesX, textoYBase + 35, 150, 40 
+    };
+    Rectangle btnCuspe = { 
+        colAtaquesX, textoYBase + 90, 150, 40 
+    };
     
     Color corSoco, corCuspe;
 
