@@ -171,7 +171,7 @@ static void DesenharPainelDetalhes(int idPersonagem) {
             intro = "O amigo da vizinhança.";
             ataque1 = "Soco-teia";
             ataque2 = "Sentido Aranha (Esquiva)";
-            pv = "130";
+            pv = "35";
             texturaParaDesenhar = texMiranhathumb;
             desenharTextura = true;
             break;
@@ -179,19 +179,45 @@ static void DesenharPainelDetalhes(int idPersonagem) {
         case ID_HELLO_KITTY:
             nome = "Hello Kitty";
             intro = "A gatinha mais famosa.";
-            ataque1 = "Ataque de fofura";
-            ataque2 = "Maçã";
-            pv = "90";
+            ataque1 = "Kityy surpresa(rolo compressor) - > 8ATK";
+            ataque2 = "??? -> 4ATK";
+            pv = "70";
+            //adicionar a textura
+
             break; 
 
         case ID_SHREK:
             nome = "Shrek";
             intro = "O ogro mais gente fina dos pântanos";
             ataque1 = "Bofetada ->5ATK";
-            ataque2 = "Arrogro -> 2ATK";
+            ataque2 = "Arrogr5 -> 2ATK";
             pv = "65";
+            //adicionar a textura
             break;
-            
+        case ID_MONICA:
+            nome = "";
+            intro = "";
+            ataque1 = "Coelhada -> 7ATK";
+            ataque2 = "Soco Super-mônico -> 3ATK";
+            pv = "64";
+            //adicionar a textura
+            break;
+        case ID_ELSA:
+            nome = "Elsa";
+            intro = "";
+            ataque1 = "Fúria Glacial -> 15ATK";
+            ataque2 = "Tempestade congelante - >7ATK";
+            pv = "30";
+            //adicionar a textura
+            break;
+        case ID_MICKEY:
+            nome = "Mickey Mouse";
+            intro = "";
+            ataque1 = "??? ->11ATK";
+            ataque2 = "??? -> 6ATK";
+            pv = "40";
+            //adicionar a textura
+            break;
         default:
             break;
     }
