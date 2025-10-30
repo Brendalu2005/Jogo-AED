@@ -2,6 +2,7 @@
 #include "telas.h"
 #include "menu.h" 
 #include "batalha.h"    
+#include "personagens.h" 
 
 void AtualizarTelaPlaceholder(GameScreen *telaAtual);
 void DesenharTelaPlaceholder(const char *titulo);
@@ -12,13 +13,14 @@ int main(void) {
     SetTargetFPS(60);
 
     MenuOpcao menuRes = LoadMenuResources();
+    CarregarRecursosPersonagens(); 
 
     GameScreen telaAtual = SCREEN_MENU;
     int ataqueSelecionado = 0;
+    int personagemSelecionado = -1; 
 
     while (!WindowShouldClose() && telaAtual != SCREEN_SAIR) {
         
-
         switch(telaAtual) {
             case SCREEN_MENU:
                 AtualizarTelaMenu(&telaAtual);
@@ -27,6 +29,8 @@ int main(void) {
                 AtualizarTelaBatalha(&ataqueSelecionado, &telaAtual);
                 break;
             case SCREEN_PERSONAGENS:
+                AtualizarTelaPersonagens(&telaAtual, &personagemSelecionado); 
+                break;
             case SCREEN_SOBRE:
                 AtualizarTelaPlaceholder(&telaAtual); 
                 break;
@@ -44,11 +48,10 @@ int main(void) {
                 DesenharTelaBatalha(ataqueSelecionado);
                 break;
             case SCREEN_PERSONAGENS:
-                DesenharTelaPlaceholder("PERSONAGENS"); //nada ainda
+                DesenharTelaPersonagens(personagemSelecionado); 
                 break;
             case SCREEN_SOBRE:
-                DesenharTelaPlaceholder("SOBRE"); //nada ainda
-                
+                DesenharTelaPlaceholder("SOBRE"); 
                 break;
             default: break;
         }
@@ -56,12 +59,12 @@ int main(void) {
         EndDrawing();
     }
 
+    DescarregarRecursosPersonagens(); 
     UnloadMenuResources(menuRes);
     CloseWindow();
     
     return 0;
 }
-
 
 
 void AtualizarTelaPlaceholder(GameScreen *telaAtual) {
