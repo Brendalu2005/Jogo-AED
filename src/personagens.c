@@ -246,44 +246,74 @@ void DesenharTelaPersonagens(int personagemSelecionado) {
     // --- Linha da Frente ---
     DrawText("Linha da Frente:", coluna1X, linhaFrenteY - 60, tamFonteTituloLinha, corTituloLinha);
     
-    if (personagemSelecionado == ID_HELLO_KITTY) { cor = corNomeSelecionado; } else { cor = corNomePersonagem; }
+    if (personagemSelecionado == ID_HELLO_KITTY) { 
+        cor = corNomeSelecionado;
+    }else { 
+        cor = corNomePersonagem;
+    }
     DrawText("-Hello Kitty", coluna1X, linhaFrenteY, tamFonteNome, cor);
     
-    if (personagemSelecionado == ID_SHREK) { cor = corNomeSelecionado; } else { cor = corNomePersonagem; }
+    if (personagemSelecionado == ID_SHREK) { 
+        cor = corNomeSelecionado; 
+    }else { 
+        cor = corNomePersonagem; 
+    }
     DrawText("-Shrek", coluna2X, linhaFrenteY, tamFonteNome, cor);
     
-    if (personagemSelecionado == ID_MONICA) { cor = corNomeSelecionado; } else { cor = corNomePersonagem; }
+    if (personagemSelecionado == ID_MONICA){ 
+        cor = corNomeSelecionado; 
+    }else{ 
+        cor = corNomePersonagem; 
+    }
     DrawText("-Mônica", coluna3X, linhaFrenteY, tamFonteNome, cor);
 
     // --- Linha do Meio ---
     DrawText("Linha do Meio:", coluna1X, linhaMeioY - 60, tamFonteTituloLinha, corTituloLinha);
     
-    if (personagemSelecionado == ID_BEN10) { cor = corNomeSelecionado; } else { cor = corNomePersonagem; }
+    if (personagemSelecionado == ID_BEN10) {
+        cor = corNomeSelecionado; 
+    }else { 
+        cor = corNomePersonagem; 
+    }
     DrawText("-Ben 10", coluna1X, linhaMeioY, tamFonteNome, cor);
-    // --- MUDANÇA: Usa a escala individual da miniatura ---
     DrawTextureEx(texBen10, (Vector2){ (float)coluna1X + 40, (float)linhaMeioY + 40 }, 0.0f, escalaMiniatura[ID_BEN10], WHITE);
     
-    if (personagemSelecionado == ID_DOCINHO) { cor = corNomeSelecionado; } else { cor = corNomePersonagem; }
+    if (personagemSelecionado == ID_DOCINHO) { 
+        cor = corNomeSelecionado; 
+    }else { 
+        cor = corNomePersonagem; 
+    }
     DrawText("-Docinho", coluna2X, linhaMeioY, tamFonteNome, cor);
-    // --- MUDANÇA: Usa a escala individual da miniatura ---
     DrawTextureEx(texDocinho, (Vector2){ (float)coluna2X + 40, (float)linhaMeioY + 40 }, 0.0f, escalaMiniatura[ID_DOCINHO], WHITE);
 
-    if (personagemSelecionado == ID_TAZ) { cor = corNomeSelecionado; } else { cor = corNomePersonagem; }
+    if (personagemSelecionado == ID_TAZ) { cor = corNomeSelecionado; } 
+    else { cor = corNomePersonagem; }
     DrawText("-Taz mania", coluna3X, linhaMeioY, tamFonteNome, cor);
-    // --- MUDANÇA: Usa a escala individual da miniatura ---
     DrawTextureEx(texTaz, (Vector2){ (float)coluna3X + 40, (float)linhaMeioY + 40 }, 0.0f, escalaMiniatura[ID_TAZ], WHITE);
 
     // --- Linha de Trás ---
     DrawText("Linha de Trás:", coluna1X, linhaTrasY - 60, tamFonteTituloLinha, corTituloLinha);
 
-    if (personagemSelecionado == ID_MIRANHA) { cor = corNomeSelecionado; } else { cor = corNomePersonagem; }
+    if (personagemSelecionado == ID_MIRANHA) { 
+        cor = corNomeSelecionado; 
+    }else{ 
+        cor = corNomePersonagem; 
+    }
     DrawText("-Homem-Aranha", coluna1X, linhaTrasY, tamFonteNome, cor);
     DrawTextureEx(texMiranhathumb, (Vector2){ (float)coluna1X + 40, (float)linhaTrasY + 40 }, 0.0f, escalaMiniatura[ID_MIRANHA], WHITE);
 
-    if (personagemSelecionado == ID_ELSA) { cor = corNomeSelecionado; } else { cor = corNomePersonagem; }
+    if (personagemSelecionado == ID_ELSA) { 
+        cor = corNomeSelecionado; 
+    }else {
+        cor = corNomePersonagem; 
+    }
     DrawText("-Elsa", coluna2X, linhaTrasY, tamFonteNome, cor);
     
-    if (personagemSelecionado == ID_MICKEY) { cor = corNomeSelecionado; } else { cor = corNomePersonagem; }
+    if (personagemSelecionado == ID_MICKEY) { 
+        cor = corNomeSelecionado; 
+    }else {
+         cor = corNomePersonagem; 
+    }
     DrawText("-Mickey mouse", coluna3X, linhaTrasY, tamFonteNome, cor);
     
     const char *aviso = "Pressione ESC ou ENTER para voltar ao Menu";
