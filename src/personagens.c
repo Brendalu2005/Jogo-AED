@@ -1,346 +1,217 @@
 #include "personagens.h"
 #include "raylib.h"
+#include "database.h"
+#include <stdio.h> // Para sprintf
+#include <string.h> // <--- CORREÇÃO 1: Adicionado
 
-#define ID_HELLO_KITTY  0
-#define ID_SHREK        1
-#define ID_MONICA       2
-#define ID_BEN10        3
-#define ID_DOCINHO      4
-#define ID_TAZ          5
-#define ID_MIRANHA      6
-#define ID_ELSA         7
-#define ID_MICKEY       8
+// --- Variáveis de Animação para a Grade ---
+// Precisamos de timers e frames para todas as 9 animações
+static int animFrame[9] = {0};
+static int animTimer[9] = {0};
+static int animVelocidade = 10; // Velocidade mais lenta para idle
+static int animFrameSelecionado = 0;
+static int animTimerSelecionado = 0;
 
-static Texture2D texBen10;
-static Texture2D texDocinho;
-static Texture2D texMiranhathumb; 
-static Texture2D texTaz;
-
-static Rectangle rectPersonagens[9]; 
-
-static float escalaMiniatura[9]; 
-static float escalaPainel[9];
-
+// --- Variáveis de Layout ---
+static Rectangle rectPersonagens[9]; // Hitboxes para seleção
 static Color corTituloLinha = { 100, 255, 100, 255 }; 
 static Color corNomePersonagem = RAYWHITE;
 static Color corNomeSelecionado = YELLOW;
 static Color corPainel = { 50, 50, 50, 200 };
 static Color corBordaPainel = { 200, 0, 0, 255 }; 
 
-/*
-A gente ainda tem que colocar os outros personagens. aí depois a gente muda a descrição deles.
-só tem os que tem lá no docs
-*/
-
-
 void CarregarRecursosPersonagens(void) {
-    //as 4 que já temos
-    texBen10 = LoadTexture("sprites/telaPersonagem/ben10thumb.png");
-    texDocinho = LoadTexture("sprites/telaPersonagem/docinhothumb.png");
-    texMiranhathumb = LoadTexture("sprites/telaPersonagem/miranhathumb.png");
-    texTaz = LoadTexture("sprites/telaPersonagem/tazthumb.png");
-
+    // Esta função agora SÓ define as hitboxes
     int linhaFrenteY = 200;
     int linhaMeioY = 450;
     int linhaTrasY = 700;
     
     int coluna1X = 100;
-    int coluna2X = 500;
-    int coluna3X = 900;
+    int coluna2X = 450; // Ajustado espaçamento
+    int coluna3X = 800; // Ajustado espaçamento
     
     int hitboxWidth = 300; 
     int hitboxHeight = 180; 
 
-    // Define as hitboxes pra cada personagem
-    rectPersonagens[ID_HELLO_KITTY] = (Rectangle){ coluna1X, linhaFrenteY, hitboxWidth, hitboxHeight };
-    rectPersonagens[ID_SHREK] = (Rectangle){ coluna2X, linhaFrenteY, hitboxWidth, hitboxHeight };
-    rectPersonagens[ID_MONICA] = (Rectangle){ coluna3X, linhaFrenteY, hitboxWidth, hitboxHeight };
-    
-    rectPersonagens[ID_BEN10] = (Rectangle){ coluna1X, linhaMeioY, hitboxWidth, hitboxHeight };
-    rectPersonagens[ID_DOCINHO] = (Rectangle){ coluna2X, linhaMeioY, hitboxWidth, hitboxHeight };
-    rectPersonagens[ID_TAZ] = (Rectangle){ coluna3X, linhaMeioY, hitboxWidth, hitboxHeight };
-    
-    rectPersonagens[ID_MIRANHA] = (Rectangle){ coluna1X, linhaTrasY, hitboxWidth, hitboxHeight };
-    rectPersonagens[ID_ELSA] = (Rectangle){ coluna2X, linhaTrasY, hitboxWidth, hitboxHeight };
-    rectPersonagens[ID_MICKEY] = (Rectangle){ coluna3X, linhaTrasY, hitboxWidth, hitboxHeight };
-
-    
+    // Define as hitboxes (usando IDs de 0 a 8)
     for (int i = 0; i < 9; i++) {
-        escalaMiniatura[i] = 3.0f; // Escala padrão da lista
-        escalaPainel[i] = 8.0f;    // Escala padrão do painel
+        int linha = i / 3; 
+        int col = i % 3;  
+        
+        int yPos = linhaFrenteY;
+        if (linha == 1) yPos = linhaMeioY;
+        if (linha == 2) yPos = linhaTrasY;
+        
+        int xPos = coluna1X;
+        if (col == 1) xPos = coluna2X;
+        if (col == 2) xPos = coluna3X;
+        
+        rectPersonagens[i] = (Rectangle){ (float)xPos, (float)yPos, (float)hitboxWidth, (float)hitboxHeight };
     }
-    
-    // Escalas da Miniatura 
-    escalaMiniatura[ID_BEN10] = 1.5f;
-    escalaMiniatura[ID_DOCINHO] = 1.5f; // Docinho é larga
-    escalaMiniatura[ID_TAZ] = -0.6f;     // Taz é muito grande
-    escalaMiniatura[ID_MIRANHA] = 1.5f;
-    
-    // Escalas do Painel 
-    escalaPainel[ID_BEN10] = 3.0f;
-    escalaPainel[ID_DOCINHO] = 2.0f; // Docinho é larga
-    escalaPainel[ID_TAZ] = 1.0f;     // Taz é muito grande
-    escalaPainel[ID_MIRANHA] = 3.0f;
 }
 
 void DescarregarRecursosPersonagens(void) {
-    UnloadTexture(texBen10);
-    UnloadTexture(texDocinho);
-    UnloadTexture(texMiranhathumb);
-    UnloadTexture(texTaz);
+    // Vazio. O LiberarDatabase() em main.c cuida disso
 }
 
-void AtualizarTelaPersonagens(GameScreen *telaAtual, int *personagemSelecionado) {
+void AtualizarTelaPersonagens(GameScreen *telaAtual, int *personagemSelecionado, SpriteDatabase* db) {
     if (IsKeyPressed(KEY_ESCAPE) || IsKeyPressed(KEY_ENTER)) {
         *telaAtual = SCREEN_MENU;
+        *personagemSelecionado = -1; // Limpa a seleção ao sair
     }
 
-    // Lógica de seleção de personagem
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         Vector2 mousePos = GetMousePosition();
         
-        for (int i = 0; i < 9; i++) {
+        *personagemSelecionado = -1; // Reseta a seleção
+        for (int i = 0; i < db->numPersonagens; i++) {
             if (CheckCollisionPointRec(mousePos, rectPersonagens[i])) {
                 *personagemSelecionado = i;
+                animFrameSelecionado = 0; // Reseta a animação do painel
+                animTimerSelecionado = 0;
                 break; 
+            }
+        }
+    }
+    
+    // --- Atualiza todas as 9 animações da grade ---
+    for (int i = 0; i < db->numPersonagens; i++) {
+        animTimer[i]++;
+        if (animTimer[i] > animVelocidade) {
+            animTimer[i] = 0;
+            animFrame[i]++;
+            AnimacaoData* anim = &db->personagens[i].animIdle;
+            if (animFrame[i] >= anim->def.numFrames) {
+                animFrame[i] = 0;
+            }
+        }
+    }
+    
+    // --- Atualiza a animação do personagem selecionado (no painel) ---
+    if (*personagemSelecionado != -1) {
+        animTimerSelecionado++;
+        if (animTimerSelecionado > animVelocidade) {
+            animTimerSelecionado = 0;
+            animFrameSelecionado++;
+            AnimacaoData* anim = &db->personagens[*personagemSelecionado].animIdle;
+            if (animFrameSelecionado >= anim->def.numFrames) {
+                animFrameSelecionado = 0;
             }
         }
     }
 }
 
-static void DesenharPainelDetalhes(int idPersonagem) {
-    Rectangle painelDireito = { 1300, 100, 580, 880 };
+// --- Painel de Detalhes (layout da imagem) ---
+static void DesenharPainelDetalhes(int idPersonagem, SpriteDatabase* db) {
+    Rectangle painelDireito = { 1150, 100, 400, 750 }; // Posição do painel
     
     DrawRectangleRec(painelDireito, corPainel);
     DrawRectangleLinesEx(painelDireito, 5.0f, corBordaPainel);
     
-    Rectangle areaImagem = { painelDireito.x + 40, painelDireito.y + 40, painelDireito.width - 80, 300 };
+    // Área para a animação grande
+    Rectangle areaAnimacao = { painelDireito.x + 25, painelDireito.y + 25, painelDireito.width - 50, 300 };
+    DrawRectangleRec(areaAnimacao, PURPLE);
 
-    int posX = (int)painelDireito.x + 40;
-    int posYBase = (int)areaImagem.y + (int)areaImagem.height + 20; 
-    int tamFonteTitulo = 30;
-    int tamFonteTexto = 25;
+    int posX = (int)painelDireito.x + 25;
+    int posYBase = (int)areaAnimacao.y + (int)areaAnimacao.height + 20; 
+    int tamFonteTitulo = 20;
+    int tamFonteTexto = 18;
 
-    int espacamentoLinha1 = 40;
-    int espacamentoLinha2 = 70;
-    int espacamentoLinha3 = 95;
-    int espacamentoBloco = 150; 
+    int espacamentoLinha1 = 25;
+    int espacamentoLinha2 = 45;
+    int espacamentoBloco = 100; 
 
-    Texture2D texturaParaDesenhar;
-    bool desenharTextura = false;
-    
-    const char *nome = "???";
-    const char *intro = "Selecione um personagem...";
-    const char *ataque1 = "-";
-    const char *ataque2 = "-";
-    const char *pv = "???";
-
-    switch (idPersonagem) {
-        case ID_BEN10:
-            nome = "Ben 10";
-            intro = "Garoto com relógio esquisito";
-            ataque1 = "Barragem de Quatro Braços->10ATK";
-            ataque2 = "Chama frenética->5ATK";
-            pv = "55";
-            texturaParaDesenhar = texBen10;
-            desenharTextura = true;
-            break;
-            
-        case ID_DOCINHO:
-            nome = "Docinho";
-            intro = "A mais doce das Meninas super poderosas";
-            ataque1 = "socada doce->13ATK";
-            ataque2 = "Laser carinhoso->6ATK";
-            pv = "42";
-            texturaParaDesenhar = texDocinho;
-            desenharTextura = true;
-            break;
-
-        case ID_TAZ:
-            nome = "Taz Mania";
-            intro = "Demônio da Tasmânia.";
-            ataque1 = "Tornado->11ATK";
-            ataque2 = "Mordida->5ATK";
-            pv = "50";
-            texturaParaDesenhar = texTaz;
-            desenharTextura = true;
-            break;
-            
-        case ID_MIRANHA:
-            nome = "Homem-Aranha";
-            intro = "O amigo da vizinhança.";
-            ataque1 = "Soco-teia";
-            ataque2 = "Sentido Aranha (Esquiva)";
-            pv = "35";
-            texturaParaDesenhar = texMiranhathumb;
-            desenharTextura = true;
-            break;
-
-        case ID_HELLO_KITTY:
-            nome = "Hello Kitty";
-            intro = "A gatinha mais famosa.";
-            ataque1 = "Kityy surpresa(rolo compressor) - > 8ATK";
-            ataque2 = "??? -> 4ATK";
-            pv = "70";
-            //adicionar a textura
-
-            break; 
-
-        case ID_SHREK:
-            nome = "Shrek";
-            intro = "O ogro mais gente fina dos pântanos";
-            ataque1 = "Bofetada ->5ATK";
-            ataque2 = "Arrogr5 -> 2ATK";
-            pv = "65";
-            //adicionar a textura
-            break;
-        case ID_MONICA:
-            nome = "";
-            intro = "";
-            ataque1 = "Coelhada -> 7ATK";
-            ataque2 = "Soco Super-mônico -> 3ATK";
-            pv = "64";
-            //adicionar a textura
-            break;
-        case ID_ELSA:
-            nome = "Elsa";
-            intro = "";
-            ataque1 = "Fúria Glacial -> 15ATK";
-            ataque2 = "Tempestade congelante - >7ATK";
-            pv = "30";
-            //adicionar a textura
-            break;
-        case ID_MICKEY:
-            nome = "Mickey Mouse";
-            intro = "";
-            ataque1 = "??? ->11ATK";
-            ataque2 = "??? -> 6ATK";
-            pv = "40";
-            //adicionar a textura
-            break;
-        default:
-            break;
+    PersonagemData* pData = NULL;
+    if (idPersonagem >= 0 && idPersonagem < db->numPersonagens) {
+        pData = &db->personagens[idPersonagem];
     }
     
-    // Desenha a foto do personagem 
-    if (desenharTextura == true) {
-        
-        float escala = escalaPainel[idPersonagem]; 
-        
-        float imgX = areaImagem.x + (areaImagem.width - (texturaParaDesenhar.width * escala)) / 2;
-        float imgY = areaImagem.y + (areaImagem.height - (texturaParaDesenhar.height * escala)) / 2;
-        DrawTextureEx(texturaParaDesenhar, (Vector2){ imgX, imgY }, 0.0f, escala, WHITE);
-    }
+    if (pData != NULL) {
+        // 1. Desenha a Animação Idle Grande
+        AnimacaoData* anim = &pData->animIdle;
+        if (anim->def.numFrames > 0) {
+            Rectangle frame = anim->def.frames[animFrameSelecionado];
+            float zoom = pData->painelZoom;
+            
+            DrawTexturePro(anim->textura, frame, 
+                (Rectangle){ areaAnimacao.x + areaAnimacao.width / 2, areaAnimacao.y + areaAnimacao.height / 2, frame.width * zoom, frame.height * zoom },
+                (Vector2){ (frame.width * zoom) / 2, (frame.height * zoom) / 2 }, 0, WHITE);
+        }
 
-    // Desenha os textos
-    DrawText("Nome:", posX, posYBase, tamFonteTitulo, corTituloLinha);
-    DrawText(nome, posX, posYBase + espacamentoLinha1, tamFonteTexto, LIGHTGRAY);
-    DrawText(intro, posX, posYBase + espacamentoLinha2, 20, LIGHTGRAY); 
-    
-    int posYBlocoAtaques = posYBase + espacamentoBloco;
-    DrawText("Ataques:", posX, posYBlocoAtaques, tamFonteTitulo, corTituloLinha);
-    DrawText(ataque1, posX, posYBlocoAtaques + espacamentoLinha1, tamFonteTexto, LIGHTGRAY);
-    DrawText(ataque2, posX, posYBlocoAtaques + espacamentoLinha3, tamFonteTexto, LIGHTGRAY);
-    
-    int posYBlocoPV = posYBase + (espacamentoBloco * 2);
-    DrawText("PV:", posX, posYBlocoPV, tamFonteTitulo, corTituloLinha);
-    DrawText(pv, posX, posYBlocoPV + espacamentoLinha1, tamFonteTexto, LIGHTGRAY);
+        // 2. Desenha os Textos
+        DrawText("Nome:", posX, posYBase, tamFonteTitulo, corTituloLinha);
+        DrawText(pData->nome, posX, posYBase + espacamentoLinha1, tamFonteTexto, LIGHTGRAY);
+        DrawText(pData->descricao, posX, posYBase + espacamentoLinha2, 16, LIGHTGRAY); 
+        
+        int posYBlocoAtaques = posYBase + espacamentoBloco;
+        DrawText("Ataques:", posX, posYBlocoAtaques, tamFonteTitulo, corTituloLinha);
+        DrawText(pData->ataque1.nome, posX, posYBlocoAtaques + espacamentoLinha1, tamFonteTexto, LIGHTGRAY);
+        DrawText(pData->ataque1.descricao, posX + 10, posYBlocoAtaques + espacamentoLinha1 + 25, 16, LIGHTGRAY);
+        DrawText(TextFormat("Dano: %d", pData->ataque1.dano), posX + 10, posYBlocoAtaques + espacamentoLinha1 + 45, 16, LIGHTGRAY);
+        
+        DrawText(pData->ataque2.nome, posX, posYBlocoAtaques + espacamentoLinha1 + 75, tamFonteTexto, LIGHTGRAY);
+        DrawText(pData->ataque2.descricao, posX + 10, posYBlocoAtaques + espacamentoLinha1 + 100, 16, LIGHTGRAY);
+        DrawText(TextFormat("Dano: %d", pData->ataque2.dano), posX + 10, posYBlocoAtaques + espacamentoLinha1 + 120, 16, LIGHTGRAY);
+        
+        int posYBlocoPV = posYBase + (espacamentoBloco * 2) + 100;
+        DrawText("PV (Pontos de Vida):", posX, posYBlocoPV, tamFonteTitulo, corTituloLinha);
+        DrawText(TextFormat("%d", pData->hpMax), posX, posYBlocoPV + espacamentoLinha1, tamFonteTexto, LIGHTGRAY);
+    } else {
+        DrawText("Selecione um personagem", (int)painelDireito.x + 40, (int)painelDireito.y + 400, 25, LIGHTGRAY);
+    }
 }
 
 
-void DesenharTelaPersonagens(int personagemSelecionado) {
+void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
     ClearBackground(DARKGRAY);
     
-    DesenharPainelDetalhes(personagemSelecionado);
+    // --- CORREÇÃO 2: Chamada correta (sem recursão) ---
+    DesenharPainelDetalhes(personagemSelecionado, db);
 
     DrawText("Personagens:", 50, 50, 60, corTituloLinha);
 
     int tamFonteTituloLinha = 40;
     int tamFonteNome = 30;
     
+    const char* titulosClasses[] = {"LINHA DE FRENTE", "LINHA DO MEIO", "LINHA DE TRAS"};
     
-    int linhaFrenteY = (int)rectPersonagens[ID_HELLO_KITTY].y;
-    int linhaMeioY = (int)rectPersonagens[ID_BEN10].y;
-    int linhaTrasY = (int)rectPersonagens[ID_MIRANHA].y;
-    
-    int coluna1X = (int)rectPersonagens[ID_HELLO_KITTY].x;
-    int coluna2X = (int)rectPersonagens[ID_SHREK].x;
-    int coluna3X = (int)rectPersonagens[ID_MONICA].x;
-    
-    Color cor; 
+    for (int c = 0; c < 3; c++) { // Loop de Classes (Linhas)
+        ClassePersonagem classe = (ClassePersonagem)c;
+        int yPos = 200 + 250 * c;
+        int xPos = 100;
+        
+        DrawText(titulosClasses[c], xPos, yPos - 60, tamFonteTituloLinha, corTituloLinha);
+        
+        int col = 0;
+        for (int i = 0; i < db->numPersonagens; i++) { // Loop de Personagens
+            if (db->personagens[i].classe == classe) {
+                xPos = 100 + 350 * col;
+                
+                // Define a hitbox (baseado no CarregarRecursosPersonagens)
+                Rectangle card = rectPersonagens[i];
+                DrawRectangleRec(card, (Color){ 30, 30, 30, 200 });
+                if (personagemSelecionado == i) {
+                    DrawRectangleLinesEx(card, 3.0f, corNomeSelecionado);
+                }
 
-    // --- Linha da Frente ---
-    DrawText("Linha da Frente:", coluna1X, linhaFrenteY - 60, tamFonteTituloLinha, corTituloLinha);
-    
-    if (personagemSelecionado == ID_HELLO_KITTY) { 
-        cor = corNomeSelecionado;
-    }else { 
-        cor = corNomePersonagem;
-    }
-    DrawText("-Hello Kitty", coluna1X, linhaFrenteY, tamFonteNome, cor);
-    
-    if (personagemSelecionado == ID_SHREK) { 
-        cor = corNomeSelecionado; 
-    }else { 
-        cor = corNomePersonagem; 
-    }
-    DrawText("-Shrek", coluna2X, linhaFrenteY, tamFonteNome, cor);
-    
-    if (personagemSelecionado == ID_MONICA){ 
-        cor = corNomeSelecionado; 
-    }else{ 
-        cor = corNomePersonagem; 
-    }
-    DrawText("-Mônica", coluna3X, linhaFrenteY, tamFonteNome, cor);
+                // Desenha a animação idle
+                AnimacaoData* anim = &db->personagens[i].animIdle;
+                if (anim->def.numFrames > 0) {
+                    Rectangle frame = anim->def.frames[animFrame[i]];
+                    float zoom = (card.height - 40) / frame.height; // Auto-ajusta o zoom
+                    DrawTexturePro(anim->textura, frame,
+                        (Rectangle){ card.x + card.width/2, card.y + card.height/2 - 10, frame.width * zoom, frame.height * zoom },
+                        (Vector2){ (frame.width * zoom) / 2, (frame.height * zoom) / 2 }, 0, WHITE);
+                }
 
-    // --- Linha do Meio ---
-    DrawText("Linha do Meio:", coluna1X, linhaMeioY - 60, tamFonteTituloLinha, corTituloLinha);
-    
-    if (personagemSelecionado == ID_BEN10) {
-        cor = corNomeSelecionado; 
-    }else { 
-        cor = corNomePersonagem; 
-    }
-    DrawText("-Ben 10", coluna1X, linhaMeioY, tamFonteNome, cor);
-    DrawTextureEx(texBen10, (Vector2){ (float)coluna1X + 40, (float)linhaMeioY + 40 }, 0.0f, escalaMiniatura[ID_BEN10], WHITE);
-    
-    if (personagemSelecionado == ID_DOCINHO) { 
-        cor = corNomeSelecionado; 
-    }else { 
-        cor = corNomePersonagem; 
-    }
-    DrawText("-Docinho", coluna2X, linhaMeioY, tamFonteNome, cor);
-    DrawTextureEx(texDocinho, (Vector2){ (float)coluna2X + 40, (float)linhaMeioY + 40 }, 0.0f, escalaMiniatura[ID_DOCINHO], WHITE);
+                // Desenha o nome
+                Color cor = (personagemSelecionado == i) ? corNomeSelecionado : corNomePersonagem;
+                DrawText(db->personagens[i].nome, xPos + 10, yPos + 10, tamFonteNome, cor);
 
-    if (personagemSelecionado == ID_TAZ) { cor = corNomeSelecionado; } 
-    else { cor = corNomePersonagem; }
-    DrawText("-Taz mania", coluna3X, linhaMeioY, tamFonteNome, cor);
-    DrawTextureEx(texTaz, (Vector2){ (float)coluna3X + 40, (float)linhaMeioY + 40 }, 0.0f, escalaMiniatura[ID_TAZ], WHITE);
-
-    // --- Linha de Trás ---
-    DrawText("Linha de Trás:", coluna1X, linhaTrasY - 60, tamFonteTituloLinha, corTituloLinha);
-
-    if (personagemSelecionado == ID_MIRANHA) { 
-        cor = corNomeSelecionado; 
-    }else{ 
-        cor = corNomePersonagem; 
+                col++;
+            }
+        }
     }
-    DrawText("-Homem-Aranha", coluna1X, linhaTrasY, tamFonteNome, cor);
-    DrawTextureEx(texMiranhathumb, (Vector2){ (float)coluna1X + 40, (float)linhaTrasY + 40 }, 0.0f, escalaMiniatura[ID_MIRANHA], WHITE);
-
-    if (personagemSelecionado == ID_ELSA) { 
-        cor = corNomeSelecionado; 
-    }else {
-        cor = corNomePersonagem; 
-    }
-    DrawText("-Elsa", coluna2X, linhaTrasY, tamFonteNome, cor);
-    
-    if (personagemSelecionado == ID_MICKEY) { 
-        cor = corNomeSelecionado; 
-    }else {
-         cor = corNomePersonagem; 
-    }
-    DrawText("-Mickey mouse", coluna3X, linhaTrasY, tamFonteNome, cor);
     
     const char *aviso = "Pressione ESC ou ENTER para voltar ao Menu";
     int tamAviso = 20;

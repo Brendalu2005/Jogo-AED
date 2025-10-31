@@ -1,0 +1,148 @@
+{
+  "personagens": [
+    {
+      "nome": "Hello Kitty",
+      "descricao": "A gatinha mais famosa.",
+      "classe": "CLASSE_LINHA_FRENTE",
+      "hpMax": 70,
+      "velocidade": 4,
+      "painelZoom": 2.5,
+      "thumbnailPath": "sprites/telaPersonagem/docinhothumb.png",
+      "ataque1": { "nome": "Kityy surpresa", "descricao": "Um rolo compressor.", "dano": 8 },
+      "ataque2": { "nome": "???", "descricao": "Um ataque fofo.", "dano": 4 },
+      "anim": {
+        "idle": "sprites/personagens/docinho/idle",
+        "ataque1": "sprites/personagens/docinho/ataque_soco",
+        "ataque2": "sprites/personagens/docinho/ataque_laser"
+      }
+    },
+    {
+      "nome": "Shrek",
+      "descricao": "O ogro mais gente fina dos pântanos.",
+      "classe": "CLASSE_LINHA_FRENTE",
+      "hpMax": 65,
+      "velocidade": 3,
+      "painelZoom": 2.5,
+      "thumbnailPath": "sprites/telaPersonagem/docinhothumb.png",
+      "ataque1": { "nome": "Bofetada", "descricao": "Um tapa de ogro.", "dano": 5 },
+      "ataque2": { "nome": "Arrogr5", "descricao": "Um arroto potente.", "dano": 2 },
+      "anim": {
+        "idle": "sprites/personagens/shrek/idle",
+        "ataque1": "sprites/personagens/shrek/ataque_soco",
+        "ataque2": "sprites/personagens/shrek/ataque_urro"
+      }
+    },
+    {
+      "nome": "Mônica",
+      "descricao": "A dona da rua.",
+      "classe": "CLASSE_LINHA_FRENTE",
+      "hpMax": 64,
+      "velocidade": 5,
+      "painelZoom": 2.5,
+      "thumbnailPath": "sprites/telaPersonagem/docinhothumb.png",
+      "ataque1": { "nome": "Coelhada", "descricao": "Uma coelhada do Sansão.", "dano": 7 },
+      "ataque2": { "nome": "Soco Super-mônico", "descricao": "Um soco com força total.", "dano": 3 },
+      "anim": {
+        "idle": "sprites/personagens/docinho/idle",
+        "ataque1": "sprites/personagens/docinho/ataque_soco",
+        "ataque2": "sprites/personagens/docinho/ataque_laser"
+      }
+    },
+    {
+      "nome": "Ben 10",
+      "descricao": "Garoto com relógio esquisito.",
+      "classe": "CLASSE_LINHA_MEIO",
+      "hpMax": 55,
+      "velocidade": 7,
+      "painelZoom": 2.5,
+      "thumbnailPath": "sprites/telaPersonagem/ben10thumb.png",
+      "ataque1": { "nome": "Barragem Quatro Braços", "descricao": "Uma barragem de socos.", "dano": 10 },
+      "ataque2": { "nome": "Chama Frenética", "descricao": "Uma bola de fogo.", "dano": 5 },
+      "anim": {
+        "idle": "sprites/personagens/ben10/idle",
+        "ataque1": "sprites/personagens/ben10/ataque_quatrobracos",
+        "ataque2": "sprites/personagens/ben10/ataque_chama"
+      }
+    },
+    {
+      "nome": "docinho",
+      "descricao": "A mais doce das Meninas Super Poderosas.",
+      "classe": "CLASSE_LINHA_MEIO",
+      "hpMax": 42,
+      "velocidade": 8,
+      "painelZoom": 2.0,
+      "thumbnailPath": "sprites/telaPersonagem/docinhothumb.png",
+      "ataque1": { "nome": "Socada Doce", "descricao": "Um soco direto no oponente.", "dano": 13 },
+      "ataque2": { "nome": "Laser Carinhoso", "descricao": "Um laser ocular potente.", "dano": 6 },
+      "anim": {
+        "idle": "sprites/personagens/docinho/idle",
+        "ataque1": "sprites/personagens/docinho/ataque_soco",
+        "ataque2": "sprites/personagens/docinho/ataque_laser"
+      }
+    },
+    {
+      "nome": "Taz Mania",
+      "descricao": "Demônio da Tasmânia.",
+      "classe": "CLASSE_LINHA_MEIO",
+      "hpMax": 50,
+      "velocidade": 6,
+      "painelZoom": 2.5,
+      "thumbnailPath": "sprites/telaPersonagem/tazthumb.png",
+      "ataque1": { "nome": "Tornado", "descricao": "Gira e destrói.", "dano": 11 },
+      "ataque2": { "nome": "Mordida", "descricao": "Uma mordida faminta.", "dano": 5 },
+      "anim": {
+        "idle": "sprites/personagens/taz/idle",
+        "ataque1": "sprites/personagens/taz/ataque_soco",
+        "ataque2": "sprites/personagens/taz/ataque_tornado"
+      }
+    },
+    {
+      "nome": "Homem-Aranha",
+      "descricao": "O amigo da vizinhança.",
+      "classe": "CLASSE_LINHA_TRAS",
+      "hpMax": 35,
+      "velocidade": 10,
+      "painelZoom": 2.5,
+      "thumbnailPath": "sprites/telaPersonagem/miranhathumb.png",
+      "ataque1": { "nome": "Soco-teia", "descricao": "Um soco com impulso de teia.", "dano": 8 },
+      "ataque2": { "nome": "Sentido Aranha", "descricao": "Jogue teia nos inimigos.", "dano": 10 },
+      "anim": {
+        "idle": "sprites/personagens/homem-aranha/idle",
+        "ataque1": "sprites/personagens/homem-aranha/ataque_soco",
+        "ataque2": "sprites/personagens/homem-aranha/ataque_teia"
+      }
+    },
+    {
+      "nome": "Elsa",
+      "descricao": "Rainha do Gelo.",
+      "classe": "CLASSE_LINHA_TRAS",
+      "hpMax": 30,
+      "velocidade": 6,
+      "painelZoom": 2.5,
+      "thumbnailPath": "sprites/telaPersonagem/docinhothumb.png",
+      "ataque1": { "nome": "Fúria Glacial", "descricao": "Um ataque de gelo poderoso.", "dano": 15 },
+      "ataque2": { "nome": "Tempestade Congelante", "descricao": "Causa dano e lentidão.", "dano": 7 },
+      "anim": {
+        "idle": "sprites/personagens/docinho/idle",
+        "ataque1": "sprites/personagens/docinho/ataque_soco",
+        "ataque2": "sprites/personagens/docinho/ataque_laser"
+      }
+    },
+    {
+      "nome": "Mickey Mouse",
+      "descricao": "O rato mais famoso do mundo.",
+      "classe": "CLASSE_LINHA_TRAS",
+      "hpMax": 40,
+      "velocidade": 7,
+      "painelZoom": 2.5,
+      "thumbnailPath": "sprites/telaPersonagem/docinhothumb.png",
+      "ataque1": { "nome": "Pincel ameaçador", "descricao": "De uma pincelada no inimigo.", "dano": 11 },
+      "ataque2": { "nome": "Magic tornade", "descricao": "Um poderoso tornado.", "dano": 6 },
+      "anim": {
+        "idle": "sprites/personagens/mickey/idle",
+        "ataque1": "sprites/personagens/mickey/ataque_pincel",
+        "ataque2": "sprites/personagens/mickey/ataque_tornado"
+      }
+    }
+  ]
+}

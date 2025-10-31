@@ -1,0 +1,175 @@
+{
+	"frames": {
+		"homemaranha-ataquesdireitaSoco1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 100,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 100,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 100,
+				"h": 100
+			}
+		},
+		"homemaranha-ataquesdireitaSoco2.png": {
+			"frame": {
+				"x": 103,
+				"y": 1,
+				"w": 94,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 94,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 94,
+				"h": 100
+			}
+		},
+		"homemaranha-ataquesdireitaSoco3.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 114,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 114,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 114,
+				"h": 100
+			}
+		},
+		"homemaranha-ataquesdireitaSoco4.png": {
+			"frame": {
+				"x": 117,
+				"y": 103,
+				"w": 86,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 86,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 86,
+				"h": 100
+			}
+		},
+		"homemaranha-ataquesdireitaSoco5.png": {
+			"frame": {
+				"x": 199,
+				"y": 1,
+				"w": 100,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 100,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 100,
+				"h": 100
+			}
+		},
+		"homemaranha-ataquesdireitaSoco6.png": {
+			"frame": {
+				"x": 205,
+				"y": 103,
+				"w": 83,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 83,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 83,
+				"h": 100
+			}
+		},
+		"homemaranha-ataquesdireitaSoco7.png": {
+			"frame": {
+				"x": 290,
+				"y": 103,
+				"w": 88,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 88,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 88,
+				"h": 100
+			}
+		},
+		"homemaranha-ataquesdireitaSoco8.png": {
+			"frame": {
+				"x": 1,
+				"y": 205,
+				"w": 83,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 83,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 83,
+				"h": 100
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 379,
+			"h": 306
+		},
+		"scale": "1"
+	}
+}

@@ -1,0 +1,95 @@
+{
+	"frames": {
+		"shrek-ataquesdireitaSoco1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 82,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 82,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 82,
+				"h": 100
+			}
+		},
+		"shrek-ataquesdireitaSoco2.png": {
+			"frame": {
+				"x": 85,
+				"y": 1,
+				"w": 108,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 108,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 108,
+				"h": 100
+			}
+		},
+		"shrek-ataquesdireitaSoco3.png": {
+			"frame": {
+				"x": 195,
+				"y": 1,
+				"w": 72,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 72,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 72,
+				"h": 100
+			}
+		},
+		"shrek-ataquesdireitaSoco4.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 104,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 104,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 104,
+				"h": 100
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 268,
+			"h": 204
+		},
+		"scale": "1"
+	}
+}

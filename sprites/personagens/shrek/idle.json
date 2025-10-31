@@ -1,0 +1,95 @@
+{
+	"frames": {
+		"shrek-idle1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 67,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 67,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 67,
+				"h": 100
+			}
+		},
+		"shrek-idle2.png": {
+			"frame": {
+				"x": 70,
+				"y": 1,
+				"w": 67,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 67,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 67,
+				"h": 100
+			}
+		},
+		"shrek-idle3.png": {
+			"frame": {
+				"x": 139,
+				"y": 1,
+				"w": 65,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 65,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 65,
+				"h": 100
+			}
+		},
+		"shrek-idle4.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 67,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 67,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 67,
+				"h": 100
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 205,
+			"h": 204
+		},
+		"scale": "1"
+	}
+}

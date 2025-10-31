@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "menu.h" 
 #include <stdio.h>
+#include "selecao.h" // <--- ADICIONE ISSO
 
 static Rectangle btnJogar;
 static Rectangle btnPersonagens;
@@ -50,7 +51,9 @@ void AtualizarTelaMenu(GameScreen *telaAtual) {
 
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         if (CheckCollisionPointRec(mousePos, btnJogar)) {
-            *telaAtual = SCREEN_BATALHA;
+            // --- ATUALIZADO ---
+            *telaAtual = SCREEN_SELECAO; 
+            // ------------------
         } else if (CheckCollisionPointRec(mousePos, btnPersonagens)) {
             *telaAtual = SCREEN_PERSONAGENS;
         } else if (CheckCollisionPointRec(mousePos, btnSobre)) {

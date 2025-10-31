@@ -3,6 +3,8 @@
 #include "menu.h" 
 #include "batalha.h"    
 #include "personagens.h" 
+#include "database.h"     
+#include "selecao.h" 
 
 void AtualizarTelaPlaceholder(GameScreen *telaAtual);
 void DesenharTelaPlaceholder(const char *titulo);
@@ -13,28 +15,44 @@ int main(void) {
     SetTargetFPS(60);
 
     MenuOpcao menuRes = LoadMenuResources();
+    // A função CarregarRecursosPersonagens define as hitboxes
     CarregarRecursosPersonagens(); 
+    
+    SpriteDatabase database = CarregarDatabase("sprites/personagens_db.json"); 
 
+    TimesBatalha timesSelecionados = {0};
+    EstadoBatalha estadoBatalha = {0};
+    
     GameScreen telaAtual = SCREEN_MENU;
-    int ataqueSelecionado = 0;
-    int personagemSelecionado = -1; 
+    int personagemSelecionado = -1; // -1 significa "nenhum selecionado"
 
     while (!WindowShouldClose() && telaAtual != SCREEN_SAIR) {
         
         switch(telaAtual) {
             case SCREEN_MENU:
                 AtualizarTelaMenu(&telaAtual);
+                if (telaAtual == SCREEN_SELECAO) {
+                    InicializarSelecao(&timesSelecionados);
+                }
+                break;
+            case SCREEN_SELECAO:
+                AtualizarTelaSelecao(&telaAtual, &database, &timesSelecionados); 
+                if (telaAtual == SCREEN_BATALHA) {
+                    // --- CORREÇÃO 3: Removido o &database ---
+                    InicializarBatalha(&estadoBatalha, &timesSelecionados);
+                }
                 break;
             case SCREEN_BATALHA:
-                AtualizarTelaBatalha(&ataqueSelecionado, &telaAtual);
+                AtualizarTelaBatalha(&estadoBatalha, &telaAtual); 
                 break;
             case SCREEN_PERSONAGENS:
-                AtualizarTelaPersonagens(&telaAtual, &personagemSelecionado); 
+                AtualizarTelaPersonagens(&telaAtual, &personagemSelecionado, &database); 
                 break;
             case SCREEN_SOBRE:
                 AtualizarTelaPlaceholder(&telaAtual); 
                 break;
-            default: break;
+            case SCREEN_SAIR:
+                break;
         }
 
         BeginDrawing();
@@ -44,22 +62,27 @@ int main(void) {
             case SCREEN_MENU:
                 DesenharTelaMenu(menuRes);
                 break;
+            case SCREEN_SELECAO:
+                DesenharTelaSelecao(&database, &timesSelecionados);
+                break;
             case SCREEN_BATALHA:
-                DesenharTelaBatalha(ataqueSelecionado);
+                DesenharTelaBatalha(&estadoBatalha); 
                 break;
             case SCREEN_PERSONAGENS:
-                DesenharTelaPersonagens(personagemSelecionado); 
+                DesenharTelaPersonagens(personagemSelecionado, &database); 
                 break;
             case SCREEN_SOBRE:
                 DesenharTelaPlaceholder("SOBRE"); 
                 break;
-            default: break;
+            case SCREEN_SAIR:
+                break;
         }
 
         EndDrawing();
     }
 
-    DescarregarRecursosPersonagens(); 
+    LiberarDatabase(&database); 
+    // DescarregarRecursosPersonagens() está vazio, não precisamos chamar
     UnloadMenuResources(menuRes);
     CloseWindow();
     
@@ -67,6 +90,7 @@ int main(void) {
 }
 
 
+// Funções placeholder originais
 void AtualizarTelaPlaceholder(GameScreen *telaAtual) {
     if (IsKeyPressed(KEY_ESCAPE) || IsKeyPressed(KEY_ENTER)) {
         *telaAtual = SCREEN_MENU;

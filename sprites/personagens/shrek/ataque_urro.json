@@ -1,0 +1,115 @@
+{
+	"frames": {
+		"shrek-ataquesdireitaSoco1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 82,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 82,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 82,
+				"h": 100
+			}
+		},
+		"shrek-ataquesdireitaUrro1.png": {
+			"frame": {
+				"x": 85,
+				"y": 1,
+				"w": 90,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 90,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 90,
+				"h": 100
+			}
+		},
+		"shrek-ataquesdireitaUrro2.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 100,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 100,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 100,
+				"h": 100
+			}
+		},
+		"shrek-ataquesdireitaUrro3.png": {
+			"frame": {
+				"x": 177,
+				"y": 1,
+				"w": 103,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 103,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 103,
+				"h": 100
+			}
+		},
+		"shrek-ataquesdireitaUrro4.png": {
+			"frame": {
+				"x": 1,
+				"y": 205,
+				"w": 103,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 103,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 103,
+				"h": 100
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 312,
+			"h": 306
+		},
+		"scale": "1"
+	}
+}

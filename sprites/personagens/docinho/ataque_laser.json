@@ -1,0 +1,155 @@
+{
+	"frames": {
+		"docinho-ataquesdireitaLaser1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 100,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 100,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 100,
+				"h": 100
+			}
+		},
+		"docinho-ataquesdireitaLaser2.png": {
+			"frame": {
+				"x": 103,
+				"y": 1,
+				"w": 103,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 103,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 103,
+				"h": 100
+			}
+		},
+		"docinho-ataquesdireitaLaser3.png": {
+			"frame": {
+				"x": 208,
+				"y": 1,
+				"w": 103,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 103,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 103,
+				"h": 100
+			}
+		},
+		"docinho-ataquesdireitaLaser4.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 100,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 100,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 100,
+				"h": 100
+			}
+		},
+		"docinho-ataquesdireitaLaser5.png": {
+			"frame": {
+				"x": 103,
+				"y": 103,
+				"w": 159,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 159,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 159,
+				"h": 100
+			}
+		},
+		"docinho-ataquesdireitaLaser6.png": {
+			"frame": {
+				"x": 1,
+				"y": 205,
+				"w": 200,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 200,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 200,
+				"h": 100
+			}
+		},
+		"docinho-ataquesdireitaLaser7.png": {
+			"frame": {
+				"x": 313,
+				"y": 1,
+				"w": 250,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 250,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 250,
+				"h": 100
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 564,
+			"h": 306
+		},
+		"scale": "1"
+	}
+}

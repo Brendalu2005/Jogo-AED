@@ -1,0 +1,255 @@
+{
+	"frames": {
+		"mickey-ataquesdireitaPincel1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 100,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 100,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 100,
+				"h": 100
+			}
+		},
+		"mickey-ataquesdireitaTornado1.png": {
+			"frame": {
+				"x": 103,
+				"y": 1,
+				"w": 106,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 106,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 106,
+				"h": 100
+			}
+		},
+		"mickey-ataquesdireitaTornado10.png": {
+			"frame": {
+				"x": 211,
+				"y": 1,
+				"w": 142,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 142,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 142,
+				"h": 100
+			}
+		},
+		"mickey-ataquesdireitaTornado11.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 158,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 158,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 158,
+				"h": 100
+			}
+		},
+		"mickey-ataquesdireitaTornado2.png": {
+			"frame": {
+				"x": 161,
+				"y": 103,
+				"w": 89,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 89,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 89,
+				"h": 100
+			}
+		},
+		"mickey-ataquesdireitaTornado3.png": {
+			"frame": {
+				"x": 252,
+				"y": 103,
+				"w": 121,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 121,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 121,
+				"h": 100
+			}
+		},
+		"mickey-ataquesdireitaTornado4.png": {
+			"frame": {
+				"x": 1,
+				"y": 205,
+				"w": 108,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 108,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 108,
+				"h": 100
+			}
+		},
+		"mickey-ataquesdireitaTornado5.png": {
+			"frame": {
+				"x": 111,
+				"y": 205,
+				"w": 104,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 104,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 104,
+				"h": 100
+			}
+		},
+		"mickey-ataquesdireitaTornado6.png": {
+			"frame": {
+				"x": 217,
+				"y": 205,
+				"w": 117,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 117,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 117,
+				"h": 100
+			}
+		},
+		"mickey-ataquesdireitaTornado7.png": {
+			"frame": {
+				"x": 355,
+				"y": 1,
+				"w": 114,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 114,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 114,
+				"h": 100
+			}
+		},
+		"mickey-ataquesdireitaTornado8.png": {
+			"frame": {
+				"x": 375,
+				"y": 103,
+				"w": 106,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 106,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 106,
+				"h": 100
+			}
+		},
+		"mickey-ataquesdireitaTornado9.png": {
+			"frame": {
+				"x": 336,
+				"y": 205,
+				"w": 132,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 132,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 132,
+				"h": 100
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 482,
+			"h": 306
+		},
+		"scale": "1"
+	}
+}

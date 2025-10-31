@@ -1,0 +1,135 @@
+{
+	"frames": {
+		"taz-ataquesdireita1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 132,
+				"h": 121
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 132,
+				"h": 121
+			},
+			"sourceSize": {
+				"w": 132,
+				"h": 121
+			}
+		},
+		"taz-ataquesdireita2.png": {
+			"frame": {
+				"x": 135,
+				"y": 1,
+				"w": 142,
+				"h": 146
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 142,
+				"h": 146
+			},
+			"sourceSize": {
+				"w": 142,
+				"h": 146
+			}
+		},
+		"taz-ataquesdireita3.png": {
+			"frame": {
+				"x": 1,
+				"y": 149,
+				"w": 152,
+				"h": 154
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 152,
+				"h": 154
+			},
+			"sourceSize": {
+				"w": 152,
+				"h": 154
+			}
+		},
+		"taz-ataquesdireita4.png": {
+			"frame": {
+				"x": 155,
+				"y": 149,
+				"w": 150,
+				"h": 152
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 150,
+				"h": 152
+			},
+			"sourceSize": {
+				"w": 150,
+				"h": 152
+			}
+		},
+		"taz-ataquesdireita5.png": {
+			"frame": {
+				"x": 307,
+				"y": 1,
+				"w": 140,
+				"h": 150
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 140,
+				"h": 150
+			},
+			"sourceSize": {
+				"w": 140,
+				"h": 150
+			}
+		},
+		"taz-ataquesdireita6.png": {
+			"frame": {
+				"x": 307,
+				"y": 153,
+				"w": 134,
+				"h": 154
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 134,
+				"h": 154
+			},
+			"sourceSize": {
+				"w": 134,
+				"h": 154
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 448,
+			"h": 308
+		},
+		"scale": "1"
+	}
+}

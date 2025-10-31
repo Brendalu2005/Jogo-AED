@@ -1,0 +1,215 @@
+{
+	"frames": {
+		"ben10-ataquesdireitaChama1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 59,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 59,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 59,
+				"h": 100
+			}
+		},
+		"ben10-ataquesdireitaChama10.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 312,
+				"h": 110
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 312,
+				"h": 110
+			},
+			"sourceSize": {
+				"w": 312,
+				"h": 110
+			}
+		},
+		"ben10-ataquesdireitaChama2.png": {
+			"frame": {
+				"x": 62,
+				"y": 1,
+				"w": 56,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 56,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 56,
+				"h": 100
+			}
+		},
+		"ben10-ataquesdireitaChama3.png": {
+			"frame": {
+				"x": 120,
+				"y": 1,
+				"w": 61,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 61,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 61,
+				"h": 100
+			}
+		},
+		"ben10-ataquesdireitaChama4.png": {
+			"frame": {
+				"x": 1,
+				"y": 215,
+				"w": 79,
+				"h": 110
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 79,
+				"h": 110
+			},
+			"sourceSize": {
+				"w": 79,
+				"h": 110
+			}
+		},
+		"ben10-ataquesdireitaChama5.png": {
+			"frame": {
+				"x": 82,
+				"y": 215,
+				"w": 79,
+				"h": 110
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 79,
+				"h": 110
+			},
+			"sourceSize": {
+				"w": 79,
+				"h": 110
+			}
+		},
+		"ben10-ataquesdireitaChama6.png": {
+			"frame": {
+				"x": 163,
+				"y": 215,
+				"w": 79,
+				"h": 110
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 79,
+				"h": 110
+			},
+			"sourceSize": {
+				"w": 79,
+				"h": 110
+			}
+		},
+		"ben10-ataquesdireitaChama7.png": {
+			"frame": {
+				"x": 244,
+				"y": 215,
+				"w": 79,
+				"h": 110
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 79,
+				"h": 110
+			},
+			"sourceSize": {
+				"w": 79,
+				"h": 110
+			}
+		},
+		"ben10-ataquesdireitaChama8.png": {
+			"frame": {
+				"x": 315,
+				"y": 1,
+				"w": 139,
+				"h": 110
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 139,
+				"h": 110
+			},
+			"sourceSize": {
+				"w": 139,
+				"h": 110
+			}
+		},
+		"ben10-ataquesdireitaChama9.png": {
+			"frame": {
+				"x": 325,
+				"y": 113,
+				"w": 148,
+				"h": 110
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 148,
+				"h": 110
+			},
+			"sourceSize": {
+				"w": 148,
+				"h": 110
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 474,
+			"h": 326
+		},
+		"scale": "1"
+	}
+}

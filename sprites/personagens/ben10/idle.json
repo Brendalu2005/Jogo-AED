@@ -1,0 +1,175 @@
+{
+	"frames": {
+		"ben10-idle1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 60,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 60,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 60,
+				"h": 100
+			}
+		},
+		"ben10-idle2.png": {
+			"frame": {
+				"x": 63,
+				"y": 1,
+				"w": 57,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 57,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 57,
+				"h": 100
+			}
+		},
+		"ben10-idle3.png": {
+			"frame": {
+				"x": 122,
+				"y": 1,
+				"w": 60,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 60,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 60,
+				"h": 100
+			}
+		},
+		"ben10-idle4.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 57,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 57,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 57,
+				"h": 100
+			}
+		},
+		"ben10-idle5.png": {
+			"frame": {
+				"x": 60,
+				"y": 103,
+				"w": 58,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 58,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 58,
+				"h": 100
+			}
+		},
+		"ben10-idle6.png": {
+			"frame": {
+				"x": 120,
+				"y": 103,
+				"w": 56,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 56,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 56,
+				"h": 100
+			}
+		},
+		"ben10-idle7.png": {
+			"frame": {
+				"x": 184,
+				"y": 1,
+				"w": 58,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 58,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 58,
+				"h": 100
+			}
+		},
+		"ben10-idle8.png": {
+			"frame": {
+				"x": 178,
+				"y": 103,
+				"w": 56,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 56,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 56,
+				"h": 100
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 243,
+			"h": 204
+		},
+		"scale": "1"
+	}
+}

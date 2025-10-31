@@ -1,0 +1,175 @@
+{
+	"frames": {
+		"docinho-ataquesdireitaSoco1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 103,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 103,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 103,
+				"h": 100
+			}
+		},
+		"docinho-ataquesdireitaSoco2.png": {
+			"frame": {
+				"x": 106,
+				"y": 1,
+				"w": 140,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 140,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 140,
+				"h": 100
+			}
+		},
+		"docinho-ataquesdireitaSoco3.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 121,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 121,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 121,
+				"h": 100
+			}
+		},
+		"docinho-ataquesdireitaSoco4.png": {
+			"frame": {
+				"x": 124,
+				"y": 103,
+				"w": 99,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 99,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 99,
+				"h": 100
+			}
+		},
+		"docinho-ataquesdireitaSoco5.png": {
+			"frame": {
+				"x": 1,
+				"y": 205,
+				"w": 107,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 107,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 107,
+				"h": 100
+			}
+		},
+		"docinho-ataquesdireitaSoco6.png": {
+			"frame": {
+				"x": 110,
+				"y": 205,
+				"w": 137,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 137,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 137,
+				"h": 100
+			}
+		},
+		"docinho-ataquesdireitaSoco7.png": {
+			"frame": {
+				"x": 248,
+				"y": 1,
+				"w": 120,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 120,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 120,
+				"h": 100
+			}
+		},
+		"docinho-ataquesdireitaSoco8.png": {
+			"frame": {
+				"x": 225,
+				"y": 103,
+				"w": 100,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 100,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 100,
+				"h": 100
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 369,
+			"h": 306
+		},
+		"scale": "1"
+	}
+}

@@ -1,0 +1,235 @@
+{
+	"frames": {
+		"ben10-ataquesdireitaChama1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 59,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 59,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 59,
+				"h": 100
+			}
+		},
+		"ben10-ataquesdireitaQuatrobracos1.png": {
+			"frame": {
+				"x": 62,
+				"y": 1,
+				"w": 59,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 59,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 59,
+				"h": 100
+			}
+		},
+		"ben10-ataquesdireitaQuatrobracos10.png": {
+			"frame": {
+				"x": 123,
+				"y": 1,
+				"w": 137,
+				"h": 110
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 137,
+				"h": 110
+			},
+			"sourceSize": {
+				"w": 137,
+				"h": 110
+			}
+		},
+		"ben10-ataquesdireitaQuatrobracos2.png": {
+			"frame": {
+				"x": 262,
+				"y": 1,
+				"w": 56,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 56,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 56,
+				"h": 100
+			}
+		},
+		"ben10-ataquesdireitaQuatrobracos3.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 61,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 61,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 61,
+				"h": 100
+			}
+		},
+		"ben10-ataquesdireitaQuatrobracos4.png": {
+			"frame": {
+				"x": 64,
+				"y": 113,
+				"w": 92,
+				"h": 110
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 92,
+				"h": 110
+			},
+			"sourceSize": {
+				"w": 92,
+				"h": 110
+			}
+		},
+		"ben10-ataquesdireitaQuatrobracos5.png": {
+			"frame": {
+				"x": 158,
+				"y": 113,
+				"w": 92,
+				"h": 110
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 92,
+				"h": 110
+			},
+			"sourceSize": {
+				"w": 92,
+				"h": 110
+			}
+		},
+		"ben10-ataquesdireitaQuatrobracos6.png": {
+			"frame": {
+				"x": 320,
+				"y": 1,
+				"w": 93,
+				"h": 110
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 93,
+				"h": 110
+			},
+			"sourceSize": {
+				"w": 93,
+				"h": 110
+			}
+		},
+		"ben10-ataquesdireitaQuatrobracos7.png": {
+			"frame": {
+				"x": 252,
+				"y": 113,
+				"w": 86,
+				"h": 110
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 86,
+				"h": 110
+			},
+			"sourceSize": {
+				"w": 86,
+				"h": 110
+			}
+		},
+		"ben10-ataquesdireitaQuatrobracos8.png": {
+			"frame": {
+				"x": 1,
+				"y": 225,
+				"w": 93,
+				"h": 110
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 93,
+				"h": 110
+			},
+			"sourceSize": {
+				"w": 93,
+				"h": 110
+			}
+		},
+		"ben10-ataquesdireitaQuatrobracos9.png": {
+			"frame": {
+				"x": 96,
+				"y": 225,
+				"w": 137,
+				"h": 110
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 137,
+				"h": 110
+			},
+			"sourceSize": {
+				"w": 137,
+				"h": 110
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 414,
+			"h": 336
+		},
+		"scale": "1"
+	}
+}
