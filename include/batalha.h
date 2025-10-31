@@ -5,7 +5,7 @@
 #include "database.h"
 #include "selecao.h" 
 
-// --- Structs (sem mudança) ---
+// --- Structs ---
 typedef enum {
     TURNO_JOGADOR,
     TURNO_IA
@@ -25,7 +25,10 @@ typedef struct {
     bool ativo;
     Vector2 pos;
     float zoom;
+    bool flip; 
 } EstadoAnimacao;
+
+// --- ESTRUTURA PRINCIPAL ATUALIZADA ---
 typedef struct {
     TimesBatalha times;
     int hpJogador[3];
@@ -38,13 +41,19 @@ typedef struct {
     int alvoSelecionado;   
     EstadoAnimacao animacaoEmExecucao;
     char mensagemBatalha[100];
+    
+    // Controle de animação IDLE
+    int idleFrameJogador[3];
+    int idleTimerJogador[3];
+    int idleFrameIA[3];
+    int idleTimerIA[3];
+    
 } EstadoBatalha;
 
 
-// --- CORREÇÃO 3: Removido o parâmetro 'db' ---
+// Funções
 void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados);
-
-// Funções de loop (sem mudança)
+// Esta linha agora vai bater com a definição no .c
 void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual);
 void DesenharTelaBatalha(EstadoBatalha *estado);
 

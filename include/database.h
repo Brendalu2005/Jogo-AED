@@ -44,7 +44,9 @@ typedef struct PersonagemData {
     int hpMax;
     int velocidade;
 
-    float painelZoom;
+    // --- MUDANÇA AQUI ---
+    float painelZoom;  // Zoom usado na tela de "Personagens"
+    float batalhaZoom; // Zoom usado na tela de "Batalha"
     
     // Ataques
     Ataque ataque1;

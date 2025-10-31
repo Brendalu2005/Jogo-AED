@@ -218,7 +218,11 @@ SpriteDatabase CarregarDatabase(const char* masterJsonPath) {
         pData->hpMax = GetIntSafe(pJson, "hpMax");
         pData->velocidade = GetIntSafe(pJson, "velocidade");
 
+        // --- MUDANÇA AQUI ---
         pData->painelZoom = (float)GetFloatSafe(pJson, "painelZoom", 3.0f);
+        // Define 2.0f como zoom padrão de batalha se não for encontrado
+        pData->batalhaZoom = (float)GetFloatSafe(pJson, "batalhaZoom", 2.0f); 
+        // --- FIM DA MUDANÇA ---
 
         pData->ataque1 = GetAtaqueSafe(pJson, "ataque1");
         pData->ataque2 = GetAtaqueSafe(pJson, "ataque2");

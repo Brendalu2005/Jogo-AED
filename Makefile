@@ -6,7 +6,7 @@ INCDIR = include
 
 CFLAGS = -Wall -Wextra -std=c99 -I$(INCDIR)
 
-LDFLAGS = -lraylib -lm -lpthread -ldl -lrt -lX11
+LDFLAGS = -lraylib -lm -lpthread -ldl -lrt -lX11 -lcurl
 
 SRC = $(wildcard $(SRCDIR)/*.c)
 
