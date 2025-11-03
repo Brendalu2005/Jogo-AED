@@ -28,7 +28,6 @@ typedef struct {
     bool flip; 
 } EstadoAnimacao;
 
-// --- ESTRUTURA PRINCIPAL ATUALIZADA ---
 typedef struct {
     TimesBatalha times;
     int hpJogador[3];
@@ -42,7 +41,6 @@ typedef struct {
     EstadoAnimacao animacaoEmExecucao;
     char mensagemBatalha[100];
     
-    // Controle de animação IDLE
     int idleFrameJogador[3];
     int idleTimerJogador[3];
     int idleFrameIA[3];
@@ -51,9 +49,7 @@ typedef struct {
 } EstadoBatalha;
 
 
-// Funções
 void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados);
-// Esta linha agora vai bater com a definição no .c
 void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual);
 void DesenharTelaBatalha(EstadoBatalha *estado);
 

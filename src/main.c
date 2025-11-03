@@ -15,7 +15,6 @@ int main(void) {
     SetTargetFPS(60);
 
     MenuOpcao menuRes = LoadMenuResources();
-    // A função CarregarRecursosPersonagens define as hitboxes
     CarregarRecursosPersonagens(); 
     
     SpriteDatabase database = CarregarDatabase("sprites/personagens_db.json"); 
@@ -38,7 +37,6 @@ int main(void) {
             case SCREEN_SELECAO:
                 AtualizarTelaSelecao(&telaAtual, &database, &timesSelecionados); 
                 if (telaAtual == SCREEN_BATALHA) {
-                    // --- CORREÇÃO 3: Removido o &database ---
                     InicializarBatalha(&estadoBatalha, &timesSelecionados);
                 }
                 break;

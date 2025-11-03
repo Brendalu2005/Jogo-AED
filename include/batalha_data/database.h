@@ -2,9 +2,7 @@
 #define DATABASE_H
 
 #include "raylib.h"
-
-// --- Novas Estruturas ---
-
+    
 // Define um único ataque
 typedef struct Ataque {
     char* nome;
@@ -19,8 +17,7 @@ typedef enum ClassePersonagem {
     CLASSE_LINHA_TRAS
 } ClassePersonagem;
 
-// --- Estruturas de Animação (as mesmas de antes) ---
-
+//animação
 typedef struct AnimacaoDef {
     Rectangle* frames;
     int numFrames;
@@ -31,29 +28,24 @@ typedef struct AnimacaoData {
     Texture2D textura;
 } AnimacaoData;
 
-// --- Estrutura Principal (Atualizada) ---
-
-// Guarda TODOS os dados de UM personagem
+// Guarda os atributos do personagem
 typedef struct PersonagemData {
-    // Info Base
     char* nome;
     char* descricao;
     ClassePersonagem classe;
     
-    // Stats de Batalha
+    // Status de Batalha
     int hpMax;
     int velocidade;
-
-    // --- MUDANÇA AQUI ---
-    float painelZoom;  // Zoom usado na tela de "Personagens"
-    float batalhaZoom; // Zoom usado na tela de "Batalha"
+    float painelZoom;  
+    float batalhaZoom; 
     
     // Ataques
     Ataque ataque1;
     Ataque ataque2;
     
     // Assets
-    Texture2D thumbnail; // A imagem pequena (ex: docinhothumb.png)
+    Texture2D thumbnail;
     AnimacaoData animIdle;
     AnimacaoData animAtaque1;
     AnimacaoData animAtaque2;
@@ -65,10 +57,9 @@ typedef struct SpriteDatabase {
     int numPersonagens;
 } SpriteDatabase;
 
-// --- Funções Públicas ---
 
 SpriteDatabase CarregarDatabase(const char* masterJsonPath);
 void LiberarDatabase(SpriteDatabase* db);
 PersonagemData* GetPersonagemData(SpriteDatabase* db, const char* nome);
 
-#endif // DATABASE_H
+#endif 

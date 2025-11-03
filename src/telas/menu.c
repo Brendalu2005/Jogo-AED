@@ -1,7 +1,7 @@
 #include "raylib.h"
 #include "menu.h" 
 #include <stdio.h>
-#include "selecao.h" // <--- ADICIONE ISSO
+#include "selecao.h" 
 
 static Rectangle btnJogar;
 static Rectangle btnPersonagens;

@@ -1,19 +1,17 @@
 #include "personagens.h"
 #include "raylib.h"
 #include "database.h"
-#include <stdio.h> // Para sprintf
-#include <string.h> // <--- CORREÇÃO 1: Adicionado
+#include <stdio.h> 
+#include <string.h> 
 
-// --- Variáveis de Animação para a Grade ---
-// Precisamos de timers e frames para todas as 9 animações
+
 static int animFrame[9] = {0};
 static int animTimer[9] = {0};
-static int animVelocidade = 10; // Velocidade mais lenta para idle
+static int animVelocidade = 10; 
 static int animFrameSelecionado = 0;
 static int animTimerSelecionado = 0;
 
-// --- Variáveis de Layout ---
-static Rectangle rectPersonagens[9]; // Hitboxes para seleção
+static Rectangle rectPersonagens[9];
 static Color corTituloLinha = { 100, 255, 100, 255 }; 
 static Color corNomePersonagem = RAYWHITE;
 static Color corNomeSelecionado = YELLOW;
@@ -21,14 +19,13 @@ static Color corPainel = { 50, 50, 50, 200 };
 static Color corBordaPainel = { 200, 0, 0, 255 }; 
 
 void CarregarRecursosPersonagens(void) {
-    // Esta função agora SÓ define as hitboxes
     int linhaFrenteY = 200;
     int linhaMeioY = 450;
     int linhaTrasY = 700;
     
     int coluna1X = 100;
-    int coluna2X = 450; // Ajustado espaçamento
-    int coluna3X = 800; // Ajustado espaçamento
+    int coluna2X = 450;
+    int coluna3X = 800; 
     
     int hitboxWidth = 300; 
     int hitboxHeight = 180; 
@@ -51,30 +48,28 @@ void CarregarRecursosPersonagens(void) {
 }
 
 void DescarregarRecursosPersonagens(void) {
-    // Vazio. O LiberarDatabase() em main.c cuida disso
 }
 
 void AtualizarTelaPersonagens(GameScreen *telaAtual, int *personagemSelecionado, SpriteDatabase* db) {
     if (IsKeyPressed(KEY_ESCAPE) || IsKeyPressed(KEY_ENTER)) {
         *telaAtual = SCREEN_MENU;
-        *personagemSelecionado = -1; // Limpa a seleção ao sair
+        *personagemSelecionado = -1; 
     }
 
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         Vector2 mousePos = GetMousePosition();
         
-        *personagemSelecionado = -1; // Reseta a seleção
+        *personagemSelecionado = -1; 
         for (int i = 0; i < db->numPersonagens; i++) {
             if (CheckCollisionPointRec(mousePos, rectPersonagens[i])) {
                 *personagemSelecionado = i;
-                animFrameSelecionado = 0; // Reseta a animação do painel
+                animFrameSelecionado = 0;
                 animTimerSelecionado = 0;
                 break; 
             }
         }
     }
     
-    // --- Atualiza todas as 9 animações da grade ---
     for (int i = 0; i < db->numPersonagens; i++) {
         animTimer[i]++;
         if (animTimer[i] > animVelocidade) {
@@ -87,7 +82,6 @@ void AtualizarTelaPersonagens(GameScreen *telaAtual, int *personagemSelecionado,
         }
     }
     
-    // --- Atualiza a animação do personagem selecionado (no painel) ---
     if (*personagemSelecionado != -1) {
         animTimerSelecionado++;
         if (animTimerSelecionado > animVelocidade) {
@@ -101,7 +95,6 @@ void AtualizarTelaPersonagens(GameScreen *telaAtual, int *personagemSelecionado,
     }
 }
 
-// --- Painel de Detalhes (layout da imagem) ---
 static void DesenharPainelDetalhes(int idPersonagem, SpriteDatabase* db) {
     Rectangle painelDireito = { 1150, 100, 400, 750 }; // Posição do painel
     
@@ -127,7 +120,6 @@ static void DesenharPainelDetalhes(int idPersonagem, SpriteDatabase* db) {
     }
     
     if (pData != NULL) {
-        // 1. Desenha a Animação Idle Grande
         AnimacaoData* anim = &pData->animIdle;
         if (anim->def.numFrames > 0) {
             Rectangle frame = anim->def.frames[animFrameSelecionado];
@@ -138,7 +130,6 @@ static void DesenharPainelDetalhes(int idPersonagem, SpriteDatabase* db) {
                 (Vector2){ (frame.width * zoom) / 2, (frame.height * zoom) / 2 }, 0, WHITE);
         }
 
-        // 2. Desenha os Textos
         DrawText("Nome:", posX, posYBase, tamFonteTitulo, corTituloLinha);
         DrawText(pData->nome, posX, posYBase + espacamentoLinha1, tamFonteTexto, LIGHTGRAY);
         DrawText(pData->descricao, posX, posYBase + espacamentoLinha2, 16, LIGHTGRAY); 
@@ -165,7 +156,6 @@ static void DesenharPainelDetalhes(int idPersonagem, SpriteDatabase* db) {
 void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
     ClearBackground(DARKGRAY);
     
-    // --- CORREÇÃO 2: Chamada correta (sem recursão) ---
     DesenharPainelDetalhes(personagemSelecionado, db);
 
     DrawText("Personagens:", 50, 50, 60, corTituloLinha);
@@ -183,7 +173,7 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
         DrawText(titulosClasses[c], xPos, yPos - 60, tamFonteTituloLinha, corTituloLinha);
         
         int col = 0;
-        for (int i = 0; i < db->numPersonagens; i++) { // Loop de Personagens
+        for (int i = 0; i < db->numPersonagens; i++) { 
             if (db->personagens[i].classe == classe) {
                 xPos = 100 + 350 * col;
                 
@@ -198,7 +188,7 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
                 AnimacaoData* anim = &db->personagens[i].animIdle;
                 if (anim->def.numFrames > 0) {
                     Rectangle frame = anim->def.frames[animFrame[i]];
-                    float zoom = (card.height - 40) / frame.height; // Auto-ajusta o zoom
+                    float zoom = (card.height - 40) / frame.height; 
                     DrawTexturePro(anim->textura, frame,
                         (Rectangle){ card.x + card.width/2, card.y + card.height/2 - 10, frame.width * zoom, frame.height * zoom },
                         (Vector2){ (frame.width * zoom) / 2, (frame.height * zoom) / 2 }, 0, WHITE);

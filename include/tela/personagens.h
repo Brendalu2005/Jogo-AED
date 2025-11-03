@@ -2,9 +2,11 @@
 #define PERSONAGENS_H
 
 #include "telas.h" 
-#include "database.h" // <--- ADICIONE ISSO
+#include "database.h" 
 
-// Remove Carregar/Descarregar, pois o database faz isso
+void CarregarRecursosPersonagens(void);
+void DescarregarRecursosPersonagens(void);
+
 void AtualizarTelaPersonagens(GameScreen *telaAtual, int *personagemSelecionado, SpriteDatabase* db);
 void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db);
 

@@ -1,16 +1,83 @@
 #include "batalha.h"
 #include "database.h"
-#include <stdio.h>  // Para printf
-#include <stdlib.h> // Para qsort e rand
-#include <string.h> // Para sprintf e strcmp
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <string.h> 
+#include "ConsumoAPI_Gemini.h" 
 
-// --- Variáveis de Posição ---
+static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataque* ataque, int alvoIdx, bool ehJogadorAtacando);
+static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataque* ataque, int alvoIdx, bool ehJogadorAtacando);
+
+static char CHAVE_API_BUFFER[256];
+static bool chaveJaFoiCarregada = false; // Impede leituras repetidas
+
+static const char* CarregarChaveApi(const char* caminhoArquivo) {
+    // Só lê o arquivo uma vez
+    if (chaveJaFoiCarregada == true) {
+        return CHAVE_API_BUFFER;
+    }
+
+    FILE *arquivo = fopen(caminhoArquivo, "r");
+    if (arquivo == NULL) {
+        printf("ERRO FATAL: Nao foi possivel abrir: %s\n", caminhoArquivo);
+        printf("Criar um arquivo 'config.txt' na raiz do projeto com a chave.\n");
+        strcpy(CHAVE_API_BUFFER, "CHAVE_NAO_ENCONTRADA");
+        chaveJaFoiCarregada = true; 
+        return CHAVE_API_BUFFER;
+    }
+
+    // Lê a primeira linha do arquivo
+    if (fgets(CHAVE_API_BUFFER, sizeof(CHAVE_API_BUFFER), arquivo) != NULL) {
+        CHAVE_API_BUFFER[strcspn(CHAVE_API_BUFFER, "\r\n")] = 0;
+        chaveJaFoiCarregada = true;
+    } else {
+         printf("ERRO: Nao foi possivel ler a chave do arquivo 'config.txt'.\n");
+         strcpy(CHAVE_API_BUFFER, "CHAVE_NAO_ENCONTRADA");
+    }
+
+    fclose(arquivo);
+    return CHAVE_API_BUFFER;
+}
+
+//IA do GEMINI
+static void ExecutarTurnoIA(EstadoBatalha *estado) {
+    PersonagemData* atacante = estado->ordemDeAtaque[estado->personagemAgindoIdx];
+
+    const char* MINHA_CHAVE_API = CarregarChaveApi("config.txt");
+
+    if (strcmp(MINHA_CHAVE_API, "CHAVE_NAO_ENCONTRADA") == 0) {
+        printf("IA: ERRO! Chave da API nao encontrada. Pulando turno.\n");
+        int alvoAleatorio = rand() % 3;
+        int tentativas = 0;
+        while (estado->hpJogador[alvoAleatorio] <= 0 && tentativas < 3) {
+             alvoAleatorio = (alvoAleatorio + 1) % 3;
+             tentativas++;
+        }
+        
+        ExecutarAtaque(estado, atacante, &atacante->ataque1, alvoAleatorio, false); 
+        return; 
+    }
+
+    // Obtém a decisão da API
+    DecisaoIA decisao = ObterDecisaoIA(estado, MINHA_CHAVE_API);
+
+    Ataque* ataqueEscolhido;
+    if (decisao.indiceAtaque == 0) {
+        ataqueEscolhido = &atacante->ataque1;
+    } else {
+        ataqueEscolhido = &atacante->ataque2;
+    }
+
+    ExecutarAtaque(estado, atacante, ataqueEscolhido, decisao.indiceAlvo, false);
+
+    LiberarDecisaoIA(&decisao);
+    
+}
+
 static Vector2 posJogador[3];
 static Vector2 posIA[3];
-// --- MUDANÇA AQUI: Adicionada velocidade da animação idle ---
 static int animVelocidadeIdle = 15; // Mais lento, bom para idle
 
-// --- Funções da Máquina de Estados de Animação ---
 static void PararAnimacao(EstadoAnimacao* anim) {
     anim->ativo = false;
     anim->frameAtual = 0;
@@ -63,18 +130,16 @@ static void DesenharAnimacao(EstadoAnimacao* anim) {
                    WHITE);
 }
 
-// --- Lógica de Turno e IA ---
 
 // Função de comparação para qsort (ordena por velocidade, decrescente)
 static int CompararVelocidade(const void* a, const void* b) {
     PersonagemData* pA = *(PersonagemData**)a;
     PersonagemData* pB = *(PersonagemData**)b;
     
-    if (pA == NULL || pB == NULL) return 0; // Guarda de segurança
+    if (pA == NULL || pB == NULL) return 0; 
     
     if (pA->velocidade > pB->velocidade) return -1;
     if (pA->velocidade < pB->velocidade) return 1;
-    // Se a velocidade for igual, desempate aleatoriamente
     return (rand() % 2 == 0) ? 1 : -1;
 }
 
@@ -135,7 +200,6 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
     int dano = ataque->dano;
     PersonagemData* alvo;
     
-    // --- MUDANÇA AQUI (BÔNUS): Encontra a posição correta do atacante ---
     Vector2 animPos;
     if (ehJogadorAtacando) {
         for (int i = 0; i < 3; i++) {
@@ -166,10 +230,9 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
             // (Adicionar lógica de morte aqui)
         }
     }
-    // --- FIM DA MUDANÇA (BÔNUS) ---
 
 
-    bool deveFlipar = !ehJogadorAtacando; // IA ataca, então flipa (true)
+    bool deveFlipar = !ehJogadorAtacando; 
     
     // Inicia a animação de ataque usando a 'animPos' correta
     if (strcmp(ataque->nome, atacante->ataque1.nome) == 0) {
@@ -181,24 +244,6 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
     estado->estadoTurno = ESTADO_ANIMACAO_ATAQUE;
 }
 
-// A "IA"
-static void ExecutarTurnoIA(EstadoBatalha *estado) {
-    PersonagemData* atacante = estado->ordemDeAtaque[estado->personagemAgindoIdx];
-    
-    // 1. Escolher um ataque aleatório (0 ou 1)
-    int escolhaAtaque = rand() % 2;
-    Ataque* ataqueEscolhido = (escolhaAtaque == 0) ? &atacante->ataque1 : &atacante->ataque2;
-
-    // 2. Escolher um alvo aleatório (0, 1, ou 2) que esteja vivo
-    int alvoEscolhido;
-    do {
-        alvoEscolhido = rand() % 3;
-    } while (estado->hpJogador[alvoEscolhido] <= 0); // Procura um alvo vivo
-
-    ExecutarAtaque(estado, atacante, ataqueEscolhido, alvoEscolhido, false);
-}
-
-// --- Funções Principais da Tela ---
 
 void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) {
     printf("INICIALIZANDO BATALHA!\n");
@@ -216,26 +261,20 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
         estado->hpIA[i] = estado->times.timeIA[i]->hpMax;
     }
     
-    // --- Define as posições de desenho (HORIZONTAL) ---
     float posY = 350.0f; 
     
-    // --- MUDANÇA AQUI: Aumenta o espaçamento ---
-    float espacamentoX = 200.0f; // Era 150.0f, aumentei para 200.0f
+    float espacamentoX = 200.0f; 
     
     float offsetInicialJogador = 100.0f; 
     float offsetInicialIA = SCREEN_WIDTH - 100.0f; 
     
-    // Ajusta os offsets para o novo espaçamento
-    // (Posições X do Jogador: 300, 500, 700)
     posJogador[2] = (Vector2){offsetInicialJogador, posY};                     
     posJogador[1] = (Vector2){offsetInicialJogador + espacamentoX, posY};      
     posJogador[0] = (Vector2){offsetInicialJogador + espacamentoX * 2, posY};  
     
-    // (Posições X da IA: 900, 1100, 1300)
     posIA[0] = (Vector2){offsetInicialIA - espacamentoX * 2, posY}; 
     posIA[1] = (Vector2){offsetInicialIA - espacamentoX, posY};     
-    posIA[2] = (Vector2){offsetInicialIA, posY};                    
-    // --- FIM DA MUDANÇA ---
+    posIA[2] = (Vector2){offsetInicialIA, posY};
 
     
     // 4. Cria e ordena a fila de ataque
@@ -272,7 +311,6 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
         return; 
     }
     
-    // --- MUDANÇA AQUI: Atualiza as animações IDLE ---
     for (int i = 0; i < 3; i++) {
         // Atualiza Jogador
         if (estado->times.timeJogador[i] != NULL && estado->times.timeJogador[i]->animIdle.def.numFrames > 0) {
@@ -297,17 +335,13 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
             }
         }
     }
-    // --- FIM DA MUDANÇA ---
-    
     if (estado->estadoTurno != ESTADO_INICIANDO && (estado->personagemAgindoIdx < 0 || estado->personagemAgindoIdx >= 6 || estado->ordemDeAtaque[estado->personagemAgindoIdx] == NULL)) {
         if(estado->estadoTurno != ESTADO_FIM_DE_JOGO) ProximoTurno(estado);
         return;
     }
 
-    // Atualiza a animação de ATAQUE (se estiver ativa)
     AtualizarAnimacao(&estado->animacaoEmExecucao);
 
-    // Lógica da Máquina de Estados de Batalha
     switch (estado->estadoTurno) {
         
         case ESTADO_INICIANDO:
@@ -380,19 +414,14 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
     int arenaHeight = 450;
     DrawRectangleLines(10, arenaY, SCREEN_WIDTH - 20, arenaHeight, LIGHTGRAY);
     
-    // --- Desenha Personagens ---
     for (int i = 0; i < 3; i++) {
-        // --- Desenha Jogador ---
         PersonagemData* pData = estado->times.timeJogador[i]; 
         if (pData != NULL && estado->hpJogador[i] > 0) {
             AnimacaoData* anim = &pData->animIdle;
             if (anim->def.numFrames > 0) { 
-                
-                // --- MUDANÇA AQUI: Usa o frame de idle atual ---
                 int frameIndex = estado->idleFrameJogador[i];
-                if (frameIndex >= anim->def.numFrames) frameIndex = 0; // Segurança
+                if (frameIndex >= anim->def.numFrames) frameIndex = 0;
                 Rectangle frame = anim->def.frames[frameIndex]; 
-                // --- FIM DA MUDANÇA ---
                 
                 float zoom = pData->batalhaZoom; 
 
@@ -407,17 +436,14 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
             }
         }
         
-        // --- Desenha IA ---
         PersonagemData* pDataIA = estado->times.timeIA[i]; 
         if (pDataIA != NULL && estado->hpIA[i] > 0) {
             AnimacaoData* anim = &pDataIA->animIdle;
             if (anim->def.numFrames > 0) { 
 
-                // --- MUDANÇA AQUI: Usa o frame de idle atual ---
                 int frameIndexIA = estado->idleFrameIA[i];
-                if (frameIndexIA >= anim->def.numFrames) frameIndexIA = 0; // Segurança
+                if (frameIndexIA >= anim->def.numFrames) frameIndexIA = 0; 
                 Rectangle frame = anim->def.frames[frameIndexIA];
-                // --- FIM DA MUDANÇA ---
 
                 float zoomIA = pDataIA->batalhaZoom; 
 
@@ -436,10 +462,8 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
         }
     }
     
-    // Desenha a animação de ATAQUE (por cima dos personagens parados)
     DesenharAnimacao(&estado->animacaoEmExecucao);
     
-    // Desenha as caixas de seleção de alvo
     if (estado->estadoTurno == ESTADO_ESPERANDO_JOGADOR && estado->ataqueSelecionado != -1) {
         for (int i=0; i<3; i++) {
             if (estado->hpIA[i] > 0) {
@@ -448,7 +472,6 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
         }
     }
 
-    // --- Menu de Ataques (inferior) ---
     int menuY = arenaY + arenaHeight + 10;
     int menuHeight = SCREEN_HEIGHT - menuY - 10;
     Color menuBG = (Color){ 40, 40, 40, 255 };

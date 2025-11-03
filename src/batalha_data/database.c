@@ -2,15 +2,14 @@
 #include "cJSON.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h> // Essencial para strlen e strcpy
+#include <string.h> 
 
-// --- CORREÇÃO: Função strdup padrão C99 ---
 static char* c99_strdup(const char* s) {
     if (s == NULL) return NULL;
     size_t len = strlen(s) + 1;
     char* new_s = (char*)malloc(len);
     if (new_s == NULL) return NULL;
-    memcpy(new_s, s, len); // memcpy é mais seguro que strcpy
+    memcpy(new_s, s, len); 
     return new_s;
 }
 
@@ -19,7 +18,6 @@ static void free_ataque(Ataque* att) {
     free(att->descricao);
 }
 
-// --- Funções Auxiliares de Parse ---
 
 static char* LerArquivoInteiro(const char* path) {
     FILE *f = fopen(path, "rb");
@@ -119,22 +117,20 @@ static void LiberarAnimacaoData(AnimacaoData* data) {
     UnloadTexture(data->textura);
 }
 
-// --- Funções Auxiliares de Leitura de JSON (Seguras) ---
 static const char* GetStringSafe(cJSON* obj, const char* key) {
     cJSON* item = cJSON_GetObjectItem(obj, key);
     if (cJSON_IsString(item) && (item->valuestring != NULL)) {
         return item->valuestring;
     }
-    return ""; // Retorna string vazia em vez de NULL
+    return "";
 }
 
-// Adicione esta função perto das outras Get...Safe
 static double GetFloatSafe(cJSON* obj, const char* key, double defaultValue) {
     cJSON* item = cJSON_GetObjectItem(obj, key);
     if (cJSON_IsNumber(item)) {
         return item->valuedouble;
     }
-    return defaultValue; // Retorna um padrão se não for encontrado
+    return defaultValue; 
 }
 
 static int GetIntSafe(cJSON* obj, const char* key) {
@@ -150,7 +146,7 @@ static ClassePersonagem GetClasseSafe(cJSON* obj, const char* key) {
     if (strcmp(classeStr, "CLASSE_LINHA_FRENTE") == 0) return CLASSE_LINHA_FRENTE;
     if (strcmp(classeStr, "CLASSE_LINHA_MEIO") == 0) return CLASSE_LINHA_MEIO;
     if (strcmp(classeStr, "CLASSE_LINHA_TRAS") == 0) return CLASSE_LINHA_TRAS;
-    return CLASSE_LINHA_MEIO; // Padrão
+    return CLASSE_LINHA_MEIO; 
 }
 
 static Ataque GetAtaqueSafe(cJSON* obj, const char* key) {
@@ -164,7 +160,6 @@ static Ataque GetAtaqueSafe(cJSON* obj, const char* key) {
     return att;
 }
 
-// --- Funções Públicas ---
 
 SpriteDatabase CarregarDatabase(const char* masterJsonPath) {
     SpriteDatabase db = {0};
@@ -207,7 +202,7 @@ SpriteDatabase CarregarDatabase(const char* masterJsonPath) {
 
         if (nome == NULL || idlePath == NULL || atq1Path == NULL || atq2Path == NULL || thumbPath == NULL) {
             fprintf(stderr, "ERRO FATAL: Personagem %d no JSON mestre esta com dados faltando. Pulando.\n", i);
-            pData->nome = c99_strdup("ERRO_CARREGAMENTO"); // Previne crash futuro
+            pData->nome = c99_strdup("ERRO_CARREGAMENTO"); 
             continue; 
         }
 
@@ -218,11 +213,8 @@ SpriteDatabase CarregarDatabase(const char* masterJsonPath) {
         pData->hpMax = GetIntSafe(pJson, "hpMax");
         pData->velocidade = GetIntSafe(pJson, "velocidade");
 
-        // --- MUDANÇA AQUI ---
         pData->painelZoom = (float)GetFloatSafe(pJson, "painelZoom", 3.0f);
-        // Define 2.0f como zoom padrão de batalha se não for encontrado
         pData->batalhaZoom = (float)GetFloatSafe(pJson, "batalhaZoom", 2.0f); 
-        // --- FIM DA MUDANÇA ---
 
         pData->ataque1 = GetAtaqueSafe(pJson, "ataque1");
         pData->ataque2 = GetAtaqueSafe(pJson, "ataque2");
