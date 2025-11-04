@@ -209,6 +209,6 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
     
     const char *aviso = "Pressione ESC ou ENTER para voltar ao Menu";
     int tamAviso = 20;
-    int posXAviso = (SCREEN_WIDTH - MeasureText(aviso, tamAviso)) / 2;
+    int posXAviso = 1110;
     DrawText(aviso, posXAviso, SCREEN_HEIGHT - 40, tamAviso, LIGHTGRAY);
 }
