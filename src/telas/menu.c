@@ -2,6 +2,7 @@
 #include "menu.h" 
 #include <stdio.h>
 #include "selecao.h" 
+#include "telas.h"
 
 static Rectangle btnJogar;
 static Rectangle btnPersonagens;
@@ -47,7 +48,8 @@ void UnloadMenuResources(MenuOpcao resources) {
 }
 
 void AtualizarTelaMenu(GameScreen *telaAtual) {
-    Vector2 mousePos = GetMousePosition();
+    //Vector2 mousePos = GetMousePosition();
+    Vector2 mousePos = GetMouseVirtual(); // Usa a nova função
 
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         if (CheckCollisionPointRec(mousePos, btnJogar)) {
@@ -63,7 +65,8 @@ void AtualizarTelaMenu(GameScreen *telaAtual) {
 }
 
 void DesenharTelaMenu(MenuOpcao resources) {
-    Vector2 mousePos = GetMousePosition();
+    //Vector2 mousePos = GetMousePosition();
+    Vector2 mousePos = GetMouseVirtual(); // Usa a nova função
     
     DrawTexture(resources.background, 0, 0, WHITE);
 

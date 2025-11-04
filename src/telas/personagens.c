@@ -3,6 +3,7 @@
 #include "database.h"
 #include <stdio.h> 
 #include <string.h> 
+#include "telas.h"
 
 
 static int animFrame[9] = {0};
@@ -25,15 +26,15 @@ void CarregarRecursosPersonagens(void) {
     
     int coluna1X = 100;
     int coluna2X = 450;
-    int coluna3X = 800; 
+    int coluna3X = 800;
     
-    int hitboxWidth = 300; 
-    int hitboxHeight = 180; 
+    int hitboxWidth = 300;
+    int hitboxHeight = 180;
 
     // Define as hitboxes (usando IDs de 0 a 8)
     for (int i = 0; i < 9; i++) {
-        int linha = i / 3; 
-        int col = i % 3;  
+        int linha = i / 3;
+        int col = i % 3;
         
         int yPos = linhaFrenteY;
         if (linha == 1) yPos = linhaMeioY;
@@ -53,19 +54,22 @@ void DescarregarRecursosPersonagens(void) {
 void AtualizarTelaPersonagens(GameScreen *telaAtual, int *personagemSelecionado, SpriteDatabase* db) {
     if (IsKeyPressed(KEY_ESCAPE) || IsKeyPressed(KEY_ENTER)) {
         *telaAtual = SCREEN_MENU;
-        *personagemSelecionado = -1; 
+        *personagemSelecionado = -1;
     }
 
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        Vector2 mousePos = GetMousePosition();
+        // --- CORREÇÃO v5 ---
+        //Vector2 mousePos = GetMousePosition();
+        Vector2 mousePos = GetMouseVirtual();
+        // -------------------
         
-        *personagemSelecionado = -1; 
+        *personagemSelecionado = -1;
         for (int i = 0; i < db->numPersonagens; i++) {
             if (CheckCollisionPointRec(mousePos, rectPersonagens[i])) {
                 *personagemSelecionado = i;
                 animFrameSelecionado = 0;
                 animTimerSelecionado = 0;
-                break; 
+                break;
             }
         }
     }
@@ -96,7 +100,7 @@ void AtualizarTelaPersonagens(GameScreen *telaAtual, int *personagemSelecionado,
 }
 
 static void DesenharPainelDetalhes(int idPersonagem, SpriteDatabase* db) {
-    Rectangle painelDireito = { 1150, 100, 400, 750 }; // Posição do painel
+    Rectangle painelDireito = { 1150, 100, 400, 750 };
     
     DrawRectangleRec(painelDireito, corPainel);
     DrawRectangleLinesEx(painelDireito, 5.0f, corBordaPainel);
@@ -106,13 +110,13 @@ static void DesenharPainelDetalhes(int idPersonagem, SpriteDatabase* db) {
     DrawRectangleRec(areaAnimacao, PURPLE);
 
     int posX = (int)painelDireito.x + 25;
-    int posYBase = (int)areaAnimacao.y + (int)areaAnimacao.height + 20; 
+    int posYBase = (int)areaAnimacao.y + (int)areaAnimacao.height + 20;
     int tamFonteTitulo = 20;
     int tamFonteTexto = 18;
 
     int espacamentoLinha1 = 25;
     int espacamentoLinha2 = 45;
-    int espacamentoBloco = 100; 
+    int espacamentoBloco = 100;
 
     PersonagemData* pData = NULL;
     if (idPersonagem >= 0 && idPersonagem < db->numPersonagens) {
@@ -125,14 +129,14 @@ static void DesenharPainelDetalhes(int idPersonagem, SpriteDatabase* db) {
             Rectangle frame = anim->def.frames[animFrameSelecionado];
             float zoom = pData->painelZoom;
             
-            DrawTexturePro(anim->textura, frame, 
+            DrawTexturePro(anim->textura, frame,
                 (Rectangle){ areaAnimacao.x + areaAnimacao.width / 2, areaAnimacao.y + areaAnimacao.height / 2, frame.width * zoom, frame.height * zoom },
                 (Vector2){ (frame.width * zoom) / 2, (frame.height * zoom) / 2 }, 0, WHITE);
         }
 
         DrawText("Nome:", posX, posYBase, tamFonteTitulo, corTituloLinha);
         DrawText(pData->nome, posX, posYBase + espacamentoLinha1, tamFonteTexto, LIGHTGRAY);
-        DrawText(pData->descricao, posX, posYBase + espacamentoLinha2, 16, LIGHTGRAY); 
+        DrawText(pData->descricao, posX, posYBase + espacamentoLinha2, 16, LIGHTGRAY);
         
         int posYBlocoAtaques = posYBase + espacamentoBloco;
         DrawText("Ataques:", posX, posYBlocoAtaques, tamFonteTitulo, corTituloLinha);
@@ -173,7 +177,7 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
         DrawText(titulosClasses[c], xPos, yPos - 60, tamFonteTituloLinha, corTituloLinha);
         
         int col = 0;
-        for (int i = 0; i < db->numPersonagens; i++) { 
+        for (int i = 0; i < db->numPersonagens; i++) {
             if (db->personagens[i].classe == classe) {
                 xPos = 100 + 350 * col;
                 
@@ -188,7 +192,7 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
                 AnimacaoData* anim = &db->personagens[i].animIdle;
                 if (anim->def.numFrames > 0) {
                     Rectangle frame = anim->def.frames[animFrame[i]];
-                    float zoom = (card.height - 40) / frame.height; 
+                    float zoom = (card.height - 40) / frame.height;
                     DrawTexturePro(anim->textura, frame,
                         (Rectangle){ card.x + card.width/2, card.y + card.height/2 - 10, frame.width * zoom, frame.height * zoom },
                         (Vector2){ (frame.width * zoom) / 2, (frame.height * zoom) / 2 }, 0, WHITE);

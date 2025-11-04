@@ -5,9 +5,9 @@
 #include <time.h>  
 #include <stdio.h> 
 
-static int animFrame[9] = {0}; // Assumindo 9 personagens
+static int animFrame[9] = {0};
 static int animTimer[9] = {0};
-static int animVelocidade = 15; // Velocidade mais lenta para idle
+static int animVelocidade = 15;
 
 
 static int etapaSelecao = 0;
@@ -87,7 +87,8 @@ void AtualizarTelaSelecao(GameScreen *telaAtual, SpriteDatabase* db, TimesBatalh
         ClassePersonagem classeAtual = (ClassePersonagem)etapaSelecao;
 
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            Vector2 mousePos = GetMousePosition();
+            //Vector2 mousePos = GetMousePosition();
+            Vector2 mousePos = GetMouseVirtual(); // Usa a nova função
             
             int yPos = yPosBase + yEspacamento * etapaSelecao; 
             int xPos = 100;

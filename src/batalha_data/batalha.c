@@ -5,6 +5,9 @@
 #include <string.h> 
 #include "ConsumoAPI_Gemini.h" 
 
+// Inclui a definição de 'GetMouseVirtual()'
+#include "telas.h"
+
 static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataque* ataque, int alvoIdx, bool ehJogadorAtacando);
 static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataque* ataque, int alvoIdx, bool ehJogadorAtacando);
 
@@ -22,7 +25,7 @@ static const char* CarregarChaveApi(const char* caminhoArquivo) {
         printf("ERRO FATAL: Nao foi possivel abrir: %s\n", caminhoArquivo);
         printf("Criar um arquivo 'config.txt' na raiz do projeto com a chave.\n");
         strcpy(CHAVE_API_BUFFER, "CHAVE_NAO_ENCONTRADA");
-        chaveJaFoiCarregada = true; 
+        chaveJaFoiCarregada = true;
         return CHAVE_API_BUFFER;
     }
 
@@ -54,8 +57,8 @@ static void ExecutarTurnoIA(EstadoBatalha *estado) {
              tentativas++;
         }
         
-        ExecutarAtaque(estado, atacante, &atacante->ataque1, alvoAleatorio, false); 
-        return; 
+        ExecutarAtaque(estado, atacante, &atacante->ataque1, alvoAleatorio, false);
+        return;
     }
 
     // Obtém a decisão da API
@@ -92,7 +95,7 @@ static void IniciarAnimacao(EstadoAnimacao* anim, AnimacaoData* data, Vector2 po
     anim->frameAtual = 0;
     anim->timer = 0;
     anim->velocidade = 8;
-    anim->flip = flip; 
+    anim->flip = flip;
 }
 
 static void AtualizarAnimacao(EstadoAnimacao* anim) {
@@ -122,11 +125,11 @@ static void DesenharAnimacao(EstadoAnimacao* anim) {
         frameRec.width = -frameRec.width; // Inverte o frame
     }
 
-    DrawTexturePro(anim->anim->textura, 
-                   frameRec, 
+    DrawTexturePro(anim->anim->textura,
+                   frameRec,
                    (Rectangle){ anim->pos.x, anim->pos.y, frameRec.width * anim->zoom, frameRec.height * anim->zoom },
-                   (Vector2){ frameRec.width * anim->zoom / 2, frameRec.height * anim->zoom / 2 }, 
-                   0.0f, 
+                   (Vector2){ frameRec.width * anim->zoom / 2, frameRec.height * anim->zoom / 2 },
+                   0.0f,
                    WHITE);
 }
 
@@ -136,7 +139,7 @@ static int CompararVelocidade(const void* a, const void* b) {
     PersonagemData* pA = *(PersonagemData**)a;
     PersonagemData* pB = *(PersonagemData**)b;
     
-    if (pA == NULL || pB == NULL) return 0; 
+    if (pA == NULL || pB == NULL) return 0;
     
     if (pA->velocidade > pB->velocidade) return -1;
     if (pA->velocidade < pB->velocidade) return 1;
@@ -232,7 +235,7 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
     }
 
 
-    bool deveFlipar = !ehJogadorAtacando; 
+    bool deveFlipar = !ehJogadorAtacando;
     
     // Inicia a animação de ataque usando a 'animPos' correta
     if (strcmp(ataque->nome, atacante->ataque1.nome) == 0) {
@@ -255,25 +258,25 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
     for (int i = 0; i < 3; i++) {
         if (estado->times.timeJogador[i] == NULL || estado->times.timeIA[i] == NULL) {
             printf("ERRO FATAL: Time nao selecionado corretamente!\n");
-            return; // Impede o crash
+            return;
         }
         estado->hpJogador[i] = estado->times.timeJogador[i]->hpMax;
         estado->hpIA[i] = estado->times.timeIA[i]->hpMax;
     }
     
-    float posY = 350.0f; 
+    float posY = 350.0f;
     
-    float espacamentoX = 200.0f; 
+    float espacamentoX = 200.0f;
     
-    float offsetInicialJogador = 100.0f; 
-    float offsetInicialIA = SCREEN_WIDTH - 100.0f; 
+    float offsetInicialJogador = 100.0f;
+    float offsetInicialIA = SCREEN_WIDTH - 100.0f;
     
-    posJogador[2] = (Vector2){offsetInicialJogador, posY};                     
-    posJogador[1] = (Vector2){offsetInicialJogador + espacamentoX, posY};      
-    posJogador[0] = (Vector2){offsetInicialJogador + espacamentoX * 2, posY};  
+    posJogador[2] = (Vector2){offsetInicialJogador, posY};
+    posJogador[1] = (Vector2){offsetInicialJogador + espacamentoX, posY};
+    posJogador[0] = (Vector2){offsetInicialJogador + espacamentoX * 2, posY};
     
-    posIA[0] = (Vector2){offsetInicialIA - espacamentoX * 2, posY}; 
-    posIA[1] = (Vector2){offsetInicialIA - espacamentoX, posY};     
+    posIA[0] = (Vector2){offsetInicialIA - espacamentoX * 2, posY};
+    posIA[1] = (Vector2){offsetInicialIA - espacamentoX, posY};
     posIA[2] = (Vector2){offsetInicialIA, posY};
 
     
@@ -286,17 +289,16 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
 
     printf("Ordem de ataque:\n");
     for(int i=0; i<6; i++) {
-        if (estado->ordemDeAtaque[i] != NULL) { // Guarda de segurança
+        if (estado->ordemDeAtaque[i] != NULL) { 
             printf("  %d. %s (Vel: %d)\n", i+1, estado->ordemDeAtaque[i]->nome, estado->ordemDeAtaque[i]->velocidade);
         }
     }
     
-    // 5. Configura o primeiro turno
-    estado->personagemAgindoIdx = -1; 
+    estado->personagemAgindoIdx = -1;
     estado->estadoTurno = ESTADO_INICIANDO;
     PararAnimacao(&estado->animacaoEmExecucao);
     
-    // Zera os timers de idle (embora o {0} no main.c já deva fazer isso)
+    
     for (int i=0; i<3; i++) {
         estado->idleFrameJogador[i] = 0;
         estado->idleTimerJogador[i] = 0;
@@ -308,7 +310,7 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
 void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
     if (IsKeyPressed(KEY_ESCAPE)) {
         *telaAtual = SCREEN_MENU;
-        return; 
+        return;
     }
     
     for (int i = 0; i < 3; i++) {
@@ -358,12 +360,13 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
                 Rectangle btnAtk1 = { colAtaquesX, textoYBase + 35, 200, 40 };
                 Rectangle btnAtk2 = { colAtaquesX, textoYBase + 90, 200, 40 };
                 
-                // Hitboxes dos alvos (IA) - Ajustadas para a nova posição
                 Rectangle alvoIA_0 = {posIA[0].x - 50, posIA[0].y - 50, 100, 100};
                 Rectangle alvoIA_1 = {posIA[1].x - 50, posIA[1].y - 50, 100, 100};
                 Rectangle alvoIA_2 = {posIA[2].x - 50, posIA[2].y - 50, 100, 100};
                 
-                Vector2 mousePos = GetMousePosition();
+
+                Vector2 mousePos = GetMouseVirtual();
+                // -------------------
 
                 if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
                     if (CheckCollisionPointRec(mousePos, btnAtk1)) estado->ataqueSelecionado = 0;
@@ -388,19 +391,16 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
             break;
             
         case ESTADO_ANIMACAO_ATAQUE:
-            // Se a animação terminou, passa para o próximo turno
             if (!estado->animacaoEmExecucao.ativo) {
                 ProximoTurno(estado);
             }
             break;
 
         case ESTADO_TURNO_IA:
-            // A IA decide e ataca instantaneamente
             ExecutarTurnoIA(estado);
             break;
             
         case ESTADO_FIM_DE_JOGO:
-            // (Lógica de fim de jogo)
             break;
     }
 }
@@ -415,17 +415,17 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
     DrawRectangleLines(10, arenaY, SCREEN_WIDTH - 20, arenaHeight, LIGHTGRAY);
     
     for (int i = 0; i < 3; i++) {
-        PersonagemData* pData = estado->times.timeJogador[i]; 
+        PersonagemData* pData = estado->times.timeJogador[i];
         if (pData != NULL && estado->hpJogador[i] > 0) {
             AnimacaoData* anim = &pData->animIdle;
-            if (anim->def.numFrames > 0) { 
+            if (anim->def.numFrames > 0) {
                 int frameIndex = estado->idleFrameJogador[i];
                 if (frameIndex >= anim->def.numFrames) frameIndex = 0;
-                Rectangle frame = anim->def.frames[frameIndex]; 
+                Rectangle frame = anim->def.frames[frameIndex];
                 
-                float zoom = pData->batalhaZoom; 
+                float zoom = pData->batalhaZoom;
 
-                DrawTexturePro(anim->textura, frame, 
+                DrawTexturePro(anim->textura, frame,
                     (Rectangle){posJogador[i].x, posJogador[i].y, frame.width * zoom, frame.height * zoom},
                     (Vector2){frame.width * zoom / 2, frame.height * zoom / 2}, 0, WHITE);
                 
@@ -436,22 +436,22 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
             }
         }
         
-        PersonagemData* pDataIA = estado->times.timeIA[i]; 
+        PersonagemData* pDataIA = estado->times.timeIA[i];
         if (pDataIA != NULL && estado->hpIA[i] > 0) {
             AnimacaoData* anim = &pDataIA->animIdle;
-            if (anim->def.numFrames > 0) { 
+            if (anim->def.numFrames > 0) {
 
                 int frameIndexIA = estado->idleFrameIA[i];
-                if (frameIndexIA >= anim->def.numFrames) frameIndexIA = 0; 
+                if (frameIndexIA >= anim->def.numFrames) frameIndexIA = 0;
                 Rectangle frame = anim->def.frames[frameIndexIA];
 
-                float zoomIA = pDataIA->batalhaZoom; 
+                float zoomIA = pDataIA->batalhaZoom;
 
                 Rectangle frameIA = frame;
-                frameIA.width = -frame.width; 
+                frameIA.width = -frame.width;
 
-                DrawTexturePro(anim->textura, frameIA, 
-                    (Rectangle){posIA[i].x, posIA[i].y, frame.width * zoomIA, frame.height * zoomIA}, 
+                DrawTexturePro(anim->textura, frameIA,
+                    (Rectangle){posIA[i].x, posIA[i].y, frame.width * zoomIA, frame.height * zoomIA},
                     (Vector2){frame.width * zoomIA / 2, frame.height * zoomIA / 2}, 0, WHITE);
                 
                 float hpBarY = posIA[i].y + (frame.height * zoomIA / 2) + 5;
@@ -501,7 +501,7 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
     if (estado->turnoDe == TURNO_JOGADOR && estado->personagemAgindoIdx >= 0)  {
         PersonagemData* atacante = estado->ordemDeAtaque[estado->personagemAgindoIdx];
         
-        if (atacante != NULL) { 
+        if (atacante != NULL) {
             DrawRectangleRounded(btnAtk1, 0.2f, 4, corAtk1);
             DrawRectangleRoundedLinesEx(btnAtk1, 0.2f, 4, espessuraBorda, BLACK);
             DrawText(atacante->ataque1.nome, btnAtk1.x + (btnAtk1.width - MeasureText(atacante->ataque1.nome, 20)) / 2, btnAtk1.y + 10, 20, corTexto);
@@ -510,7 +510,10 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
             DrawRectangleRoundedLinesEx(btnAtk2, 0.2f, 4, espessuraBorda, BLACK);
             DrawText(atacante->ataque2.nome, btnAtk2.x + (btnAtk2.width - MeasureText(atacante->ataque2.nome, 20)) / 2, btnAtk2.y + 10, 20, corTexto);
         
-            Vector2 mousePos = GetMousePosition();
+
+            Vector2 mousePos = GetMouseVirtual();
+            // -------------------
+            
             if (CheckCollisionPointRec(mousePos, btnAtk1)) {
                 DrawText(atacante->ataque1.descricao, colSpecsX, textoYBase + 40, 20, RAYWHITE);
                 DrawText(TextFormat("Causa %d de Dano.", atacante->ataque1.dano), colSpecsX, textoYBase + 70, 20, RAYWHITE);
