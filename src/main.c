@@ -29,36 +29,30 @@ int main(void) {
     
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Ecos da Infância");
 
-    // 2. AGORA que a janela existe, pegamos o monitor atual
+    ToggleFullscreen();
+
     int monitorAtual = GetCurrentMonitor();
     int larguraNativa = GetMonitorWidth(monitorAtual);
     int alturaNativa = GetMonitorHeight(monitorAtual);
 
-    // 3. Aplica as flags para "tela cheia sem bordas"
     SetWindowState(FLAG_WINDOW_UNDECORATED); 
 
-    // 4. Redimensiona a janela para o tamanho nativo
     SetWindowSize(larguraNativa, alturaNativa);
     
-    // 5. Posiciona a janela no canto (0,0)
     SetWindowPosition(0, 0);
 
-    // 6. Cria o "canvas" (RenderTexture) no tamanho do seu design (1600x900)
     RenderTexture2D canvas = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
     
-    // 7. Calcula a escala e atribui às variáveis estáticas
     escala = (float)larguraNativa / SCREEN_WIDTH;
     if ((float)alturaNativa / SCREEN_HEIGHT < escala) {
         escala = (float)alturaNativa / SCREEN_HEIGHT;
     }
 
-    // 8. Define a área de desenho final
     areaDestinoCanvas.width = SCREEN_WIDTH * escala;
     areaDestinoCanvas.height = SCREEN_HEIGHT * escala;
-    areaDestinoCanvas.x = (larguraNativa - areaDestinoCanvas.width) * 0.5f; // Centraliza X
-    areaDestinoCanvas.y = (alturaNativa - areaDestinoCanvas.height) * 0.5f; // Centraliza Y
+    areaDestinoCanvas.x = (larguraNativa - areaDestinoCanvas.width) * 0.5f;
+    areaDestinoCanvas.y = (alturaNativa - areaDestinoCanvas.height) * 0.5f;
     
-    // 9. Define a origem e fonte do canvas
     Vector2 origemCanvas = { 0.0f, 0.0f };
     Rectangle retanguloFonteCanvas = { 0.0f, 0.0f, (float)canvas.texture.width, (float)-canvas.texture.height };
 
@@ -74,7 +68,7 @@ int main(void) {
     EstadoBatalha estadoBatalha = {0};
     
     GameScreen telaAtual = SCREEN_MENU;
-    int personagemSelecionado = -1; // -1 significa "nenhum selecionado"
+    int personagemSelecionado = -1;
 
     while (!WindowShouldClose() && telaAtual != SCREEN_SAIR) {
         
@@ -104,11 +98,10 @@ int main(void) {
                 break;
         }
         
-        // 1. Começa a desenhar no "canvas" (1600x900)
+
         BeginTextureMode(canvas); 
             ClearBackground(DARKGRAY);
 
-            // 2. O switch de desenho original
             switch(telaAtual) {
                 case SCREEN_MENU:
                     DesenharTelaMenu(menuRes);
@@ -129,12 +122,10 @@ int main(void) {
                     break;
             }
 
-        // 3. Termina de desenhar no canvas
         EndTextureMode(); 
 
-        // 4. Agora, desenha na TELA REAL (Nativa)
         BeginDrawing();
-            ClearBackground(BLACK); // Fundo preto (para o letterboxing)
+            ClearBackground(BLACK);
             
             DrawTexturePro(
                 canvas.texture,       
@@ -158,7 +149,6 @@ int main(void) {
 }
 
 
-// Funções placeholder originais
 void AtualizarTelaPlaceholder(GameScreen *telaAtual) {
     if (IsKeyPressed(KEY_ESCAPE) || IsKeyPressed(KEY_ENTER)) {
         *telaAtual = SCREEN_MENU;
