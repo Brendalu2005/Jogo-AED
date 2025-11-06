@@ -1,10 +1,10 @@
 {
 	"frames": {
-		"homemaranha-ataquesdireitaSoco1.png": {
+		"ataque1.png": {
 			"frame": {
 				"x": 1,
 				"y": 1,
-				"w": 100,
+				"w": 159,
 				"h": 100
 			},
 			"rotated": false,
@@ -12,19 +12,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 100,
+				"w": 159,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 100,
+				"w": 159,
 				"h": 100
 			}
 		},
-		"homemaranha-ataquesdireitaTeia1.png": {
+		"ataque2.png": {
 			"frame": {
-				"x": 103,
+				"x": 162,
 				"y": 1,
-				"w": 143,
+				"w": 156,
 				"h": 100
 			},
 			"rotated": false,
@@ -32,19 +32,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 143,
+				"w": 156,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 143,
+				"w": 156,
 				"h": 100
 			}
 		},
-		"homemaranha-ataquesdireitaTeia2.png": {
+		"ataque3.png": {
 			"frame": {
 				"x": 1,
 				"y": 103,
-				"w": 143,
+				"w": 156,
 				"h": 100
 			},
 			"rotated": false,
@@ -52,19 +52,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 143,
+				"w": 156,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 143,
+				"w": 156,
 				"h": 100
 			}
 		},
-		"homemaranha-ataquesdireitaTeia3.png": {
+		"ataque4.png": {
 			"frame": {
-				"x": 248,
-				"y": 1,
-				"w": 330,
+				"x": 159,
+				"y": 103,
+				"w": 156,
 				"h": 100
 			},
 			"rotated": false,
@@ -72,11 +72,111 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 330,
+				"w": 156,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 330,
+				"w": 156,
+				"h": 100
+			}
+		},
+		"ataque5.png": {
+			"frame": {
+				"x": 1,
+				"y": 205,
+				"w": 160,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 160,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 160,
+				"h": 100
+			}
+		},
+		"ataque6.png": {
+			"frame": {
+				"x": 163,
+				"y": 205,
+				"w": 185,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 185,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 185,
+				"h": 100
+			}
+		},
+		"ataque7.png": {
+			"frame": {
+				"x": 320,
+				"y": 1,
+				"w": 156,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 156,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 156,
+				"h": 100
+			}
+		},
+		"ataque8.png": {
+			"frame": {
+				"x": 317,
+				"y": 103,
+				"w": 156,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 156,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 156,
+				"h": 100
+			}
+		},
+		"ataque9.png": {
+			"frame": {
+				"x": 350,
+				"y": 205,
+				"w": 156,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 156,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 156,
 				"h": 100
 			}
 		}
@@ -87,8 +187,8 @@
 		"image": "spritesheet.png",
 		"format": "RGBA8888",
 		"size": {
-			"w": 579,
-			"h": 204
+			"w": 507,
+			"h": 306
 		},
 		"scale": "1"
 	}

@@ -1,0 +1,115 @@
+{
+	"frames": {
+		"ataque_onda1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 184,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 184,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 184,
+				"h": 100
+			}
+		},
+		"ataque_onda2.png": {
+			"frame": {
+				"x": 187,
+				"y": 1,
+				"w": 162,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 162,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 162,
+				"h": 100
+			}
+		},
+		"ataque_onda3.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 115,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 115,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 115,
+				"h": 100
+			}
+		},
+		"ataque_onda4.png": {
+			"frame": {
+				"x": 118,
+				"y": 103,
+				"w": 139,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 139,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 139,
+				"h": 100
+			}
+		},
+		"ataque_onda5.png": {
+			"frame": {
+				"x": 259,
+				"y": 103,
+				"w": 235,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 235,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 235,
+				"h": 100
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 587,
+			"h": 306
+		},
+		"scale": "1"
+	}
+}

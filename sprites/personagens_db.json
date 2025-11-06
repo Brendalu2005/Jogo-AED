@@ -47,8 +47,8 @@
       "ataque2": { "nome": "Soco Super-mônico", "descricao": "Um soco com força total.", "dano": 3 },
       "anim": {
         "idle": "sprites/personagens/hulk/idle",
-        "ataque1": "sprites/personagens/docinho/ataque_soco",
-        "ataque2": "sprites/personagens/docinho/ataque_laser"
+        "ataque1": "sprites/personagens/hulk/ataque_onda",
+        "ataque2": "sprites/personagens/hulk/ataque_soco"
       }
     },
     {
@@ -115,7 +115,7 @@
       "ataque2": { "nome": "Sentido Aranha", "descricao": "Jogue teia nos inimigos.", "dano": 10 },
       "anim": {
         "idle": "sprites/personagens/homem-aranha/idle",
-        "ataque1": "sprites/personagens/homem-aranha/ataque_soco",
+        "ataque1": "sprites/personagens/homem-aranha/ataque_superteia",
         "ataque2": "sprites/personagens/homem-aranha/ataque_teia"
       }
     },
