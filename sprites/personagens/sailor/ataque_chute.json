@@ -1,10 +1,10 @@
 {
 	"frames": {
-		"ataque1.png": {
+		"sailorataque1.png": {
 			"frame": {
 				"x": 1,
 				"y": 1,
-				"w": 104,
+				"w": 57,
 				"h": 100
 			},
 			"rotated": false,
@@ -12,19 +12,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 104,
+				"w": 57,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 104,
+				"w": 57,
 				"h": 100
 			}
 		},
-		"ataque10.png": {
+		"sailorataque10.png": {
 			"frame": {
-				"x": 107,
+				"x": 60,
 				"y": 1,
-				"w": 91,
+				"w": 95,
 				"h": 100
 			},
 			"rotated": false,
@@ -32,39 +32,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 91,
+				"w": 95,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 91,
+				"w": 95,
 				"h": 100
 			}
 		},
-		"ataque11.png": {
-			"frame": {
-				"x": 200,
-				"y": 1,
-				"w": 97,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 97,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 97,
-				"h": 100
-			}
-		},
-		"ataque12.png": {
+		"sailorataque11.png": {
 			"frame": {
 				"x": 1,
 				"y": 103,
-				"w": 95,
+				"w": 207,
 				"h": 100
 			},
 			"rotated": false,
@@ -72,58 +52,58 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 95,
+				"w": 207,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 95,
+				"w": 207,
 				"h": 100
 			}
 		},
-		"ataque2.png": {
+		"sailorataque2.png": {
 			"frame": {
-				"x": 98,
+				"x": 157,
+				"y": 1,
+				"w": 38,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 38,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 38,
+				"h": 100
+			}
+		},
+		"sailorataque3.png": {
+			"frame": {
+				"x": 197,
+				"y": 1,
+				"w": 54,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 54,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 54,
+				"h": 100
+			}
+		},
+		"sailorataque4.png": {
+			"frame": {
+				"x": 210,
 				"y": 103,
-				"w": 95,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 95,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 95,
-				"h": 100
-			}
-		},
-		"ataque3.png": {
-			"frame": {
-				"x": 195,
-				"y": 103,
-				"w": 80,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 80,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 80,
-				"h": 100
-			}
-		},
-		"ataque4.png": {
-			"frame": {
-				"x": 1,
-				"y": 205,
 				"w": 76,
 				"h": 100
 			},
@@ -140,11 +120,11 @@
 				"h": 100
 			}
 		},
-		"ataque5.png": {
+		"sailorataque5.png": {
 			"frame": {
-				"x": 79,
+				"x": 1,
 				"y": 205,
-				"w": 108,
+				"w": 77,
 				"h": 100
 			},
 			"rotated": false,
@@ -152,19 +132,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 108,
+				"w": 77,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 108,
+				"w": 77,
 				"h": 100
 			}
 		},
-		"ataque6.png": {
+		"sailorataque6.png": {
 			"frame": {
-				"x": 189,
+				"x": 80,
 				"y": 205,
-				"w": 85,
+				"w": 71,
 				"h": 100
 			},
 			"rotated": false,
@@ -172,19 +152,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 85,
+				"w": 71,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 85,
+				"w": 71,
 				"h": 100
 			}
 		},
-		"ataque7.png": {
+		"sailorataque7.png": {
 			"frame": {
-				"x": 299,
+				"x": 253,
 				"y": 1,
-				"w": 91,
+				"w": 59,
 				"h": 100
 			},
 			"rotated": false,
@@ -192,39 +172,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 91,
+				"w": 59,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 91,
+				"w": 59,
 				"h": 100
 			}
 		},
-		"ataque8.png": {
+		"sailorataque8.png": {
 			"frame": {
-				"x": 277,
-				"y": 103,
-				"w": 89,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 89,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 89,
-				"h": 100
-			}
-		},
-		"ataque9.png": {
-			"frame": {
-				"x": 276,
+				"x": 153,
 				"y": 205,
-				"w": 94,
+				"w": 106,
 				"h": 100
 			},
 			"rotated": false,
@@ -232,11 +192,31 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 94,
+				"w": 106,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 94,
+				"w": 106,
+				"h": 100
+			}
+		},
+		"sailorataque9.png": {
+			"frame": {
+				"x": 314,
+				"y": 1,
+				"w": 137,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 137,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 137,
 				"h": 100
 			}
 		}
@@ -247,7 +227,7 @@
 		"image": "spritesheet.png",
 		"format": "RGBA8888",
 		"size": {
-			"w": 391,
+			"w": 452,
 			"h": 306
 		},
 		"scale": "1"

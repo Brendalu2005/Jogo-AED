@@ -1,10 +1,10 @@
 {
 	"frames": {
-		"ataque1.png": {
+		"sailoridle11.png": {
 			"frame": {
 				"x": 1,
 				"y": 1,
-				"w": 104,
+				"w": 32,
 				"h": 100
 			},
 			"rotated": false,
@@ -12,19 +12,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 104,
+				"w": 32,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 104,
+				"w": 32,
 				"h": 100
 			}
 		},
-		"ataque10.png": {
+		"sailoridle12.png": {
 			"frame": {
-				"x": 107,
+				"x": 35,
 				"y": 1,
-				"w": 91,
+				"w": 37,
 				"h": 100
 			},
 			"rotated": false,
@@ -32,19 +32,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 91,
+				"w": 37,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 91,
+				"w": 37,
 				"h": 100
 			}
 		},
-		"ataque11.png": {
+		"sailoridle2.png": {
 			"frame": {
-				"x": 200,
+				"x": 74,
 				"y": 1,
-				"w": 97,
+				"w": 44,
 				"h": 100
 			},
 			"rotated": false,
@@ -52,19 +52,79 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 97,
+				"w": 44,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 97,
+				"w": 44,
 				"h": 100
 			}
 		},
-		"ataque12.png": {
+		"sailoridle3.png": {
+			"frame": {
+				"x": 120,
+				"y": 1,
+				"w": 39,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 39,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 39,
+				"h": 100
+			}
+		},
+		"sailoridle4.png": {
+			"frame": {
+				"x": 161,
+				"y": 1,
+				"w": 33,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 33,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 33,
+				"h": 100
+			}
+		},
+		"sailoridle5.png": {
+			"frame": {
+				"x": 196,
+				"y": 1,
+				"w": 33,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 33,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 33,
+				"h": 100
+			}
+		},
+		"sailoridle6.png": {
 			"frame": {
 				"x": 1,
 				"y": 103,
-				"w": 95,
+				"w": 33,
 				"h": 100
 			},
 			"rotated": false,
@@ -72,19 +132,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 95,
+				"w": 33,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 95,
+				"w": 33,
 				"h": 100
 			}
 		},
-		"ataque2.png": {
+		"sailoridle7.png": {
 			"frame": {
-				"x": 98,
+				"x": 36,
 				"y": 103,
-				"w": 95,
+				"w": 36,
 				"h": 100
 			},
 			"rotated": false,
@@ -92,19 +152,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 95,
+				"w": 36,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 95,
+				"w": 36,
 				"h": 100
 			}
 		},
-		"ataque3.png": {
+		"sailoridle8.png": {
 			"frame": {
-				"x": 195,
+				"x": 74,
 				"y": 103,
-				"w": 80,
+				"w": 45,
 				"h": 100
 			},
 			"rotated": false,
@@ -112,99 +172,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 80,
+				"w": 45,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 80,
+				"w": 45,
 				"h": 100
 			}
 		},
-		"ataque4.png": {
+		"sailoridle9.png": {
 			"frame": {
-				"x": 1,
-				"y": 205,
-				"w": 76,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 76,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 76,
-				"h": 100
-			}
-		},
-		"ataque5.png": {
-			"frame": {
-				"x": 79,
-				"y": 205,
-				"w": 108,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 108,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 108,
-				"h": 100
-			}
-		},
-		"ataque6.png": {
-			"frame": {
-				"x": 189,
-				"y": 205,
-				"w": 85,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 85,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 85,
-				"h": 100
-			}
-		},
-		"ataque7.png": {
-			"frame": {
-				"x": 299,
-				"y": 1,
-				"w": 91,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 91,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 91,
-				"h": 100
-			}
-		},
-		"ataque8.png": {
-			"frame": {
-				"x": 277,
+				"x": 121,
 				"y": 103,
-				"w": 89,
+				"w": 40,
 				"h": 100
 			},
 			"rotated": false,
@@ -212,31 +192,11 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 89,
+				"w": 40,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 89,
-				"h": 100
-			}
-		},
-		"ataque9.png": {
-			"frame": {
-				"x": 276,
-				"y": 205,
-				"w": 94,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 94,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 94,
+				"w": 40,
 				"h": 100
 			}
 		}
@@ -247,8 +207,8 @@
 		"image": "spritesheet.png",
 		"format": "RGBA8888",
 		"size": {
-			"w": 391,
-			"h": 306
+			"w": 230,
+			"h": 204
 		},
 		"scale": "1"
 	}

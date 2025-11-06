@@ -1,0 +1,95 @@
+{
+	"frames": {
+		"ataque1.png": {
+			"frame": {
+				"x": 165,
+				"y": 1,
+				"w": 162,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 162,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 162,
+				"h": 100
+			}
+		},
+		"ataque2.png": {
+			"frame": {
+				"x": 158,
+				"y": 103,
+				"w": 155,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 155,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 155,
+				"h": 100
+			}
+		},
+		"ataque3.png": {
+			"frame": {
+				"x": 165,
+				"y": 205,
+				"w": 162,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 162,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 162,
+				"h": 100
+			}
+		},
+		"ataque4.png": {
+			"frame": {
+				"x": 315,
+				"y": 103,
+				"w": 155,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 155,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 155,
+				"h": 100
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 485,
+			"h": 306
+		},
+		"scale": "1"
+	}
+}

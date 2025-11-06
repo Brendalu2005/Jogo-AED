@@ -46,7 +46,7 @@
       "ataque1": { "nome": "Coelhada", "descricao": "Uma coelhada do Sansão.", "dano": 7 },
       "ataque2": { "nome": "Soco Super-mônico", "descricao": "Um soco com força total.", "dano": 3 },
       "anim": {
-        "idle": "sprites/personagens/docinho/idle",
+        "idle": "sprites/personagens/hulk/idle",
         "ataque1": "sprites/personagens/docinho/ataque_soco",
         "ataque2": "sprites/personagens/docinho/ataque_laser"
       }
@@ -98,7 +98,7 @@
       "ataque2": { "nome": "Mordida", "descricao": "Uma mordida faminta.", "dano": 5 },
       "anim": {
         "idle": "sprites/personagens/taz/idle",
-        "ataque1": "sprites/personagens/taz/ataque_soco",
+        "ataque1": "sprites/personagens/taz/ataque_lingua",
         "ataque2": "sprites/personagens/taz/ataque_tornado"
       }
     },
@@ -121,19 +121,19 @@
     },
     {
       "nome": "Elsa",
-      "descricao": "Rainha do Gelo.",
+      "descricao": "A menina da lua.",
       "classe": "CLASSE_LINHA_TRAS",
       "hpMax": 30,
       "velocidade": 6,
       "painelZoom": 2.5,
       "batalhaZoom": 1.5,
       "thumbnailPath": "sprites/telaPersonagem/docinhothumb.png",
-      "ataque1": { "nome": "Fúria Glacial", "descricao": "Um ataque de gelo poderoso.", "dano": 15 },
-      "ataque2": { "nome": "Tempestade Congelante", "descricao": "Causa dano e lentidão.", "dano": 7 },
+      "ataque1": { "nome": "Soco da lua", "descricao": "Um ataque de gelo poderoso.", "dano": 15 },
+      "ataque2": { "nome": "Chute do luar", "descricao": "Causa dano e lentidão.", "dano": 7 },
       "anim": {
-        "idle": "sprites/personagens/docinho/idle",
-        "ataque1": "sprites/personagens/docinho/ataque_soco",
-        "ataque2": "sprites/personagens/docinho/ataque_laser"
+        "idle": "sprites/personagens/sailor/idle",
+        "ataque1": "sprites/personagens/sailor/ataque_soco",
+        "ataque2": "sprites/personagens/sailor/ataque_chute"
       }
     },
     {

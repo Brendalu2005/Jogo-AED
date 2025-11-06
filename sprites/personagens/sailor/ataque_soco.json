@@ -4,7 +4,7 @@
 			"frame": {
 				"x": 1,
 				"y": 1,
-				"w": 104,
+				"w": 68,
 				"h": 100
 			},
 			"rotated": false,
@@ -12,79 +12,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 104,
+				"w": 68,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 104,
-				"h": 100
-			}
-		},
-		"ataque10.png": {
-			"frame": {
-				"x": 107,
-				"y": 1,
-				"w": 91,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 91,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 91,
-				"h": 100
-			}
-		},
-		"ataque11.png": {
-			"frame": {
-				"x": 200,
-				"y": 1,
-				"w": 97,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 97,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 97,
-				"h": 100
-			}
-		},
-		"ataque12.png": {
-			"frame": {
-				"x": 1,
-				"y": 103,
-				"w": 95,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 95,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 95,
+				"w": 68,
 				"h": 100
 			}
 		},
 		"ataque2.png": {
 			"frame": {
-				"x": 98,
-				"y": 103,
-				"w": 95,
+				"x": 71,
+				"y": 1,
+				"w": 74,
 				"h": 100
 			},
 			"rotated": false,
@@ -92,19 +32,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 95,
+				"w": 74,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 95,
+				"w": 74,
 				"h": 100
 			}
 		},
 		"ataque3.png": {
 			"frame": {
-				"x": 195,
-				"y": 103,
-				"w": 80,
+				"x": 147,
+				"y": 1,
+				"w": 75,
 				"h": 100
 			},
 			"rotated": false,
@@ -112,19 +52,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 80,
+				"w": 75,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 80,
+				"w": 75,
 				"h": 100
 			}
 		},
 		"ataque4.png": {
 			"frame": {
-				"x": 1,
-				"y": 205,
-				"w": 76,
+				"x": 224,
+				"y": 1,
+				"w": 75,
 				"h": 100
 			},
 			"rotated": false,
@@ -132,19 +72,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 76,
+				"w": 75,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 76,
+				"w": 75,
 				"h": 100
 			}
 		},
 		"ataque5.png": {
 			"frame": {
-				"x": 79,
-				"y": 205,
-				"w": 108,
+				"x": 1,
+				"y": 103,
+				"w": 74,
 				"h": 100
 			},
 			"rotated": false,
@@ -152,19 +92,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 108,
+				"w": 74,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 108,
+				"w": 74,
 				"h": 100
 			}
 		},
 		"ataque6.png": {
 			"frame": {
-				"x": 189,
-				"y": 205,
-				"w": 85,
+				"x": 77,
+				"y": 103,
+				"w": 61,
 				"h": 100
 			},
 			"rotated": false,
@@ -172,19 +112,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 85,
+				"w": 61,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 85,
+				"w": 61,
 				"h": 100
 			}
 		},
 		"ataque7.png": {
 			"frame": {
-				"x": 299,
-				"y": 1,
-				"w": 91,
+				"x": 140,
+				"y": 103,
+				"w": 72,
 				"h": 100
 			},
 			"rotated": false,
@@ -192,19 +132,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 91,
+				"w": 72,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 91,
+				"w": 72,
 				"h": 100
 			}
 		},
 		"ataque8.png": {
 			"frame": {
-				"x": 277,
-				"y": 103,
-				"w": 89,
+				"x": 1,
+				"y": 205,
+				"w": 123,
 				"h": 100
 			},
 			"rotated": false,
@@ -212,19 +152,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 89,
+				"w": 123,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 89,
+				"w": 123,
 				"h": 100
 			}
 		},
 		"ataque9.png": {
 			"frame": {
-				"x": 276,
-				"y": 205,
-				"w": 94,
+				"x": 301,
+				"y": 1,
+				"w": 147,
 				"h": 100
 			},
 			"rotated": false,
@@ -232,11 +172,11 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 94,
+				"w": 147,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 94,
+				"w": 147,
 				"h": 100
 			}
 		}
@@ -247,7 +187,7 @@
 		"image": "spritesheet.png",
 		"format": "RGBA8888",
 		"size": {
-			"w": 391,
+			"w": 449,
 			"h": 306
 		},
 		"scale": "1"

@@ -1,10 +1,10 @@
 {
 	"frames": {
-		"ataque1.png": {
+		"idle1 (1).png": {
 			"frame": {
 				"x": 1,
 				"y": 1,
-				"w": 104,
+				"w": 99,
 				"h": 100
 			},
 			"rotated": false,
@@ -12,19 +12,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 104,
+				"w": 99,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 104,
+				"w": 99,
 				"h": 100
 			}
 		},
-		"ataque10.png": {
+		"idle2 (1).png": {
 			"frame": {
-				"x": 107,
+				"x": 102,
 				"y": 1,
-				"w": 91,
+				"w": 95,
 				"h": 100
 			},
 			"rotated": false,
@@ -32,17 +32,57 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 91,
+				"w": 95,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 91,
+				"w": 95,
 				"h": 100
 			}
 		},
-		"ataque11.png": {
+		"idle3 (1).png": {
 			"frame": {
-				"x": 200,
+				"x": 1,
+				"y": 103,
+				"w": 93,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 93,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 93,
+				"h": 100
+			}
+		},
+		"idle4 (1).png": {
+			"frame": {
+				"x": 96,
+				"y": 103,
+				"w": 96,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 96,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 96,
+				"h": 100
+			}
+		},
+		"idle5 (1).png": {
+			"frame": {
+				"x": 199,
 				"y": 1,
 				"w": 97,
 				"h": 100
@@ -60,11 +100,11 @@
 				"h": 100
 			}
 		},
-		"ataque12.png": {
+		"idle6 (1).png": {
 			"frame": {
-				"x": 1,
+				"x": 194,
 				"y": 103,
-				"w": 95,
+				"w": 101,
 				"h": 100
 			},
 			"rotated": false,
@@ -72,59 +112,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 95,
+				"w": 101,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 95,
+				"w": 101,
 				"h": 100
 			}
 		},
-		"ataque2.png": {
-			"frame": {
-				"x": 98,
-				"y": 103,
-				"w": 95,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 95,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 95,
-				"h": 100
-			}
-		},
-		"ataque3.png": {
-			"frame": {
-				"x": 195,
-				"y": 103,
-				"w": 80,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 80,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 80,
-				"h": 100
-			}
-		},
-		"ataque4.png": {
+		"idle7 (1).png": {
 			"frame": {
 				"x": 1,
 				"y": 205,
-				"w": 76,
+				"w": 102,
 				"h": 100
 			},
 			"rotated": false,
@@ -132,19 +132,19 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 76,
+				"w": 102,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 76,
+				"w": 102,
 				"h": 100
 			}
 		},
-		"ataque5.png": {
+		"idle8 (1).png": {
 			"frame": {
-				"x": 79,
+				"x": 105,
 				"y": 205,
-				"w": 108,
+				"w": 102,
 				"h": 100
 			},
 			"rotated": false,
@@ -152,91 +152,11 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 108,
+				"w": 102,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 108,
-				"h": 100
-			}
-		},
-		"ataque6.png": {
-			"frame": {
-				"x": 189,
-				"y": 205,
-				"w": 85,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 85,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 85,
-				"h": 100
-			}
-		},
-		"ataque7.png": {
-			"frame": {
-				"x": 299,
-				"y": 1,
-				"w": 91,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 91,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 91,
-				"h": 100
-			}
-		},
-		"ataque8.png": {
-			"frame": {
-				"x": 277,
-				"y": 103,
-				"w": 89,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 89,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 89,
-				"h": 100
-			}
-		},
-		"ataque9.png": {
-			"frame": {
-				"x": 276,
-				"y": 205,
-				"w": 94,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 94,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 94,
+				"w": 102,
 				"h": 100
 			}
 		}
@@ -247,7 +167,7 @@
 		"image": "spritesheet.png",
 		"format": "RGBA8888",
 		"size": {
-			"w": 391,
+			"w": 297,
 			"h": 306
 		},
 		"scale": "1"
