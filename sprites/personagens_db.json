@@ -8,7 +8,7 @@
       "velocidade": 4,
       "painelZoom": 2.5,
       "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/docinhothumb.png",
+      "thumbnailPath": "sprites/telaPersonagem/docinho_icon.png",
       "ataque1": { "nome": "Kityy surpresa", "descricao": "Um rolo compressor.", "dano": 8 },
       "ataque2": { "nome": "???", "descricao": "Um ataque fofo.", "dano": 4 },
       "anim": {
@@ -25,7 +25,7 @@
       "velocidade": 3,
       "painelZoom": 2.5,
       "batalhaZoom": 1.5,
-      "thumbnailPath": "sprites/telaPersonagem/docinhothumb.png",
+      "thumbnailPath": "sprites/telaPersonagem/shrek_icon.png",
       "ataque1": { "nome": "Bofetada", "descricao": "Um tapa de ogro.", "dano": 5 },
       "ataque2": { "nome": "Arrogr5", "descricao": "Um arroto potente.", "dano": 2 },
       "anim": {
@@ -42,7 +42,7 @@
       "velocidade": 5,
       "painelZoom": 2.5,
       "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/docinhothumb.png",
+      "thumbnailPath": "sprites/telaPersonagem/hulk_icon.png",
       "ataque1": { "nome": "Coelhada", "descricao": "Uma coelhada do Sansão.", "dano": 7 },
       "ataque2": { "nome": "Soco Super-mônico", "descricao": "Um soco com força total.", "dano": 3 },
       "anim": {
@@ -59,7 +59,7 @@
       "velocidade": 7,
       "painelZoom": 2.5,
       "batalhaZoom": 1.5,
-      "thumbnailPath": "sprites/telaPersonagem/ben10thumb.png",
+      "thumbnailPath": "sprites/telaPersonagem/ben10_icon.png",
       "ataque1": { "nome": "Barragem Quatro Braços", "descricao": "Uma barragem de socos.", "dano": 10 },
       "ataque2": { "nome": "Chama Frenética", "descricao": "Uma bola de fogo.", "dano": 5 },
       "anim": {
@@ -76,7 +76,7 @@
       "velocidade": 8,
       "painelZoom": 2.0,
       "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/docinhothumb.png",
+      "thumbnailPath": "sprites/telaPersonagem/docinho_icon.png",
       "ataque1": { "nome": "Socada Doce", "descricao": "Um soco direto no oponente.", "dano": 13 },
       "ataque2": { "nome": "Laser Carinhoso", "descricao": "Um laser ocular potente.", "dano": 6 },
       "anim": {
@@ -93,7 +93,7 @@
       "velocidade": 6,
       "painelZoom": 2.5,
       "batalhaZoom": 1.5,
-      "thumbnailPath": "sprites/telaPersonagem/tazthumb.png",
+      "thumbnailPath": "sprites/telaPersonagem/taz_icon.png",
       "ataque1": { "nome": "Tornado", "descricao": "Gira e destrói.", "dano": 11 },
       "ataque2": { "nome": "Mordida", "descricao": "Uma mordida faminta.", "dano": 5 },
       "anim": {
@@ -110,7 +110,7 @@
       "velocidade": 10,
       "painelZoom": 2.5,
       "batalhaZoom": 1.5,
-      "thumbnailPath": "sprites/telaPersonagem/miranhathumb.png",
+      "thumbnailPath": "sprites/telaPersonagem/homemaranha_icon.png",
       "ataque1": { "nome": "Soco-teia", "descricao": "Um soco com impulso de teia.", "dano": 8 },
       "ataque2": { "nome": "Sentido Aranha", "descricao": "Jogue teia nos inimigos.", "dano": 10 },
       "anim": {
@@ -120,14 +120,14 @@
       }
     },
     {
-      "nome": "Elsa",
+      "nome": "Sailor Moon",
       "descricao": "A menina da lua.",
       "classe": "CLASSE_LINHA_TRAS",
       "hpMax": 30,
       "velocidade": 6,
       "painelZoom": 2.5,
       "batalhaZoom": 1.5,
-      "thumbnailPath": "sprites/telaPersonagem/docinhothumb.png",
+      "thumbnailPath": "sprites/telaPersonagem/sailor_icon.png",
       "ataque1": { "nome": "Soco da lua", "descricao": "Um ataque de gelo poderoso.", "dano": 15 },
       "ataque2": { "nome": "Chute do luar", "descricao": "Causa dano e lentidão.", "dano": 7 },
       "anim": {
@@ -144,7 +144,7 @@
       "velocidade": 7,
       "painelZoom": 2.5,
       "batalhaZoom": 1.5,
-      "thumbnailPath": "sprites/telaPersonagem/docinhothumb.png",
+      "thumbnailPath": "sprites/telaPersonagem/mickey_icon.png",
       "ataque1": { "nome": "Pincel ameaçador", "descricao": "De uma pincelada no inimigo.", "dano": 11 },
       "ataque2": { "nome": "Magic tornade", "descricao": "Um poderoso tornado.", "dano": 6 },
       "anim": {

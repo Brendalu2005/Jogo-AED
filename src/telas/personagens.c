@@ -19,6 +19,8 @@ static Color corNomeSelecionado = YELLOW;
 static Color corPainel = { 50, 50, 50, 200 };
 static Color corBordaPainel = { 200, 0, 0, 255 }; 
 
+static Texture2D backgroundTexture;
+
 void CarregarRecursosPersonagens(void) {
     int linhaFrenteY = 200;
     int linhaMeioY = 450;
@@ -31,7 +33,6 @@ void CarregarRecursosPersonagens(void) {
     int hitboxWidth = 300;
     int hitboxHeight = 180;
 
-    // Define as hitboxes (usando IDs de 0 a 8)
     for (int i = 0; i < 9; i++) {
         int linha = i / 3;
         int col = i % 3;
@@ -46,9 +47,15 @@ void CarregarRecursosPersonagens(void) {
         
         rectPersonagens[i] = (Rectangle){ (float)xPos, (float)yPos, (float)hitboxWidth, (float)hitboxHeight };
     }
+    
+    Image bgImg = LoadImage("sprites/background/background5.png");
+    ImageResize(&bgImg, SCREEN_WIDTH, SCREEN_HEIGHT); 
+    backgroundTexture = LoadTextureFromImage(bgImg);
+    UnloadImage(bgImg);
 }
 
 void DescarregarRecursosPersonagens(void) {
+    UnloadTexture(backgroundTexture);
 }
 
 void AtualizarTelaPersonagens(GameScreen *telaAtual, int *personagemSelecionado, SpriteDatabase* db) {
@@ -58,10 +65,7 @@ void AtualizarTelaPersonagens(GameScreen *telaAtual, int *personagemSelecionado,
     }
 
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        // --- CORREÇÃO v5 ---
-        //Vector2 mousePos = GetMousePosition();
         Vector2 mousePos = GetMouseVirtual();
-        // -------------------
         
         *personagemSelecionado = -1;
         for (int i = 0; i < db->numPersonagens; i++) {
@@ -79,10 +83,6 @@ void AtualizarTelaPersonagens(GameScreen *telaAtual, int *personagemSelecionado,
         if (animTimer[i] > animVelocidade) {
             animTimer[i] = 0;
             animFrame[i]++;
-            AnimacaoData* anim = &db->personagens[i].animIdle;
-            if (animFrame[i] >= anim->def.numFrames) {
-                animFrame[i] = 0;
-            }
         }
     }
     
@@ -105,18 +105,10 @@ static void DesenharPainelDetalhes(int idPersonagem, SpriteDatabase* db) {
     DrawRectangleRec(painelDireito, corPainel);
     DrawRectangleLinesEx(painelDireito, 5.0f, corBordaPainel);
     
-    // Área para a animação grande
-    Rectangle areaAnimacao = { painelDireito.x + 25, painelDireito.y + 25, painelDireito.width - 50, 300 };
-    DrawRectangleRec(areaAnimacao, PURPLE);
-
     int posX = (int)painelDireito.x + 25;
-    int posYBase = (int)areaAnimacao.y + (int)areaAnimacao.height + 20;
+    int posYBase = (int)painelDireito.y + 400;
     int tamFonteTitulo = 20;
     int tamFonteTexto = 18;
-
-    int espacamentoLinha1 = 25;
-    int espacamentoLinha2 = 45;
-    int espacamentoBloco = 100;
 
     PersonagemData* pData = NULL;
     if (idPersonagem >= 0 && idPersonagem < db->numPersonagens) {
@@ -124,33 +116,42 @@ static void DesenharPainelDetalhes(int idPersonagem, SpriteDatabase* db) {
     }
     
     if (pData != NULL) {
+        Texture2D thumb = pData->thumbnail;
+        Rectangle thumbSource = { 0, 0, (float)thumb.width, (float)thumb.height };
+        Vector2 previewCenter = { painelDireito.x + painelDireito.width / 2, painelDireito.y + 220 };
+        Rectangle thumbDest = { previewCenter.x, previewCenter.y, 300, 300 };
+        Vector2 thumbOrig = { thumbDest.width / 2, thumbDest.height / 2 };
+        DrawTexturePro(thumb, thumbSource, thumbDest, thumbOrig, 0.0f, (Color){ 255, 255, 255, 80 });
+        
         AnimacaoData* anim = &pData->animIdle;
         if (anim->def.numFrames > 0) {
+            if (animFrameSelecionado >= anim->def.numFrames) animFrameSelecionado = 0;
             Rectangle frame = anim->def.frames[animFrameSelecionado];
             float zoom = pData->painelZoom;
             
-            DrawTexturePro(anim->textura, frame,
-                (Rectangle){ areaAnimacao.x + areaAnimacao.width / 2, areaAnimacao.y + areaAnimacao.height / 2, frame.width * zoom, frame.height * zoom },
-                (Vector2){ (frame.width * zoom) / 2, (frame.height * zoom) / 2 }, 0, WHITE);
+            Rectangle animDest = { previewCenter.x, previewCenter.y, frame.width * zoom, frame.height * zoom };
+            Vector2 animOrig = { animDest.width / 2, animDest.height / 2 };
+            DrawTexturePro(anim->textura, frame, animDest, animOrig, 0, WHITE);
         }
 
-        DrawText("Nome:", posX, posYBase, tamFonteTitulo, corTituloLinha);
-        DrawText(pData->nome, posX, posYBase + espacamentoLinha1, tamFonteTexto, LIGHTGRAY);
-        DrawText(pData->descricao, posX, posYBase + espacamentoLinha2, 16, LIGHTGRAY);
+        DrawText(pData->nome, posX, posYBase, 30, corNomeSelecionado);
+        DrawText(pData->descricao, posX, posYBase + 35, 16, LIGHTGRAY);
         
-        int posYBlocoAtaques = posYBase + espacamentoBloco;
+        int posYBlocoStats = posYBase + 80;
+        DrawText("PV (Pontos de Vida):", posX, posYBlocoStats, tamFonteTitulo, corTituloLinha);
+        DrawText(TextFormat("%d", pData->hpMax), posX + 220, posYBlocoStats, tamFonteTexto, LIGHTGRAY);
+        DrawText("Velocidade:", posX, posYBlocoStats + 25, tamFonteTitulo, corTituloLinha);
+        DrawText(TextFormat("%d", pData->velocidade), posX + 220, posYBlocoStats + 25, tamFonteTexto, LIGHTGRAY);
+
+        int posYBlocoAtaques = posYBase + 140;
         DrawText("Ataques:", posX, posYBlocoAtaques, tamFonteTitulo, corTituloLinha);
-        DrawText(pData->ataque1.nome, posX, posYBlocoAtaques + espacamentoLinha1, tamFonteTexto, LIGHTGRAY);
-        DrawText(pData->ataque1.descricao, posX + 10, posYBlocoAtaques + espacamentoLinha1 + 25, 16, LIGHTGRAY);
-        DrawText(TextFormat("Dano: %d", pData->ataque1.dano), posX + 10, posYBlocoAtaques + espacamentoLinha1 + 45, 16, LIGHTGRAY);
         
-        DrawText(pData->ataque2.nome, posX, posYBlocoAtaques + espacamentoLinha1 + 75, tamFonteTexto, LIGHTGRAY);
-        DrawText(pData->ataque2.descricao, posX + 10, posYBlocoAtaques + espacamentoLinha1 + 100, 16, LIGHTGRAY);
-        DrawText(TextFormat("Dano: %d", pData->ataque2.dano), posX + 10, posYBlocoAtaques + espacamentoLinha1 + 120, 16, LIGHTGRAY);
+        DrawText(pData->ataque1.nome, posX, posYBlocoAtaques + 25, tamFonteTexto, LIGHTGRAY);
+        DrawText(TextFormat("Dano: %d", pData->ataque1.dano), posX + 250, posYBlocoAtaques + 25, tamFonteTexto, LIGHTGRAY);
         
-        int posYBlocoPV = posYBase + (espacamentoBloco * 2) + 100;
-        DrawText("PV (Pontos de Vida):", posX, posYBlocoPV, tamFonteTitulo, corTituloLinha);
-        DrawText(TextFormat("%d", pData->hpMax), posX, posYBlocoPV + espacamentoLinha1, tamFonteTexto, LIGHTGRAY);
+        DrawText(pData->ataque2.nome, posX, posYBlocoAtaques + 55, tamFonteTexto, LIGHTGRAY);
+        DrawText(TextFormat("Dano: %d", pData->ataque2.dano), posX + 250, posYBlocoAtaques + 55, tamFonteTexto, LIGHTGRAY);
+        
     } else {
         DrawText("Selecione um personagem", (int)painelDireito.x + 40, (int)painelDireito.y + 400, 25, LIGHTGRAY);
     }
@@ -158,7 +159,8 @@ static void DesenharPainelDetalhes(int idPersonagem, SpriteDatabase* db) {
 
 
 void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
-    ClearBackground(DARKGRAY);
+
+    DrawTexture(backgroundTexture, 0, 0, (Color){100, 100, 100, 255});
     
     DesenharPainelDetalhes(personagemSelecionado, db);
 
@@ -169,36 +171,48 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
     
     const char* titulosClasses[] = {"LINHA DE FRENTE", "LINHA DO MEIO", "LINHA DE TRAS"};
     
-    for (int c = 0; c < 3; c++) { // Loop de Classes (Linhas)
+    for (int c = 0; c < 3; c++) {
         ClassePersonagem classe = (ClassePersonagem)c;
         int yPos = 200 + 250 * c;
         int xPos = 100;
         
         DrawText(titulosClasses[c], xPos, yPos - 60, tamFonteTituloLinha, corTituloLinha);
         
+        DrawRectangleRec((Rectangle){ 80, yPos - 10, 1000, 200 }, (Color){0, 0, 0, 100});
+        
         int col = 0;
         for (int i = 0; i < db->numPersonagens; i++) {
             if (db->personagens[i].classe == classe) {
                 xPos = 100 + 350 * col;
+
                 
-                // Define a hitbox (baseado no CarregarRecursosPersonagens)
-                Rectangle card = rectPersonagens[i];
-                DrawRectangleRec(card, (Color){ 30, 30, 30, 200 });
-                if (personagemSelecionado == i) {
-                    DrawRectangleLinesEx(card, 3.0f, corNomeSelecionado);
-                }
+                Rectangle hitbox = rectPersonagens[i]; 
+                Vector2 cardCenter = { hitbox.x + hitbox.width / 2, hitbox.y + hitbox.height / 2 };
 
-                // Desenha a animação idle
-                AnimacaoData* anim = &db->personagens[i].animIdle;
-                if (anim->def.numFrames > 0) {
-                    Rectangle frame = anim->def.frames[animFrame[i]];
-                    float zoom = (card.height - 40) / frame.height;
-                    DrawTexturePro(anim->textura, frame,
-                        (Rectangle){ card.x + card.width/2, card.y + card.height/2 - 10, frame.width * zoom, frame.height * zoom },
-                        (Vector2){ (frame.width * zoom) / 2, (frame.height * zoom) / 2 }, 0, WHITE);
-                }
+                Texture2D thumb = db->personagens[i].thumbnail;
+                if (thumb.id <= 0) continue; 
+                
+                Rectangle thumbSource = { 0, 0, (float)thumb.width, (float)thumb.height };
+                float rotation = 5.0f;
+                float borderSize = 8.0f;
+                Color borderColor = (personagemSelecionado == i) ? corNomeSelecionado : (Color){30, 30, 30, 255};
 
-                // Desenha o nome
+                float zoom = (hitbox.height - 40) / thumbSource.height;
+                if (thumbSource.width * zoom > (hitbox.width - 40)) {
+                    zoom = (hitbox.width - 40) / thumbSource.width;
+                }
+                float photoWidth = thumbSource.width * zoom;
+                float photoHeight = thumbSource.height * zoom;
+
+                Rectangle borderDest = { cardCenter.x, cardCenter.y, photoWidth + borderSize, photoHeight + borderSize };
+                Vector2 borderOrigin = { borderDest.width / 2, borderDest.height / 2 };
+                Rectangle photoDest = { cardCenter.x, cardCenter.y, photoWidth, photoHeight };
+                Vector2 photoOrigin = { photoWidth / 2, photoHeight / 2 };
+
+                DrawRectanglePro(borderDest, borderOrigin, rotation, borderColor);
+                DrawTexturePro(thumb, thumbSource, photoDest, photoOrigin, rotation, WHITE);
+                
+
                 Color cor = (personagemSelecionado == i) ? corNomeSelecionado : corNomePersonagem;
                 DrawText(db->personagens[i].nome, xPos + 10, yPos + 10, tamFonteNome, cor);
 
