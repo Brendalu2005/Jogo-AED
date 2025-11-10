@@ -54,7 +54,7 @@ void AtualizarTelaMenu(GameScreen *telaAtual) {
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         if (CheckCollisionPointRec(mousePos, btnJogar)) {
             // --- ATUALIZADO ---
-            *telaAtual = SCREEN_SELECAO; 
+            *telaAtual = SCREEN_MODO_JOGO; // vai para a tela de modo de jogo
             // ------------------
         } else if (CheckCollisionPointRec(mousePos, btnPersonagens)) {
             *telaAtual = SCREEN_PERSONAGENS;

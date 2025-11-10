@@ -6,6 +6,9 @@
 #include "database.h"     
 #include "selecao.h" 
 #include "sobre.h"
+#include "modo_jogo.h"
+
+Texture2D backgroundSelecao;
 
 void AtualizarTelaPlaceholder(GameScreen *telaAtual);
 void DesenharTelaPlaceholder(const char *titulo);
@@ -62,6 +65,9 @@ int main(void) {
 
     MenuOpcao menuRes = LoadMenuResources();
     CarregarRecursosPersonagens();
+
+    backgroundSelecao = LoadTexture("sprites/background/background3.jpg");
+
     
     SpriteDatabase database = CarregarDatabase("sprites/personagens_db.json");
 
@@ -96,6 +102,10 @@ int main(void) {
                 AtualizarTelaSobre(&telaAtual); 
                 break;
 
+            case SCREEN_MODO_JOGO:
+                AtualizarTelaModoJogo(&telaAtual);
+                break;
+
             case SCREEN_SAIR:
                 break;
         }
@@ -109,6 +119,7 @@ int main(void) {
                     DesenharTelaMenu(menuRes);
                     break;
                 case SCREEN_SELECAO:
+                    DrawTexture(backgroundSelecao, 0, 0, WHITE);
                     DesenharTelaSelecao(&database, &timesSelecionados);
                     break;
                 case SCREEN_BATALHA:
@@ -120,6 +131,11 @@ int main(void) {
                 case SCREEN_SOBRE:
                     DesenharTelaSobre(menuRes); 
                     break;
+
+                case SCREEN_MODO_JOGO:
+                DesenharTelaModoJogo(menuRes);
+                break;
+
                 case SCREEN_SAIR:
                     break;
             }
@@ -140,6 +156,8 @@ int main(void) {
             
         EndDrawing();   
     }
+
+    UnloadTexture(backgroundSelecao);
 
     UnloadRenderTexture(canvas); 
     

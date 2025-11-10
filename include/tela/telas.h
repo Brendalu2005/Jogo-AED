@@ -12,6 +12,7 @@ typedef enum GameScreen {
     SCREEN_BATALHA,
     SCREEN_PERSONAGENS, 
     SCREEN_SOBRE,
+    SCREEN_MODO_JOGO,
     SCREEN_SAIR 
 } GameScreen;
 
