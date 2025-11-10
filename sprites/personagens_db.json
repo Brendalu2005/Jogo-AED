@@ -35,23 +35,6 @@
       }
     },
     {
-      "nome": "Kirby",
-      "descricao": "Poyo!",
-      "classe": "CLASSE_LINHA_FRENTE",
-      "hpMax": 70,
-      "velocidade": 4,
-      "painelZoom": 1.0,
-      "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/kirby_icon.png",
-      "ataque1": { "nome": "Espada", "descricao": "Um rolo compressor.", "dano": 8 },
-      "ataque2": { "nome": "Plasma", "descricao": "Um ataque fofo.", "dano": 4 },
-      "anim": {
-        "idle": "sprites/personagens/kirby/idle",
-        "ataque1": "sprites/personagens/kirby/ataque_espada",
-        "ataque2": "sprites/personagens/kirby/ataque_plasmakirby"
-      }
-    },
-    {
       "nome": "Homer",
       "descricao": "O 'cara' de Springfield.",
       "classe": "CLASSE_LINHA_FRENTE",
@@ -66,6 +49,23 @@
         "idle": "sprites/personagens/homer/idle",
         "ataque1": "sprites/personagens/homer/marretadaDoThor",
         "ataque2": "sprites/personagens/homer/vassourada"
+      }
+    },
+    {
+      "nome": "Kirby",
+      "descricao": "Poyo!",
+      "classe": "CLASSE_LINHA_FRENTE",
+      "hpMax": 70,
+      "velocidade": 4,
+      "painelZoom": 1.0,
+      "batalhaZoom": 1.0,
+      "thumbnailPath": "sprites/telaPersonagem/kirby_icon.png",
+      "ataque1": { "nome": "Espada", "descricao": "Um rolo compressor.", "dano": 8 },
+      "ataque2": { "nome": "Plasma", "descricao": "Um ataque fofo.", "dano": 4 },
+      "anim": {
+        "idle": "sprites/personagens/kirby/idle",
+        "ataque1": "sprites/personagens/kirby/ataque_espada",
+        "ataque2": "sprites/personagens/kirby/ataque_plasmakirby"
       }
     },
     {

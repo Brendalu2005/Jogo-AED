@@ -13,6 +13,8 @@ static int animVelocidade = 10;
 static int animFrameSelecionado = 0;
 static int animTimerSelecionado = 0;
 
+static int personagemHover = -1; // Guarda o ID do personagem sob o cursor
+
 
 static Color corTituloLinha = { 100, 255, 100, 255 }; 
 static Color corNomePersonagem = RAYWHITE;
@@ -62,8 +64,37 @@ void AtualizarTelaPersonagens(GameScreen *telaAtual, int *personagemSelecionado,
         }
     }
 
+
+    Vector2 mousePos = GetMouseVirtual();
+    personagemHover = -1; // Reseta o hover a cada frame
+
+    for (int c = 0; c < 3; c++) {
+        ClassePersonagem classe = (ClassePersonagem)c;
+        int yPos = 200 + 250 * c;
+        int col = 0;
+        int startX = 50;
+        int horizontalSpacing = 150;
+
+        for (int i = 0; i < db->numPersonagens; i++) {
+            if (db->personagens[i].classe == classe) {
+                int xPos = startX + horizontalSpacing * col;
+                Rectangle hitbox = { (float)xPos, (float)yPos, (float)hitboxWidth, (float)hitboxHeight };
+
+                if (CheckCollisionPointRec(mousePos, hitbox)) {
+                    personagemHover = i; // Define o personagem sob o cursor
+                    break; 
+                }
+                col++; 
+            }
+        }
+        if (personagemHover != -1) {
+            break; 
+        }
+    }
+
+
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        Vector2 mousePos = GetMouseVirtual();
+
         *personagemSelecionado = -1;
 
         for (int c = 0; c < 3; c++) {
@@ -83,7 +114,7 @@ void AtualizarTelaPersonagens(GameScreen *telaAtual, int *personagemSelecionado,
                 
                     Rectangle hitbox = { (float)xPos, (float)yPos, (float)hitboxWidth, (float)hitboxHeight };
 
-                    if (CheckCollisionPointRec(mousePos, hitbox)) {
+                    if (CheckCollisionPointRec(mousePos, hitbox)) { // --- MODIFICADO --- (usa 'mousePos')
                         *personagemSelecionado = i;
                         animFrameSelecionado = 0;
                         animTimerSelecionado = 0;
@@ -236,6 +267,8 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
                 Color borderColor;
                 if (personagemSelecionado == i) {
                     borderColor = corNomeSelecionado;
+                } else if (personagemHover == i) { // Adiciona a verificação de hover
+                    borderColor = LIGHTGRAY;
                 } else {
                     borderColor = (Color){30, 30, 30, 255};
                 }
@@ -272,10 +305,11 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
                     DrawTexturePro(thumb, thumbSource, photoDest, (Vector2){0, 0}, 0.0f, WHITE);
                 }
                 
-                // 9. Posiciona o texto abaixo da moldura
                 Color cor;
                 if (personagemSelecionado == i) {
                     cor = corNomeSelecionado;
+                } else if (personagemHover == i) {
+                    cor = LIGHTGRAY;
                 } else {
                     cor = corNomePersonagem;
                 }
@@ -285,7 +319,7 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
                 
                 DrawText(
                     db->personagens[i].nome, 
-                    (int)(hitbox.x + (hitbox.width - textWidth) / 2.0f), // Centraliza o texto
+                    (int)(hitbox.x + (hitbox.width - textWidth) / 2.0f),
                     textY, 
                     tamFonteNome, 
                     cor
