@@ -1,0 +1,335 @@
+{
+	"frames": {
+		"elsa-ataquesdireita2.1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 39,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 39,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 39,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.10.png": {
+			"frame": {
+				"x": 42,
+				"y": 1,
+				"w": 55,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 55,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 55,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.11.png": {
+			"frame": {
+				"x": 99,
+				"y": 1,
+				"w": 86,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 86,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 86,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.12.png": {
+			"frame": {
+				"x": 187,
+				"y": 1,
+				"w": 89,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 89,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 89,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.13.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 87,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 87,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 87,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.14.png": {
+			"frame": {
+				"x": 90,
+				"y": 103,
+				"w": 105,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 105,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 105,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.15.png": {
+			"frame": {
+				"x": 197,
+				"y": 103,
+				"w": 111,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 111,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 111,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.16.png": {
+			"frame": {
+				"x": 1,
+				"y": 205,
+				"w": 113,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 113,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 113,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.2.png": {
+			"frame": {
+				"x": 278,
+				"y": 1,
+				"w": 39,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 39,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 39,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.3.png": {
+			"frame": {
+				"x": 116,
+				"y": 205,
+				"w": 43,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 43,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 43,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.4.png": {
+			"frame": {
+				"x": 161,
+				"y": 205,
+				"w": 43,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 43,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 43,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.5.png": {
+			"frame": {
+				"x": 206,
+				"y": 205,
+				"w": 52,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 52,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 52,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.6.png": {
+			"frame": {
+				"x": 260,
+				"y": 205,
+				"w": 53,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 53,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 53,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.7.png": {
+			"frame": {
+				"x": 319,
+				"y": 1,
+				"w": 55,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 55,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 55,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.8.png": {
+			"frame": {
+				"x": 310,
+				"y": 103,
+				"w": 56,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 56,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 56,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.9.png": {
+			"frame": {
+				"x": 315,
+				"y": 205,
+				"w": 51,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 51,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 51,
+				"h": 100
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 375,
+			"h": 306
+		},
+		"scale": "1"
+	}
+}
