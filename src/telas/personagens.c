@@ -5,7 +5,6 @@
 #include <string.h> 
 #include "telas.h"
 
-// Define um limite máximo de personagens que o array de animacao pode suportar
 #define MAX_PERSONAGENS 50
 
 static int animFrame[MAX_PERSONAGENS] = {0};
@@ -14,7 +13,6 @@ static int animVelocidade = 10;
 static int animFrameSelecionado = 0;
 static int animTimerSelecionado = 0;
 
-// O array de retangulos foi removido daqui, sera calculado dinamicamente
 
 static Color corTituloLinha = { 100, 255, 100, 255 }; 
 static Color corNomePersonagem = RAYWHITE;
@@ -41,51 +39,50 @@ void AtualizarTelaPersonagens(GameScreen *telaAtual, int *personagemSelecionado,
         *personagemSelecionado = -1;
     }
 
-    // Definicoes de layout (iguais as de DesenharTelaPersonagens)
-    int hitboxWidth = 300;
+    int hitboxWidth = 130;
     int hitboxHeight = 180;
 
-    // Atualiza animacao de todos os personagens
+
     for (int i = 0; i < db->numPersonagens; i++) {
-        if (i < MAX_PERSONAGENS) { // Guarda de seguranca
+        if (i < MAX_PERSONAGENS) { 
             animTimer[i]++;
             if (animTimer[i] > animVelocidade) {
                 animTimer[i] = 0;
                 animFrame[i]++;
-                // Reseta a animacao (checando se a animacao existe)
+
                 AnimacaoData* anim = &db->personagens[i].animIdle;
                 if (anim->def.numFrames > 0) {
                     if (animFrame[i] >= anim->def.numFrames) {
                         animFrame[i] = 0;
                     }
                 } else {
-                    animFrame[i] = 0; // Caso nao tenha animacao
+                    animFrame[i] = 0;
                 }
             }
         }
     }
 
-    // Checa cliques nos personagens
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         Vector2 mousePos = GetMouseVirtual();
-        *personagemSelecionado = -1; // Reseta a selecao
+        *personagemSelecionado = -1;
 
-        // Itera pelas classes (linhas)
         for (int c = 0; c < 3; c++) {
             ClassePersonagem classe = (ClassePersonagem)c;
             int yPos = 200 + 250 * c;
-            int col = 0; // Reseta a coluna para cada classe
+            int col = 0;
 
-            // Itera por todos os personagens do banco de dados
+            int startX = 50;
+            int horizontalSpacing = 150;
+
+
             for (int i = 0; i < db->numPersonagens; i++) {
-                // Se o personagem pertence a classe (linha) atual
+                
                 if (db->personagens[i].classe == classe) {
-                    int xPos = 100 + 350 * col;
                     
-                    // Calcula a hitbox dinamicamente
+                    int xPos = startX + horizontalSpacing * col;
+                
                     Rectangle hitbox = { (float)xPos, (float)yPos, (float)hitboxWidth, (float)hitboxHeight };
 
-                    // Checa a colisao
                     if (CheckCollisionPointRec(mousePos, hitbox)) {
                         *personagemSelecionado = i;
                         animFrameSelecionado = 0;
@@ -102,7 +99,6 @@ void AtualizarTelaPersonagens(GameScreen *telaAtual, int *personagemSelecionado,
         }
     }
     
-    // Atualiza a animacao do personagem que esta selecionado (no painel da direita)
     if (*personagemSelecionado != -1) {
         animTimerSelecionado++;
         if (animTimerSelecionado > animVelocidade) {
@@ -190,10 +186,9 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
     DrawText("Personagens:", 50, 50, 60, corTituloLinha);
 
     int tamFonteTituloLinha = 40;
-    int tamFonteNome = 30;
+    int tamFonteNome = 20;
     
-    // Definicoes de layout
-    int hitboxWidth = 300;
+    int hitboxWidth = 130; 
     int hitboxHeight = 180;
     
     const char* titulosClasses[] = {"LINHA DE FRENTE", "LINHA DO MEIO", "LINHA DE TRAS"};
@@ -201,23 +196,27 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
     for (int c = 0; c < 3; c++) {
         ClassePersonagem classe = (ClassePersonagem)c;
         int yPos = 200 + 250 * c;
+
+        int startX = 50;
+        int horizontalSpacing = 150;
         
-        DrawText(titulosClasses[c], 100, yPos - 60, tamFonteTituloLinha, corTituloLinha);
+        DrawText(titulosClasses[c], startX, yPos - 60, tamFonteTituloLinha, corTituloLinha); // Era 100
         
-        DrawRectangleRec((Rectangle){ 80, yPos - 10, 1000, 200 }, (Color){0, 0, 0, 100});
+
+        DrawRectangleRec((Rectangle){ startX - 10, yPos - 10, (float)(horizontalSpacing * 7) - 20, 200 }, (Color){0, 0, 0, 100}); // Era { 80, yPos - 10, 1000, 200 }
         
-        int col = 0; // Reseta a coluna para cada linha
+        int col = 0;
         for (int i = 0; i < db->numPersonagens; i++) {
             if (db->personagens[i].classe == classe) {
-                int xPos = 100 + 350 * col;
+                
+                int xPos = startX + horizontalSpacing * col;
 
-                // Calcula a hitbox dinamicamente
                 Rectangle hitbox = { (float)xPos, (float)yPos, (float)hitboxWidth, (float)hitboxHeight }; 
                 Vector2 cardCenter = { hitbox.x + hitbox.width / 2, hitbox.y + hitbox.height / 2 };
 
                 Texture2D thumb = db->personagens[i].thumbnail;
                 if (thumb.id <= 0) {
-                    continue; // Pula se a textura nao carregou
+                    continue;
                 }
                 
                 Rectangle thumbSource = { 0, 0, (float)thumb.width, (float)thumb.height };
@@ -252,9 +251,12 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
                 } else {
                     cor = corNomePersonagem;
                 }
-                DrawText(db->personagens[i].nome, xPos + 10, yPos + 10, tamFonteNome, cor);
+                
 
-                col++; // Incrementa a coluna
+                int textWidth = MeasureText(db->personagens[i].nome, tamFonteNome);
+                DrawText(db->personagens[i].nome, xPos + (hitboxWidth - textWidth) / 2, yPos + 10, tamFonteNome, cor);
+
+                col++; 
             }
         }
     }

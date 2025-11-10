@@ -8,7 +8,7 @@
       "velocidade": 4,
       "painelZoom": 2.5,
       "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/docinho_icon.png",
+      "thumbnailPath": "sprites/telaPersonagem/goku_icon.png",
       "ataque1": { "nome": "Kityy surpresa", "descricao": "Um rolo compressor.", "dano": 8 },
       "ataque2": { "nome": "???", "descricao": "Um ataque fofo.", "dano": 4 },
       "anim": {
@@ -35,20 +35,88 @@
       }
     },
     {
-      "nome": "Mônica",
+      "nome": "Ravena",
       "descricao": "A dona da rua.",
       "classe": "CLASSE_LINHA_FRENTE",
       "hpMax": 64,
       "velocidade": 5,
       "painelZoom": 2.5,
       "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/hulk_icon.png",
+      "thumbnailPath": "sprites/telaPersonagem/ravena_icon.png",
       "ataque1": { "nome": "Coelhada", "descricao": "Uma coelhada do Sansão.", "dano": 7 },
       "ataque2": { "nome": "Soco Super-mônico", "descricao": "Um soco com força total.", "dano": 3 },
       "anim": {
-        "idle": "sprites/personagens/sonic/idle",
-        "ataque1": "sprites/personagens/sonic/ataque_martelo",
-        "ataque2": "sprites/personagens/sonic/ataque_giro"
+        "idle": "sprites/personagens/ravena/idle",
+        "ataque1": "sprites/personagens/monica/soco",
+        "ataque2": "sprites/personagens/monica/bolhaCura"
+      }
+    },
+    {
+      "nome": "Homer",
+      "descricao": "O 'cara' de Springfield.",
+      "classe": "CLASSE_LINHA_FRENTE",
+      "hpMax": 70,
+      "velocidade": 4,
+      "painelZoom": 2.5,
+      "batalhaZoom": 1.0,
+      "thumbnailPath": "sprites/telaPersonagem/homer_icon.png",
+      "ataque1": { "nome": "Marretada", "descricao": "Um rolo compressor.", "dano": 8 },
+      "ataque2": { "nome": "Vassourada", "descricao": "Um ataque fofo.", "dano": 4 },
+      "anim": {
+        "idle": "sprites/personagens/homer/idle",
+        "ataque1": "sprites/personagens/homer/marretadaDoThor",
+        "ataque2": "sprites/personagens/homer/vassourada"
+      }
+    },
+    {
+      "nome": "Hulk",
+      "descricao": "HULK ESMAGA!",
+      "classe": "CLASSE_LINHA_FRENTE",
+      "hpMax": 70,
+      "velocidade": 4,
+      "painelZoom": 2.5,
+      "batalhaZoom": 1.0,
+      "thumbnailPath": "sprites/telaPersonagem/hulk_icon.png",
+      "ataque1": { "nome": "Soco", "descricao": "Um rolo compressor.", "dano": 8 },
+      "ataque2": { "nome": "Onda de Choque", "descricao": "Um ataque fofo.", "dano": 4 },
+      "anim": {
+        "idle": "sprites/personagens/hulk/idle",
+        "ataque1": "sprites/personagens/hulk/ataque_soco",
+        "ataque2": "sprites/personagens/hulk/ataque_onda"
+      }
+    },
+    {
+      "nome": "venom",
+      "descricao": "Nós somos Venom.",
+      "classe": "CLASSE_LINHA_FRENTE",
+      "hpMax": 70,
+      "velocidade": 4,
+      "painelZoom": 2.5,
+      "batalhaZoom": 1.0,
+      "thumbnailPath": "sprites/telaPersonagem/venom_icon.png",
+      "ataque1": { "nome": "Escudo", "descricao": "Um rolo compressor.", "dano": 8 },
+      "ataque2": { "nome": "Mordida", "descricao": "Um ataque fofo.", "dano": 4 },
+      "anim": {
+        "idle": "sprites/personagens/venom/idle",
+        "ataque1": "sprites/personagens/venom/ataque_escudo",
+        "ataque2": "sprites/personagens/venom/ataque_mordida"
+      }
+    },
+    {
+      "nome": "Kirby",
+      "descricao": "Poyo!",
+      "classe": "CLASSE_LINHA_FRENTE",
+      "hpMax": 70,
+      "velocidade": 4,
+      "painelZoom": 2.5,
+      "batalhaZoom": 1.0,
+      "thumbnailPath": "sprites/telaPersonagem/goku_icon.png",
+      "ataque1": { "nome": "Espada", "descricao": "Um rolo compressor.", "dano": 8 },
+      "ataque2": { "nome": "Plasma", "descricao": "Um ataque fofo.", "dano": 4 },
+      "anim": {
+        "idle": "sprites/personagens/kirby/idle",
+        "ataque1": "sprites/personagens/kirby/ataque_espada",
+        "ataque2": "sprites/personagens/kirby/ataque_plasmakirby"
       }
     },
     {
@@ -103,6 +171,74 @@
       }
     },
     {
+      "nome": "Edward",
+      "descricao": "Alquimista de Aço.",
+      "classe": "CLASSE_LINHA_MEIO",
+      "hpMax": 70,
+      "velocidade": 4,
+      "painelZoom": 2.5,
+      "batalhaZoom": 1.0,
+      "thumbnailPath": "sprites/telaPersonagem/edward_icon.png",
+      "ataque1": { "nome": "Explosao Alquimica", "descricao": "Um rolo compressor.", "dano": 8 },
+      "ataque2": { "nome": "Invocar", "descricao": "Um ataque fofo.", "dano": 4 },
+      "anim": {
+        "idle": "sprites/personagens/edward/idle",
+        "ataque1": "sprites/personagens/edward/explosao",
+        "ataque2": "sprites/personagens/edward/invocar"
+      }
+    },
+    {
+      "nome": "Mario",
+      "descricao": "It's-a me, Mario!",
+      "classe": "CLASSE_LINHA_MEIO",
+      "hpMax": 70,
+      "velocidade": 4,
+      "painelZoom": 2.5,
+      "batalhaZoom": 1.0,
+      "thumbnailPath": "sprites/telaPersonagem/mario_icon.png",
+      "ataque1": { "nome": "Super Chute", "descricao": "Um rolo compressor.", "dano": 8 },
+      "ataque2": { "nome": "Super Soco", "descricao": "Um ataque fofo.", "dano": 4 },
+      "anim": {
+        "idle": "sprites/personagens/mario/idle",
+        "ataque1": "sprites/personagens/mario/ataque_superchute",
+        "ataque2": "sprites/personagens/mario/ataque_supersoco"
+      }
+    },
+    {
+      "nome": "Mutano",
+      "descricao": "Muda de forma animal.",
+      "classe": "CLASSE_LINHA_MEIO",
+      "hpMax": 70,
+      "velocidade": 4,
+      "painelZoom": 2.5,
+      "batalhaZoom": 1.0,
+      "thumbnailPath": "sprites/telaPersonagem/goku_icon.png",
+      "ataque1": { "nome": "Gorila", "descricao": "Um rolo compressor.", "dano": 8 },
+      "ataque2": { "nome": "Tigre", "descricao": "Um ataque fofo.", "dano": 4 },
+      "anim": {
+        "idle": "sprites/personagens/mutano/idle",
+        "ataque1": "sprites/personagens/mutano/ataque_gorila",
+        "ataque2": "sprites/personagens/mutano/ataque_tigre"
+      }
+    },
+    {
+      "nome": "Ravena",
+      "descricao": "Azarath... Metrion... Zinthos!",
+      "classe": "CLASSE_LINHA_MEIO",
+      "hpMax": 70,
+      "velocidade": 4,
+      "painelZoom": 2.5,
+      "batalhaZoom": 1.0,
+      "thumbnailPath": "sprites/telaPersonagem/ravena_icon.png",
+      "ataque1": { "nome": "Soco Sombrio", "descricao": "Um rolo compressor.", "dano": 8 },
+      "ataque2": { "nome": "Bolha de Cura", "descricao": "Um ataque fofo.", "dano": 4 },
+      "anim": {
+        "idle": "sprites/personagens/ravena/idle",
+        "ataque1": "sprites/personagens/ravena/soco",
+        "ataque2": "sprites/personagens/ravena/bolhaCura"
+      }
+    },
+    {
       "nome": "Homem-Aranha",
       "descricao": "O amigo da vizinhança.",
       "classe": "CLASSE_LINHA_TRAS",
@@ -135,91 +271,6 @@
         "ataque1": "sprites/personagens/sailor/ataque_soco",
         "ataque2": "sprites/personagens/sailor/ataque_chute"
       }
-    },    
-    {
-      "nome": "Edward",
-      "descricao": "Alquimista de Aço.",
-      "classe": "CLASSE_LINHA_MEIO",
-      "hpMax": 70,
-      "velocidade": 4,
-      "painelZoom": 2.5,
-      "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/edward_icon.png",
-      "ataque1": { "nome": "Explosao Alquimica", "descricao": "Um rolo compressor.", "dano": 8 },
-      "ataque2": { "nome": "Invocar", "descricao": "Um ataque fofo.", "dano": 4 },
-      "anim": {
-        "idle": "sprites/personagens/edward/idle",
-        "ataque1": "sprites/personagens/edward/explosao",
-        "ataque2": "sprites/personagens/edward/invocar"
-      }
-    },
-    {
-      "nome": "Homer",
-      "descricao": "O 'cara' de Springfield.",
-      "classe": "CLASSE_LINHA_FRENTE",
-      "hpMax": 70,
-      "velocidade": 4,
-      "painelZoom": 2.5,
-      "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/homer_icon.png",
-      "ataque1": { "nome": "Marretada", "descricao": "Um rolo compressor.", "dano": 8 },
-      "ataque2": { "nome": "Vassourada", "descricao": "Um ataque fofo.", "dano": 4 },
-      "anim": {
-        "idle": "sprites/personagens/homer/idle",
-        "ataque1": "sprites/personagens/homer/marretadaDoThor",
-        "ataque2": "sprites/personagens/homer/vassourada"
-      }
-    },
-    {
-      "nome": "Hulk",
-      "descricao": "HULK ESMAGA!",
-      "classe": "CLASSE_LINHA_FRENTE",
-      "hpMax": 70,
-      "velocidade": 4,
-      "painelZoom": 2.5,
-      "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/hulk_icon.png",
-      "ataque1": { "nome": "Soco", "descricao": "Um rolo compressor.", "dano": 8 },
-      "ataque2": { "nome": "Onda de Choque", "descricao": "Um ataque fofo.", "dano": 4 },
-      "anim": {
-        "idle": "sprites/personagens/hulk/idle",
-        "ataque1": "sprites/personagens/hulk/ataque_soco",
-        "ataque2": "sprites/personagens/hulk/ataque_onda"
-      }
-    },
-    {
-      "nome": "Mario",
-      "descricao": "It's-a me, Mario!",
-      "classe": "CLASSE_LINHA_MEIO",
-      "hpMax": 70,
-      "velocidade": 4,
-      "painelZoom": 2.5,
-      "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/mario_icon.png",
-      "ataque1": { "nome": "Super Chute", "descricao": "Um rolo compressor.", "dano": 8 },
-      "ataque2": { "nome": "Super Soco", "descricao": "Um ataque fofo.", "dano": 4 },
-      "anim": {
-        "idle": "sprites/personagens/mario/idle",
-        "ataque1": "sprites/personagens/mario/ataque_superchute",
-        "ataque2": "sprites/personagens/mario/ataque_supersoco"
-      }
-    },
-    {
-      "nome": "Mutano",
-      "descricao": "Muda de forma animal.",
-      "classe": "CLASSE_LINHA_MEIO",
-      "hpMax": 70,
-      "velocidade": 4,
-      "painelZoom": 2.5,
-      "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/docinho_icon.png",
-      "ataque1": { "nome": "Gorila", "descricao": "Um rolo compressor.", "dano": 8 },
-      "ataque2": { "nome": "Tigre", "descricao": "Um ataque fofo.", "dano": 4 },
-      "anim": {
-        "idle": "sprites/personagens/mutano/idle",
-        "ataque1": "sprites/personagens/mutano/ataque_gorila",
-        "ataque2": "sprites/personagens/mutano/ataque_tigre"
-      }
     },
     {
       "nome": "Naruto",
@@ -236,23 +287,6 @@
         "idle": "sprites/personagens/naruto/idle",
         "ataque1": "sprites/personagens/naruto/ataque_solo",
         "ataque2": "sprites/personagens/naruto/ataque_duo"
-      }
-    },
-    {
-      "nome": "Ravena",
-      "descricao": "Azarath... Metrion... Zinthos!",
-      "classe": "CLASSE_LINHA_FRENTE",
-      "hpMax": 70,
-      "velocidade": 4,
-      "painelZoom": 2.5,
-      "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/ravena_icon.png",
-      "ataque1": { "nome": "Soco Sombrio", "descricao": "Um rolo compressor.", "dano": 8 },
-      "ataque2": { "nome": "Bolha de Cura", "descricao": "Um ataque fofo.", "dano": 4 },
-      "anim": {
-        "idle": "sprites/personagens/ravena/idle",
-        "ataque1": "sprites/personagens/ravena/soco",
-        "ataque2": "sprites/personagens/ravena/bolhaCura"
       }
     },
     {
@@ -273,40 +307,6 @@
       }
     },
     {
-      "nome": "venom",
-      "descricao": "Nós somos Venom.",
-      "classe": "CLASSE_LINHA_FRENTE",
-      "hpMax": 70,
-      "velocidade": 4,
-      "painelZoom": 2.5,
-      "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/venom_icon.png",
-      "ataque1": { "nome": "Escudo", "descricao": "Um rolo compressor.", "dano": 8 },
-      "ataque2": { "nome": "Mordida", "descricao": "Um ataque fofo.", "dano": 4 },
-      "anim": {
-        "idle": "sprites/personagens/venom/idle",
-        "ataque1": "sprites/personagens/venom/ataque_escudo",
-        "ataque2": "sprites/personagens/venom/ataque_mordida"
-      }
-    },
-    {
-      "nome": "Kirby",
-      "descricao": "Poyo!",
-      "classe": "CLASSE_LINHA_FRENTE",
-      "hpMax": 70,
-      "velocidade": 4,
-      "painelZoom": 2.5,
-      "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/docinho_icon.png",
-      "ataque1": { "nome": "Espada", "descricao": "Um rolo compressor.", "dano": 8 },
-      "ataque2": { "nome": "Plasma", "descricao": "Um ataque fofo.", "dano": 4 },
-      "anim": {
-        "idle": "sprites/personagens/kirby/idle",
-        "ataque1": "sprites/personagens/kirby/ataque_espada",
-        "ataque2": "sprites/personagens/kirby/ataque_plasmakirby"
-      }
-    },
-    {
       "nome": "Mickey Mouse",
       "descricao": "O rato mais famoso do mundo.",
       "classe": "CLASSE_LINHA_TRAS",
@@ -321,6 +321,40 @@
         "idle": "sprites/personagens/mickey/idle",
         "ataque1": "sprites/personagens/mickey/ataque_pincel",
         "ataque2": "sprites/personagens/mickey/ataque_tornado"
+      }
+    },
+    {
+      "nome": "Elsa",
+      "descricao": "A rainha de gelo",
+      "classe": "CLASSE_LINHA_TRAS",
+      "hpMax": 40,
+      "velocidade": 7,
+      "painelZoom": 2.5,
+      "batalhaZoom": 1.5,
+      "thumbnailPath": "sprites/telaPersonagem/goku_icon.png",
+      "ataque1": { "nome": "Pincel ameaçador", "descricao": "De uma pincelada no inimigo.", "dano": 11 },
+      "ataque2": { "nome": "Magic tornade", "descricao": "Um poderoso tornado.", "dano": 6 },
+      "anim": {
+        "idle": "sprites/personagens/elsa/idle",
+        "ataque1": "sprites/personagens/elsa/ataque_congelante",
+        "ataque2": "sprites/personagens/elsa/ataque_furiaglacial"
+      }
+    },
+    {
+      "nome": "Goku",
+      "descricao": "O lendário Super Saiyajin!",
+      "classe": "CLASSE_LINHA_TRAS",
+      "hpMax": 45,
+      "velocidade": 9,
+      "painelZoom": 2.5,
+      "batalhaZoom": 1.5,
+      "thumbnailPath": "sprites/telaPersonagem/goku_icon.png",
+      "ataque1": { "nome": "Kamehameha", "descricao": "Um poderoso raio de energia.", "dano": 12 },
+      "ataque2": { "nome": "Super Saiyajin", "descricao": "Transforma e intimida.", "dano": 7 },
+      "anim": {
+        "idle": "sprites/personagens/goku/idle",
+        "ataque1": "sprites/personagens/goku/ataque_superior",
+        "ataque2": "sprites/personagens/goku/ataque_ssj4"
       }
     }
   ]
