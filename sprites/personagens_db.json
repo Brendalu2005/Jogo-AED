@@ -1,6 +1,23 @@
 {
   "personagens": [
     {
+      "nome": "Venom",
+      "descricao": "Nós somos Venom.",
+      "classe": "CLASSE_LINHA_FRENTE",
+      "hpMax": 70,
+      "velocidade": 4,
+      "painelZoom": 1.7,
+      "batalhaZoom": 1.0,
+      "thumbnailPath": "sprites/telaPersonagem/venom_icon.png",
+      "ataque1": { "nome": "Escudo", "descricao": "Um rolo compressor.", "dano": 8 },
+      "ataque2": { "nome": "Mordida", "descricao": "Um ataque fofo.", "dano": 4 },
+      "anim": {
+        "idle": "sprites/personagens/venom/idle",
+        "ataque1": "sprites/personagens/venom/ataque_escudo",
+        "ataque2": "sprites/personagens/venom/ataque_mordida"
+      }
+    },
+    {
       "nome": "Hello Kitty",
       "descricao": "A gatinha mais famosa.",
       "classe": "CLASSE_LINHA_FRENTE",
@@ -8,7 +25,7 @@
       "velocidade": 4,
       "painelZoom": 2.5,
       "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/goku_icon.png",
+      "thumbnailPath": "sprites/telaPersonagem/hellokitty_icon.png",
       "ataque1": { "nome": "Kityy surpresa", "descricao": "Um rolo compressor.", "dano": 8 },
       "ataque2": { "nome": "???", "descricao": "Um ataque fofo.", "dano": 4 },
       "anim": {
@@ -18,37 +35,20 @@
       }
     },
     {
-      "nome": "Shrek",
-      "descricao": "O ogro mais gente fina dos pântanos.",
+      "nome": "Kirby",
+      "descricao": "Poyo!",
       "classe": "CLASSE_LINHA_FRENTE",
-      "hpMax": 65,
-      "velocidade": 3,
-      "painelZoom": 2.5,
-      "batalhaZoom": 1.5,
-      "thumbnailPath": "sprites/telaPersonagem/shrek_icon.png",
-      "ataque1": { "nome": "Bofetada", "descricao": "Um tapa de ogro.", "dano": 5 },
-      "ataque2": { "nome": "Arrogr5", "descricao": "Um arroto potente.", "dano": 2 },
-      "anim": {
-        "idle": "sprites/personagens/shrek/idle",
-        "ataque1": "sprites/personagens/shrek/ataque_soco",
-        "ataque2": "sprites/personagens/shrek/ataque_urro"
-      }
-    },
-    {
-      "nome": "Ravena",
-      "descricao": "A dona da rua.",
-      "classe": "CLASSE_LINHA_FRENTE",
-      "hpMax": 64,
-      "velocidade": 5,
-      "painelZoom": 2.5,
+      "hpMax": 70,
+      "velocidade": 4,
+      "painelZoom": 1.0,
       "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/ravena_icon.png",
-      "ataque1": { "nome": "Coelhada", "descricao": "Uma coelhada do Sansão.", "dano": 7 },
-      "ataque2": { "nome": "Soco Super-mônico", "descricao": "Um soco com força total.", "dano": 3 },
+      "thumbnailPath": "sprites/telaPersonagem/kirby_icon.png",
+      "ataque1": { "nome": "Espada", "descricao": "Um rolo compressor.", "dano": 8 },
+      "ataque2": { "nome": "Plasma", "descricao": "Um ataque fofo.", "dano": 4 },
       "anim": {
-        "idle": "sprites/personagens/ravena/idle",
-        "ataque1": "sprites/personagens/monica/soco",
-        "ataque2": "sprites/personagens/monica/bolhaCura"
+        "idle": "sprites/personagens/kirby/idle",
+        "ataque1": "sprites/personagens/kirby/ataque_espada",
+        "ataque2": "sprites/personagens/kirby/ataque_plasmakirby"
       }
     },
     {
@@ -69,6 +69,23 @@
       }
     },
     {
+      "nome": "Ravena",
+      "descricao": "A dona da rua.",
+      "classe": "CLASSE_LINHA_FRENTE",
+      "hpMax": 64,
+      "velocidade": 5,
+      "painelZoom": 2.5,
+      "batalhaZoom": 1.0,
+      "thumbnailPath": "sprites/telaPersonagem/ravena_icon.png",
+      "ataque1": { "nome": "Coelhada", "descricao": "Uma coelhada do Sansão.", "dano": 7 },
+      "ataque2": { "nome": "Soco Super-mônico", "descricao": "Um soco com força total.", "dano": 3 },
+      "anim": {
+        "idle": "sprites/personagens/ravena/idle",
+        "ataque1": "sprites/personagens/monica/soco",
+        "ataque2": "sprites/personagens/monica/bolhaCura"
+      }
+    },
+    {
       "nome": "Hulk",
       "descricao": "HULK ESMAGA!",
       "classe": "CLASSE_LINHA_FRENTE",
@@ -86,37 +103,20 @@
       }
     },
     {
-      "nome": "venom",
-      "descricao": "Nós somos Venom.",
+      "nome": "Shrek",
+      "descricao": "O ogro mais gente fina dos pântanos.",
       "classe": "CLASSE_LINHA_FRENTE",
-      "hpMax": 70,
-      "velocidade": 4,
+      "hpMax": 65,
+      "velocidade": 3,
       "painelZoom": 2.5,
-      "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/venom_icon.png",
-      "ataque1": { "nome": "Escudo", "descricao": "Um rolo compressor.", "dano": 8 },
-      "ataque2": { "nome": "Mordida", "descricao": "Um ataque fofo.", "dano": 4 },
+      "batalhaZoom": 1.5,
+      "thumbnailPath": "sprites/telaPersonagem/shrek_icon.png",
+      "ataque1": { "nome": "Bofetada", "descricao": "Um tapa de ogro.", "dano": 5 },
+      "ataque2": { "nome": "Arrogr5", "descricao": "Um arroto potente.", "dano": 2 },
       "anim": {
-        "idle": "sprites/personagens/venom/idle",
-        "ataque1": "sprites/personagens/venom/ataque_escudo",
-        "ataque2": "sprites/personagens/venom/ataque_mordida"
-      }
-    },
-    {
-      "nome": "Kirby",
-      "descricao": "Poyo!",
-      "classe": "CLASSE_LINHA_FRENTE",
-      "hpMax": 70,
-      "velocidade": 4,
-      "painelZoom": 2.5,
-      "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/goku_icon.png",
-      "ataque1": { "nome": "Espada", "descricao": "Um rolo compressor.", "dano": 8 },
-      "ataque2": { "nome": "Plasma", "descricao": "Um ataque fofo.", "dano": 4 },
-      "anim": {
-        "idle": "sprites/personagens/kirby/idle",
-        "ataque1": "sprites/personagens/kirby/ataque_espada",
-        "ataque2": "sprites/personagens/kirby/ataque_plasmakirby"
+        "idle": "sprites/personagens/shrek/idle",
+        "ataque1": "sprites/personagens/shrek/ataque_soco",
+        "ataque2": "sprites/personagens/shrek/ataque_urro"
       }
     },
     {
@@ -137,29 +137,12 @@
       }
     },
     {
-      "nome": "docinho",
-      "descricao": "A mais doce das Meninas Super Poderosas.",
-      "classe": "CLASSE_LINHA_MEIO",
-      "hpMax": 42,
-      "velocidade": 8,
-      "painelZoom": 2.0,
-      "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/docinho_icon.png",
-      "ataque1": { "nome": "Socada Doce", "descricao": "Um soco direto no oponente.", "dano": 13 },
-      "ataque2": { "nome": "Laser Carinhoso", "descricao": "Um laser ocular potente.", "dano": 6 },
-      "anim": {
-        "idle": "sprites/personagens/docinho/idle",
-        "ataque1": "sprites/personagens/docinho/ataque_soco",
-        "ataque2": "sprites/personagens/docinho/ataque_laser"
-      }
-    },
-    {
       "nome": "Taz Mania",
       "descricao": "Demônio da Tasmânia.",
       "classe": "CLASSE_LINHA_MEIO",
       "hpMax": 50,
       "velocidade": 6,
-      "painelZoom": 2.5,
+      "painelZoom": 1.8,
       "batalhaZoom": 1.5,
       "thumbnailPath": "sprites/telaPersonagem/taz_icon.png",
       "ataque1": { "nome": "Tornado", "descricao": "Gira e destrói.", "dano": 11 },
@@ -188,6 +171,23 @@
       }
     },
     {
+      "nome": "Docinho",
+      "descricao": "A mais doce das Meninas Super Poderosas.",
+      "classe": "CLASSE_LINHA_MEIO",
+      "hpMax": 42,
+      "velocidade": 8,
+      "painelZoom": 2.0,
+      "batalhaZoom": 1.0,
+      "thumbnailPath": "sprites/telaPersonagem/docinho_icon.png",
+      "ataque1": { "nome": "Socada Doce", "descricao": "Um soco direto no oponente.", "dano": 13 },
+      "ataque2": { "nome": "Laser Carinhoso", "descricao": "Um laser ocular potente.", "dano": 6 },
+      "anim": {
+        "idle": "sprites/personagens/docinho/idle",
+        "ataque1": "sprites/personagens/docinho/ataque_soco",
+        "ataque2": "sprites/personagens/docinho/ataque_laser"
+      }
+    },
+    {
       "nome": "Mario",
       "descricao": "It's-a me, Mario!",
       "classe": "CLASSE_LINHA_MEIO",
@@ -212,7 +212,7 @@
       "velocidade": 4,
       "painelZoom": 2.5,
       "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/goku_icon.png",
+      "thumbnailPath": "sprites/telaPersonagem/mutano_icon.png",
       "ataque1": { "nome": "Gorila", "descricao": "Um rolo compressor.", "dano": 8 },
       "ataque2": { "nome": "Tigre", "descricao": "Um ataque fofo.", "dano": 4 },
       "anim": {
@@ -222,20 +222,20 @@
       }
     },
     {
-      "nome": "Ravena",
-      "descricao": "Azarath... Metrion... Zinthos!",
+      "nome": "Superman",
+      "descricao": "O mais forte!",
       "classe": "CLASSE_LINHA_MEIO",
       "hpMax": 70,
       "velocidade": 4,
       "painelZoom": 2.5,
       "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/ravena_icon.png",
+      "thumbnailPath": "sprites/telaPersonagem/superman_icon.png",
       "ataque1": { "nome": "Soco Sombrio", "descricao": "Um rolo compressor.", "dano": 8 },
       "ataque2": { "nome": "Bolha de Cura", "descricao": "Um ataque fofo.", "dano": 4 },
       "anim": {
-        "idle": "sprites/personagens/ravena/idle",
-        "ataque1": "sprites/personagens/ravena/soco",
-        "ataque2": "sprites/personagens/ravena/bolhaCura"
+        "idle": "sprites/personagens/superman/idle",
+        "ataque1": "sprites/personagens/superman/ataque_combosoco",
+        "ataque2": "sprites/personagens/superman/ataque_meteorodapaixao"
       }
     },
     {
@@ -256,6 +256,23 @@
       }
     },
     {
+      "nome": "Elsa",
+      "descricao": "A rainha de gelo",
+      "classe": "CLASSE_LINHA_TRAS",
+      "hpMax": 40,
+      "velocidade": 7,
+      "painelZoom": 2.5,
+      "batalhaZoom": 1.5,
+      "thumbnailPath": "sprites/telaPersonagem/elsa_icon.png",
+      "ataque1": { "nome": "Pincel ameaçador", "descricao": "De uma pincelada no inimigo.", "dano": 11 },
+      "ataque2": { "nome": "Magic tornade", "descricao": "Um poderoso tornado.", "dano": 6 },
+      "anim": {
+        "idle": "sprites/personagens/elsa/idle",
+        "ataque1": "sprites/personagens/elsa/ataque_congelante",
+        "ataque2": "sprites/personagens/elsa/ataque_furiaglacial"
+      }
+    },
+    {
       "nome": "Sailor Moon",
       "descricao": "A menina da lua.",
       "classe": "CLASSE_LINHA_TRAS",
@@ -273,24 +290,7 @@
       }
     },
     {
-      "nome": "Naruto",
-      "descricao": "Dattebayo!",
-      "classe": "CLASSE_LINHA_TRAS",
-      "hpMax": 70,
-      "velocidade": 4,
-      "painelZoom": 2.5,
-      "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/naruto_icon.png",
-      "ataque1": { "nome": "Rasengan", "descricao": "Um rolo compressor.", "dano": 8 },
-      "ataque2": { "nome": "Clones", "descricao": "Um ataque fofo.", "dano": 4 },
-      "anim": {
-        "idle": "sprites/personagens/naruto/idle",
-        "ataque1": "sprites/personagens/naruto/ataque_solo",
-        "ataque2": "sprites/personagens/naruto/ataque_duo"
-      }
-    },
-    {
-      "nome": "sonic",
+      "nome": "Sonic",
       "descricao": "Gotta go fast!",
       "classe": "CLASSE_LINHA_TRAS",
       "hpMax": 70,
@@ -324,20 +324,20 @@
       }
     },
     {
-      "nome": "Elsa",
-      "descricao": "A rainha de gelo",
+      "nome": "Naruto",
+      "descricao": "Dattebayo!",
       "classe": "CLASSE_LINHA_TRAS",
-      "hpMax": 40,
-      "velocidade": 7,
+      "hpMax": 70,
+      "velocidade": 4,
       "painelZoom": 2.5,
-      "batalhaZoom": 1.5,
-      "thumbnailPath": "sprites/telaPersonagem/goku_icon.png",
-      "ataque1": { "nome": "Pincel ameaçador", "descricao": "De uma pincelada no inimigo.", "dano": 11 },
-      "ataque2": { "nome": "Magic tornade", "descricao": "Um poderoso tornado.", "dano": 6 },
+      "batalhaZoom": 1.0,
+      "thumbnailPath": "sprites/telaPersonagem/naruto_icon.png",
+      "ataque1": { "nome": "Rasengan", "descricao": "Um rolo compressor.", "dano": 8 },
+      "ataque2": { "nome": "Clones", "descricao": "Um ataque fofo.", "dano": 4 },
       "anim": {
-        "idle": "sprites/personagens/elsa/idle",
-        "ataque1": "sprites/personagens/elsa/ataque_congelante",
-        "ataque2": "sprites/personagens/elsa/ataque_furiaglacial"
+        "idle": "sprites/personagens/naruto/idle",
+        "ataque1": "sprites/personagens/naruto/ataque_solo",
+        "ataque2": "sprites/personagens/naruto/ataque_duo"
       }
     },
     {

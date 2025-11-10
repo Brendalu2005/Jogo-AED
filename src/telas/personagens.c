@@ -200,29 +200,39 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
         int startX = 50;
         int horizontalSpacing = 150;
         
-        DrawText(titulosClasses[c], startX, yPos - 60, tamFonteTituloLinha, corTituloLinha); // Era 100
+        DrawText(titulosClasses[c], startX, yPos - 60, tamFonteTituloLinha, corTituloLinha);
         
-
-        DrawRectangleRec((Rectangle){ startX - 10, yPos - 10, (float)(horizontalSpacing * 7) - 20, 200 }, (Color){0, 0, 0, 100}); // Era { 80, yPos - 10, 1000, 200 }
+        DrawRectangleRec((Rectangle){ startX - 10, yPos - 10, 1050.0f, 170.0f }, (Color){0, 0, 0, 100});
         
         int col = 0;
         for (int i = 0; i < db->numPersonagens; i++) {
             if (db->personagens[i].classe == classe) {
                 
                 int xPos = startX + horizontalSpacing * col;
-
+                
                 Rectangle hitbox = { (float)xPos, (float)yPos, (float)hitboxWidth, (float)hitboxHeight }; 
-                Vector2 cardCenter = { hitbox.x + hitbox.width / 2, hitbox.y + hitbox.height / 2 };
 
-                Texture2D thumb = db->personagens[i].thumbnail;
-                if (thumb.id <= 0) {
-                    continue;
-                }
+
+                // 1. Define o tamanho fixo para a foto
+                float frameWidth = 120.0f;
+                float frameHeight = 110.0f;
+                float borderSize = 6.0f; // Tamanho da borda
                 
-                Rectangle thumbSource = { 0, 0, (float)thumb.width, (float)thumb.height };
-                float rotation = 5.0f;
-                float borderSize = 8.0f;
+
+                float frameX = hitbox.x + (hitbox.width - frameWidth) / 2.0f;
+                float frameY = hitbox.y + 15.0f;
                 
+                Rectangle borderRect = { frameX, frameY, frameWidth, frameHeight };
+                
+                // 3. Define a área interna da foto (dentro da moldura)
+                Rectangle photoRect = { 
+                    frameX + borderSize, 
+                    frameY + borderSize, 
+                    frameWidth - (borderSize * 2), 
+                    frameHeight - (borderSize * 2) 
+                };
+
+                // 4. Define a cor da borda
                 Color borderColor;
                 if (personagemSelecionado == i) {
                     borderColor = corNomeSelecionado;
@@ -230,31 +240,57 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
                     borderColor = (Color){30, 30, 30, 255};
                 }
 
-                float zoom = (hitbox.height - 40) / thumbSource.height;
-                if (thumbSource.width * zoom > (hitbox.width - 40)) {
-                    zoom = (hitbox.width - 40) / thumbSource.width;
+                // 5. Desenha a borda
+                DrawRectangleRec(borderRect, borderColor); 
+
+                Texture2D thumb = db->personagens[i].thumbnail;
+                if (thumb.id <= 0) {
+                    DrawRectangleRec(photoRect, BLACK);
+                } else {
+                    // 6. Calcula o zoom para a foto caber na área interna (photoRect)
+                    Rectangle thumbSource = { 0, 0, (float)thumb.width, (float)thumb.height };
+                    
+                    float zoom = photoRect.height / thumbSource.height;
+                    float scaledWidth = thumbSource.width * zoom;
+                    
+                    if (scaledWidth > photoRect.width) {
+                        zoom = photoRect.width / thumbSource.width;
+                    }
+                    
+                    float photoWidth = thumbSource.width * zoom;
+                    float photoHeight = thumbSource.height * zoom;
+
+                    // 7. Define o destino da textura, centralizada dentro de photoRect
+                    Rectangle photoDest = {
+                        photoRect.x + (photoRect.width - photoWidth) / 2.0f,
+                        photoRect.y + (photoRect.height - photoHeight) / 2.0f,
+                        photoWidth,
+                        photoHeight
+                    };
+
+                    // 8. Desenha a foto
+                    DrawTexturePro(thumb, thumbSource, photoDest, (Vector2){0, 0}, 0.0f, WHITE);
                 }
-                float photoWidth = thumbSource.width * zoom;
-                float photoHeight = thumbSource.height * zoom;
-
-                Rectangle borderDest = { cardCenter.x, cardCenter.y, photoWidth + borderSize, photoHeight + borderSize };
-                Vector2 borderOrigin = { borderDest.width / 2, borderDest.height / 2 };
-                Rectangle photoDest = { cardCenter.x, cardCenter.y, photoWidth, photoHeight };
-                Vector2 photoOrigin = { photoWidth / 2, photoHeight / 2 };
-
-                DrawRectanglePro(borderDest, borderOrigin, rotation, borderColor);
-                DrawTexturePro(thumb, thumbSource, photoDest, photoOrigin, rotation, WHITE);
                 
+                // 9. Posiciona o texto abaixo da moldura
                 Color cor;
                 if (personagemSelecionado == i) {
                     cor = corNomeSelecionado;
                 } else {
                     cor = corNomePersonagem;
                 }
-                
 
                 int textWidth = MeasureText(db->personagens[i].nome, tamFonteNome);
-                DrawText(db->personagens[i].nome, xPos + (hitboxWidth - textWidth) / 2, yPos + 10, tamFonteNome, cor);
+                int textY = (int)(frameY + frameHeight + 10);
+                
+                DrawText(
+                    db->personagens[i].nome, 
+                    (int)(hitbox.x + (hitbox.width - textWidth) / 2.0f), // Centraliza o texto
+                    textY, 
+                    tamFonteNome, 
+                    cor
+                );
+
 
                 col++; 
             }
