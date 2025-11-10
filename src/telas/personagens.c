@@ -5,14 +5,17 @@
 #include <string.h> 
 #include "telas.h"
 
+// Define um limite máximo de personagens que o array de animacao pode suportar
+#define MAX_PERSONAGENS 50
 
-static int animFrame[9] = {0};
-static int animTimer[9] = {0};
+static int animFrame[MAX_PERSONAGENS] = {0};
+static int animTimer[MAX_PERSONAGENS] = {0};
 static int animVelocidade = 10; 
 static int animFrameSelecionado = 0;
 static int animTimerSelecionado = 0;
 
-static Rectangle rectPersonagens[9];
+// O array de retangulos foi removido daqui, sera calculado dinamicamente
+
 static Color corTituloLinha = { 100, 255, 100, 255 }; 
 static Color corNomePersonagem = RAYWHITE;
 static Color corNomeSelecionado = YELLOW;
@@ -22,32 +25,6 @@ static Color corBordaPainel = { 200, 0, 0, 255 };
 static Texture2D backgroundTexture;
 
 void CarregarRecursosPersonagens(void) {
-    int linhaFrenteY = 200;
-    int linhaMeioY = 450;
-    int linhaTrasY = 700;
-    
-    int coluna1X = 100;
-    int coluna2X = 450;
-    int coluna3X = 800;
-    
-    int hitboxWidth = 300;
-    int hitboxHeight = 180;
-
-    for (int i = 0; i < 9; i++) {
-        int linha = i / 3;
-        int col = i % 3;
-        
-        int yPos = linhaFrenteY;
-        if (linha == 1) yPos = linhaMeioY;
-        if (linha == 2) yPos = linhaTrasY;
-        
-        int xPos = coluna1X;
-        if (col == 1) xPos = coluna2X;
-        if (col == 2) xPos = coluna3X;
-        
-        rectPersonagens[i] = (Rectangle){ (float)xPos, (float)yPos, (float)hitboxWidth, (float)hitboxHeight };
-    }
-    
     Image bgImg = LoadImage("sprites/background/background5.png");
     ImageResize(&bgImg, SCREEN_WIDTH, SCREEN_HEIGHT); 
     backgroundTexture = LoadTextureFromImage(bgImg);
@@ -64,35 +41,79 @@ void AtualizarTelaPersonagens(GameScreen *telaAtual, int *personagemSelecionado,
         *personagemSelecionado = -1;
     }
 
+    // Definicoes de layout (iguais as de DesenharTelaPersonagens)
+    int hitboxWidth = 300;
+    int hitboxHeight = 180;
+
+    // Atualiza animacao de todos os personagens
+    for (int i = 0; i < db->numPersonagens; i++) {
+        if (i < MAX_PERSONAGENS) { // Guarda de seguranca
+            animTimer[i]++;
+            if (animTimer[i] > animVelocidade) {
+                animTimer[i] = 0;
+                animFrame[i]++;
+                // Reseta a animacao (checando se a animacao existe)
+                AnimacaoData* anim = &db->personagens[i].animIdle;
+                if (anim->def.numFrames > 0) {
+                    if (animFrame[i] >= anim->def.numFrames) {
+                        animFrame[i] = 0;
+                    }
+                } else {
+                    animFrame[i] = 0; // Caso nao tenha animacao
+                }
+            }
+        }
+    }
+
+    // Checa cliques nos personagens
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         Vector2 mousePos = GetMouseVirtual();
-        
-        *personagemSelecionado = -1;
-        for (int i = 0; i < db->numPersonagens; i++) {
-            if (CheckCollisionPointRec(mousePos, rectPersonagens[i])) {
-                *personagemSelecionado = i;
-                animFrameSelecionado = 0;
-                animTimerSelecionado = 0;
+        *personagemSelecionado = -1; // Reseta a selecao
+
+        // Itera pelas classes (linhas)
+        for (int c = 0; c < 3; c++) {
+            ClassePersonagem classe = (ClassePersonagem)c;
+            int yPos = 200 + 250 * c;
+            int col = 0; // Reseta a coluna para cada classe
+
+            // Itera por todos os personagens do banco de dados
+            for (int i = 0; i < db->numPersonagens; i++) {
+                // Se o personagem pertence a classe (linha) atual
+                if (db->personagens[i].classe == classe) {
+                    int xPos = 100 + 350 * col;
+                    
+                    // Calcula a hitbox dinamicamente
+                    Rectangle hitbox = { (float)xPos, (float)yPos, (float)hitboxWidth, (float)hitboxHeight };
+
+                    // Checa a colisao
+                    if (CheckCollisionPointRec(mousePos, hitbox)) {
+                        *personagemSelecionado = i;
+                        animFrameSelecionado = 0;
+                        animTimerSelecionado = 0;
+                        break; 
+                    }
+                    col++; 
+                }
+            }
+            
+            if (*personagemSelecionado != -1) {
                 break;
             }
         }
     }
     
-    for (int i = 0; i < db->numPersonagens; i++) {
-        animTimer[i]++;
-        if (animTimer[i] > animVelocidade) {
-            animTimer[i] = 0;
-            animFrame[i]++;
-        }
-    }
-    
+    // Atualiza a animacao do personagem que esta selecionado (no painel da direita)
     if (*personagemSelecionado != -1) {
         animTimerSelecionado++;
         if (animTimerSelecionado > animVelocidade) {
             animTimerSelecionado = 0;
             animFrameSelecionado++;
             AnimacaoData* anim = &db->personagens[*personagemSelecionado].animIdle;
-            if (animFrameSelecionado >= anim->def.numFrames) {
+            if (anim->def.numFrames > 0) {
+                if (animFrameSelecionado >= anim->def.numFrames) {
+                    animFrameSelecionado = 0;
+                }
+            } else {
                 animFrameSelecionado = 0;
             }
         }
@@ -125,7 +146,9 @@ static void DesenharPainelDetalhes(int idPersonagem, SpriteDatabase* db) {
         
         AnimacaoData* anim = &pData->animIdle;
         if (anim->def.numFrames > 0) {
-            if (animFrameSelecionado >= anim->def.numFrames) animFrameSelecionado = 0;
+            if (animFrameSelecionado >= anim->def.numFrames) {
+                animFrameSelecionado = 0;
+            }
             Rectangle frame = anim->def.frames[animFrameSelecionado];
             float zoom = pData->painelZoom;
             
@@ -169,33 +192,44 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
     int tamFonteTituloLinha = 40;
     int tamFonteNome = 30;
     
+    // Definicoes de layout
+    int hitboxWidth = 300;
+    int hitboxHeight = 180;
+    
     const char* titulosClasses[] = {"LINHA DE FRENTE", "LINHA DO MEIO", "LINHA DE TRAS"};
     
     for (int c = 0; c < 3; c++) {
         ClassePersonagem classe = (ClassePersonagem)c;
         int yPos = 200 + 250 * c;
-        int xPos = 100;
         
-        DrawText(titulosClasses[c], xPos, yPos - 60, tamFonteTituloLinha, corTituloLinha);
+        DrawText(titulosClasses[c], 100, yPos - 60, tamFonteTituloLinha, corTituloLinha);
         
         DrawRectangleRec((Rectangle){ 80, yPos - 10, 1000, 200 }, (Color){0, 0, 0, 100});
         
-        int col = 0;
+        int col = 0; // Reseta a coluna para cada linha
         for (int i = 0; i < db->numPersonagens; i++) {
             if (db->personagens[i].classe == classe) {
-                xPos = 100 + 350 * col;
+                int xPos = 100 + 350 * col;
 
-                
-                Rectangle hitbox = rectPersonagens[i]; 
+                // Calcula a hitbox dinamicamente
+                Rectangle hitbox = { (float)xPos, (float)yPos, (float)hitboxWidth, (float)hitboxHeight }; 
                 Vector2 cardCenter = { hitbox.x + hitbox.width / 2, hitbox.y + hitbox.height / 2 };
 
                 Texture2D thumb = db->personagens[i].thumbnail;
-                if (thumb.id <= 0) continue; 
+                if (thumb.id <= 0) {
+                    continue; // Pula se a textura nao carregou
+                }
                 
                 Rectangle thumbSource = { 0, 0, (float)thumb.width, (float)thumb.height };
                 float rotation = 5.0f;
                 float borderSize = 8.0f;
-                Color borderColor = (personagemSelecionado == i) ? corNomeSelecionado : (Color){30, 30, 30, 255};
+                
+                Color borderColor;
+                if (personagemSelecionado == i) {
+                    borderColor = corNomeSelecionado;
+                } else {
+                    borderColor = (Color){30, 30, 30, 255};
+                }
 
                 float zoom = (hitbox.height - 40) / thumbSource.height;
                 if (thumbSource.width * zoom > (hitbox.width - 40)) {
@@ -212,11 +246,15 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
                 DrawRectanglePro(borderDest, borderOrigin, rotation, borderColor);
                 DrawTexturePro(thumb, thumbSource, photoDest, photoOrigin, rotation, WHITE);
                 
-
-                Color cor = (personagemSelecionado == i) ? corNomeSelecionado : corNomePersonagem;
+                Color cor;
+                if (personagemSelecionado == i) {
+                    cor = corNomeSelecionado;
+                } else {
+                    cor = corNomePersonagem;
+                }
                 DrawText(db->personagens[i].nome, xPos + 10, yPos + 10, tamFonteNome, cor);
 
-                col++;
+                col++; // Incrementa a coluna
             }
         }
     }

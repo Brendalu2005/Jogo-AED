@@ -5,8 +5,11 @@
 #include <time.h>  
 #include <stdio.h> 
 
-static int animFrame[9] = {0};
-static int animTimer[9] = {0};
+// Define um limite máximo de personagens que o array de animacao pode suportar
+#define MAX_PERSONAGENS 50
+
+static int animFrame[MAX_PERSONAGENS] = {0};
+static int animTimer[MAX_PERSONAGENS] = {0};
 static int animVelocidade = 15;
 
 
@@ -87,7 +90,6 @@ void AtualizarTelaSelecao(GameScreen *telaAtual, SpriteDatabase* db, TimesBatalh
         ClassePersonagem classeAtual = (ClassePersonagem)etapaSelecao;
 
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            //Vector2 mousePos = GetMousePosition();
             Vector2 mousePos = GetMouseVirtual(); // Usa a nova função
             
             int yPos = yPosBase + yEspacamento * etapaSelecao; 
@@ -108,18 +110,22 @@ void AtualizarTelaSelecao(GameScreen *telaAtual, SpriteDatabase* db, TimesBatalh
         }
     }
 
-    for (int i = 0; i < db->numPersonagens && i < 9; i++) {
-        animTimer[i]++;
-        if (animTimer[i] > animVelocidade) {
-            animTimer[i] = 0;
-            animFrame[i]++;
-            AnimacaoData* anim = &db->personagens[i].animIdle;
-            if (anim->def.numFrames > 0) { // Checa se a animação existe
-                if (animFrame[i] >= anim->def.numFrames) {
+    // Loop de animacao corrigido (nao mais limitado a 9)
+    for (int i = 0; i < db->numPersonagens; i++) {
+        // Checa se o indice esta dentro dos limites do array de animacao
+        if (i < MAX_PERSONAGENS) { 
+            animTimer[i]++;
+            if (animTimer[i] > animVelocidade) {
+                animTimer[i] = 0;
+                animFrame[i]++;
+                AnimacaoData* anim = &db->personagens[i].animIdle;
+                if (anim->def.numFrames > 0) { // Checa se a animação existe
+                    if (animFrame[i] >= anim->def.numFrames) {
+                        animFrame[i] = 0;
+                    }
+                } else {
                     animFrame[i] = 0;
                 }
-            } else {
-                animFrame[i] = 0;
             }
         }
     }
@@ -155,8 +161,14 @@ void DesenharTelaSelecao(SpriteDatabase* db, TimesBatalha* times) {
         
         int yPos = yPosBase + yEspacamento * c;
         
-        // Desenha o título 50 pixels ACIMA do card
-        DrawText(nomesClasses[c], 50, yPos - 50, 30, (c == etapaSelecao) ? YELLOW : WHITE);
+        // Desenha o título (sem operador ternario)
+        Color corTitulo;
+        if (c == etapaSelecao) {
+            corTitulo = YELLOW;
+        } else {
+            corTitulo = WHITE;
+        }
+        DrawText(nomesClasses[c], 50, yPos - 50, 30, corTitulo);
         
         int xPos = 100;
         
@@ -165,29 +177,40 @@ void DesenharTelaSelecao(SpriteDatabase* db, TimesBatalha* times) {
                 
                 Rectangle card = { (float)xPos, (float)yPos, (float)cardWidth, (float)cardHeight };
                 
-                // Define a cor
-                Color cor = GRAY;
-                if (c == etapaSelecao) cor = LIGHTGRAY; // Classe atual
-                if (times->timeJogador[c] == &db->personagens[i]) cor = GREEN; // Já selecionado
+                // Define a cor (sem operador ternario)
+                Color cor;
+                if (c == etapaSelecao) {
+                    cor = LIGHTGRAY; // Classe atual
+                } else {
+                    cor = GRAY;
+                }
+                
+                if (times->timeJogador[c] == &db->personagens[i]) {
+                    cor = GREEN; // Já selecionado
+                }
                 
                 DrawRectangleRec(card, cor);
                 DrawRectangleLines((int)card.x, (int)card.y, (int)card.width, (int)card.height, WHITE);
                 
                 AnimacaoData* anim = &db->personagens[i].animIdle;
-                if (anim->def.numFrames > 0) {
-                    Rectangle frame = anim->def.frames[animFrame[i]];
+                
+                // Checa se o personagem 'i' esta dentro dos limites do array de animacao
+                if (i < MAX_PERSONAGENS) {
+                    if (anim->def.numFrames > 0) {
+                        Rectangle frame = anim->def.frames[animFrame[i]];
 
-                    Rectangle areaAnim = { card.x + 10, card.y + 10, (card.width / 2.0f) - 20, card.height - 20 };
+                        Rectangle areaAnim = { card.x + 10, card.y + 10, (card.width / 2.0f) - 20, card.height - 20 };
 
-                    float zoom = areaAnim.height / frame.height;
-                    
-                    if (frame.width * zoom > areaAnim.width) {
-                        zoom = areaAnim.width / frame.width;
+                        float zoom = areaAnim.height / frame.height;
+                        
+                        if (frame.width * zoom > areaAnim.width) {
+                            zoom = areaAnim.width / frame.width;
+                        }
+
+                        DrawTexturePro(anim->textura, frame,
+                            (Rectangle){ areaAnim.x + areaAnim.width / 2, areaAnim.y + areaAnim.height / 2, frame.width * zoom, frame.height * zoom },
+                            (Vector2){ (frame.width * zoom) / 2, (frame.height * zoom) / 2 }, 0, WHITE);
                     }
-
-                    DrawTexturePro(anim->textura, frame,
-                        (Rectangle){ areaAnim.x + areaAnim.width / 2, areaAnim.y + areaAnim.height / 2, frame.width * zoom, frame.height * zoom },
-                        (Vector2){ (frame.width * zoom) / 2, (frame.height * zoom) / 2 }, 0, WHITE);
                 }
                 
                 int textoX = (int)card.x + (int)card.width / 2; 
