@@ -46,9 +46,9 @@
       "ataque1": { "nome": "Coelhada", "descricao": "Uma coelhada do Sansão.", "dano": 7 },
       "ataque2": { "nome": "Soco Super-mônico", "descricao": "Um soco com força total.", "dano": 3 },
       "anim": {
-        "idle": "sprites/personagens/hulk/idle",
-        "ataque1": "sprites/personagens/hulk/ataque_onda",
-        "ataque2": "sprites/personagens/hulk/ataque_soco"
+        "idle": "sprites/personagens/sonic/idle",
+        "ataque1": "sprites/personagens/sonic/ataque_martelo",
+        "ataque2": "sprites/personagens/sonic/ataque_giro"
       }
     },
     {
@@ -148,9 +148,9 @@
       "ataque1": { "nome": "Pincel ameaçador", "descricao": "De uma pincelada no inimigo.", "dano": 11 },
       "ataque2": { "nome": "Magic tornade", "descricao": "Um poderoso tornado.", "dano": 6 },
       "anim": {
-        "idle": "sprites/personagens/mickey/idle",
-        "ataque1": "sprites/personagens/mickey/ataque_pincel",
-        "ataque2": "sprites/personagens/mickey/ataque_tornado"
+        "idle": "sprites/personagens/goku/idle",
+        "ataque1": "sprites/personagens/goku/ataque_ssj4",
+        "ataque2": "sprites/personagens/goku/ataque_superior"
       }
     }
   ]
