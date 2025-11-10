@@ -1,0 +1,195 @@
+{
+	"frames": {
+		"MarioAtaque2.1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 72,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 72,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 72,
+				"h": 100
+			}
+		},
+		"MarioAtaque2.2.png": {
+			"frame": {
+				"x": 75,
+				"y": 1,
+				"w": 141,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 141,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 141,
+				"h": 100
+			}
+		},
+		"MarioAtaque2.3.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 126,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 126,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 126,
+				"h": 100
+			}
+		},
+		"MarioAtaque2.4.png": {
+			"frame": {
+				"x": 129,
+				"y": 103,
+				"w": 109,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 109,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 109,
+				"h": 100
+			}
+		},
+		"MarioAtaque2.5.png": {
+			"frame": {
+				"x": 1,
+				"y": 205,
+				"w": 97,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 97,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 97,
+				"h": 100
+			}
+		},
+		"MarioAtaque2.6.png": {
+			"frame": {
+				"x": 100,
+				"y": 205,
+				"w": 94,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 94,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 94,
+				"h": 100
+			}
+		},
+		"MarioAtaque2.7.png": {
+			"frame": {
+				"x": 196,
+				"y": 205,
+				"w": 103,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 103,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 103,
+				"h": 100
+			}
+		},
+		"MarioAtaque2.8.png": {
+			"frame": {
+				"x": 218,
+				"y": 1,
+				"w": 106,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 106,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 106,
+				"h": 100
+			}
+		},
+		"MarioAtaque2.9.png": {
+			"frame": {
+				"x": 326,
+				"y": 1,
+				"w": 74,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 74,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 74,
+				"h": 100
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 401,
+			"h": 306
+		},
+		"scale": "1"
+	}
+}
