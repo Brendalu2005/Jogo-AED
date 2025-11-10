@@ -1,0 +1,255 @@
+{
+	"frames": {
+		"mutano_atk1_1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 73,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 73,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 73,
+				"h": 100
+			}
+		},
+		"mutano_atk1_10.png": {
+			"frame": {
+				"x": 76,
+				"y": 1,
+				"w": 102,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 102,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 102,
+				"h": 100
+			}
+		},
+		"mutano_atk1_11.png": {
+			"frame": {
+				"x": 180,
+				"y": 1,
+				"w": 96,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 96,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 96,
+				"h": 100
+			}
+		},
+		"mutano_atk1_12.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 79,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 79,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 79,
+				"h": 100
+			}
+		},
+		"mutano_atk1_2.png": {
+			"frame": {
+				"x": 82,
+				"y": 103,
+				"w": 75,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 75,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 75,
+				"h": 100
+			}
+		},
+		"mutano_atk1_3.png": {
+			"frame": {
+				"x": 159,
+				"y": 103,
+				"w": 96,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 96,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 96,
+				"h": 100
+			}
+		},
+		"mutano_atk1_4.png": {
+			"frame": {
+				"x": 1,
+				"y": 205,
+				"w": 102,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 102,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 102,
+				"h": 100
+			}
+		},
+		"mutano_atk1_5.png": {
+			"frame": {
+				"x": 105,
+				"y": 205,
+				"w": 93,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 93,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 93,
+				"h": 100
+			}
+		},
+		"mutano_atk1_6.png": {
+			"frame": {
+				"x": 200,
+				"y": 205,
+				"w": 128,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 128,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 128,
+				"h": 100
+			}
+		},
+		"mutano_atk1_7.png": {
+			"frame": {
+				"x": 278,
+				"y": 1,
+				"w": 135,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 135,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 135,
+				"h": 100
+			}
+		},
+		"mutano_atk1_8.png": {
+			"frame": {
+				"x": 257,
+				"y": 103,
+				"w": 89,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 89,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 89,
+				"h": 100
+			}
+		},
+		"mutano_atk1_9.png": {
+			"frame": {
+				"x": 348,
+				"y": 103,
+				"w": 69,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 69,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 69,
+				"h": 100
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 418,
+			"h": 306
+		},
+		"scale": "1"
+	}
+}

@@ -1,0 +1,335 @@
+{
+	"frames": {
+		"homer_atk1_1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 50,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 50,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 50,
+				"h": 100
+			}
+		},
+		"homer_atk1_10.png": {
+			"frame": {
+				"x": 53,
+				"y": 1,
+				"w": 50,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 50,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 50,
+				"h": 100
+			}
+		},
+		"homer_atk1_11.png": {
+			"frame": {
+				"x": 105,
+				"y": 1,
+				"w": 50,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 50,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 50,
+				"h": 100
+			}
+		},
+		"homer_atk1_12.png": {
+			"frame": {
+				"x": 157,
+				"y": 1,
+				"w": 89,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 89,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 89,
+				"h": 100
+			}
+		},
+		"homer_atk1_13.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 126,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 126,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 126,
+				"h": 100
+			}
+		},
+		"homer_atk1_14.png": {
+			"frame": {
+				"x": 129,
+				"y": 103,
+				"w": 116,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 116,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 116,
+				"h": 100
+			}
+		},
+		"homer_atk1_15.png": {
+			"frame": {
+				"x": 1,
+				"y": 205,
+				"w": 113,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 113,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 113,
+				"h": 100
+			}
+		},
+		"homer_atk1_16.png": {
+			"frame": {
+				"x": 116,
+				"y": 205,
+				"w": 114,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 114,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 114,
+				"h": 100
+			}
+		},
+		"homer_atk1_2.png": {
+			"frame": {
+				"x": 248,
+				"y": 1,
+				"w": 32,
+				"h": 63
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 32,
+				"h": 63
+			},
+			"sourceSize": {
+				"w": 32,
+				"h": 63
+			}
+		},
+		"homer_atk1_3.png": {
+			"frame": {
+				"x": 248,
+				"y": 66,
+				"w": 58,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 58,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 58,
+				"h": 100
+			}
+		},
+		"homer_atk1_4.png": {
+			"frame": {
+				"x": 247,
+				"y": 168,
+				"w": 52,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 52,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 52,
+				"h": 100
+			}
+		},
+		"homer_atk1_5.png": {
+			"frame": {
+				"x": 308,
+				"y": 1,
+				"w": 51,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 51,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 51,
+				"h": 100
+			}
+		},
+		"homer_atk1_6.png": {
+			"frame": {
+				"x": 308,
+				"y": 103,
+				"w": 52,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 52,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 52,
+				"h": 100
+			}
+		},
+		"homer_atk1_7.png": {
+			"frame": {
+				"x": 301,
+				"y": 205,
+				"w": 57,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 57,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 57,
+				"h": 100
+			}
+		},
+		"homer_atk1_8.png": {
+			"frame": {
+				"x": 1,
+				"y": 307,
+				"w": 51,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 51,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 51,
+				"h": 100
+			}
+		},
+		"homer_atk1_9.png": {
+			"frame": {
+				"x": 54,
+				"y": 307,
+				"w": 51,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 51,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 51,
+				"h": 100
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 361,
+			"h": 408
+		},
+		"scale": "1"
+	}
+}

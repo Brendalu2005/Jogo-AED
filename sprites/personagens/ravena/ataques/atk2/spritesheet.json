@@ -1,0 +1,355 @@
+{
+	"frames": {
+		"ravena_atk2_1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 79,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 79,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 79,
+				"h": 100
+			}
+		},
+		"ravena_atk2_10.png": {
+			"frame": {
+				"x": 82,
+				"y": 1,
+				"w": 100,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 100,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 100,
+				"h": 100
+			}
+		},
+		"ravena_atk2_11.png": {
+			"frame": {
+				"x": 184,
+				"y": 1,
+				"w": 101,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 101,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 101,
+				"h": 100
+			}
+		},
+		"ravena_atk2_12.png": {
+			"frame": {
+				"x": 287,
+				"y": 1,
+				"w": 103,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 103,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 103,
+				"h": 100
+			}
+		},
+		"ravena_atk2_13.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 101,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 101,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 101,
+				"h": 100
+			}
+		},
+		"ravena_atk2_14.png": {
+			"frame": {
+				"x": 104,
+				"y": 103,
+				"w": 100,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 100,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 100,
+				"h": 100
+			}
+		},
+		"ravena_atk2_15.png": {
+			"frame": {
+				"x": 206,
+				"y": 103,
+				"w": 75,
+				"h": 69
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 75,
+				"h": 69
+			},
+			"sourceSize": {
+				"w": 75,
+				"h": 69
+			}
+		},
+		"ravena_atk2_16.png": {
+			"frame": {
+				"x": 283,
+				"y": 103,
+				"w": 109,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 109,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 109,
+				"h": 100
+			}
+		},
+		"ravena_atk2_17.png": {
+			"frame": {
+				"x": 1,
+				"y": 205,
+				"w": 74,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 74,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 74,
+				"h": 100
+			}
+		},
+		"ravena_atk2_2.png": {
+			"frame": {
+				"x": 77,
+				"y": 205,
+				"w": 127,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 127,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 127,
+				"h": 100
+			}
+		},
+		"ravena_atk2_3.png": {
+			"frame": {
+				"x": 206,
+				"y": 205,
+				"w": 119,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 119,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 119,
+				"h": 100
+			}
+		},
+		"ravena_atk2_4.png": {
+			"frame": {
+				"x": 1,
+				"y": 307,
+				"w": 94,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 94,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 94,
+				"h": 100
+			}
+		},
+		"ravena_atk2_5.png": {
+			"frame": {
+				"x": 97,
+				"y": 307,
+				"w": 101,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 101,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 101,
+				"h": 100
+			}
+		},
+		"ravena_atk2_6.png": {
+			"frame": {
+				"x": 200,
+				"y": 307,
+				"w": 101,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 101,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 101,
+				"h": 100
+			}
+		},
+		"ravena_atk2_7.png": {
+			"frame": {
+				"x": 303,
+				"y": 307,
+				"w": 101,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 101,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 101,
+				"h": 100
+			}
+		},
+		"ravena_atk2_8.png": {
+			"frame": {
+				"x": 392,
+				"y": 1,
+				"w": 100,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 100,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 100,
+				"h": 100
+			}
+		},
+		"ravena_atk2_9.png": {
+			"frame": {
+				"x": 394,
+				"y": 103,
+				"w": 101,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 101,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 101,
+				"h": 100
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 496,
+			"h": 408
+		},
+		"scale": "1"
+	}
+}
