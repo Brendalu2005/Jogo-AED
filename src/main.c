@@ -5,6 +5,7 @@
 #include "personagens.h" 
 #include "database.h"     
 #include "selecao.h" 
+#include "sobre.h"
 
 void AtualizarTelaPlaceholder(GameScreen *telaAtual);
 void DesenharTelaPlaceholder(const char *titulo);
@@ -92,8 +93,9 @@ int main(void) {
                 AtualizarTelaPersonagens(&telaAtual, &personagemSelecionado, &database); 
                 break;
             case SCREEN_SOBRE:
-                AtualizarTelaPlaceholder(&telaAtual); 
+                AtualizarTelaSobre(&telaAtual); 
                 break;
+
             case SCREEN_SAIR:
                 break;
         }
@@ -116,7 +118,7 @@ int main(void) {
                     DesenharTelaPersonagens(personagemSelecionado, &database); 
                     break;
                 case SCREEN_SOBRE:
-                    DesenharTelaPlaceholder("SOBRE"); 
+                    DesenharTelaSobre(menuRes); 
                     break;
                 case SCREEN_SAIR:
                     break;
