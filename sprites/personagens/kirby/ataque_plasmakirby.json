@@ -1,0 +1,175 @@
+{
+	"frames": {
+		"plasmakirby1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 73,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 73,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 73,
+				"h": 100
+			}
+		},
+		"plasmakirby2.png": {
+			"frame": {
+				"x": 76,
+				"y": 1,
+				"w": 86,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 86,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 86,
+				"h": 100
+			}
+		},
+		"plasmakirby3.png": {
+			"frame": {
+				"x": 164,
+				"y": 1,
+				"w": 68,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 68,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 68,
+				"h": 100
+			}
+		},
+		"plasmakirby4.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 75,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 75,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 75,
+				"h": 100
+			}
+		},
+		"plasmakirby5.png": {
+			"frame": {
+				"x": 78,
+				"y": 103,
+				"w": 78,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 78,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 78,
+				"h": 100
+			}
+		},
+		"plasmakirby6.png": {
+			"frame": {
+				"x": 158,
+				"y": 103,
+				"w": 74,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 74,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 74,
+				"h": 100
+			}
+		},
+		"plasmakirby7.png": {
+			"frame": {
+				"x": 234,
+				"y": 1,
+				"w": 74,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 74,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 74,
+				"h": 100
+			}
+		},
+		"plasmakirby8.png": {
+			"frame": {
+				"x": 234,
+				"y": 103,
+				"w": 74,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 74,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 74,
+				"h": 100
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 309,
+			"h": 204
+		},
+		"scale": "1"
+	}
+}

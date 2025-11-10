@@ -1,0 +1,195 @@
+{
+	"frames": {
+		"kirbyidle1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 126,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 126,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 126,
+				"h": 100
+			}
+		},
+		"kirbyidle2.png": {
+			"frame": {
+				"x": 129,
+				"y": 1,
+				"w": 133,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 133,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 133,
+				"h": 100
+			}
+		},
+		"kirbyidle3.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 141,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 141,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 141,
+				"h": 100
+			}
+		},
+		"kirbyidle4.png": {
+			"frame": {
+				"x": 144,
+				"y": 103,
+				"w": 133,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 133,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 133,
+				"h": 100
+			}
+		},
+		"kirbyidle5.png": {
+			"frame": {
+				"x": 1,
+				"y": 205,
+				"w": 126,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 126,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 126,
+				"h": 100
+			}
+		},
+		"kirbyidle6.png": {
+			"frame": {
+				"x": 129,
+				"y": 205,
+				"w": 126,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 126,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 126,
+				"h": 100
+			}
+		},
+		"kirbyidle7.png": {
+			"frame": {
+				"x": 264,
+				"y": 1,
+				"w": 133,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 133,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 133,
+				"h": 100
+			}
+		},
+		"kirbyidle8.png": {
+			"frame": {
+				"x": 279,
+				"y": 103,
+				"w": 141,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 141,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 141,
+				"h": 100
+			}
+		},
+		"kirbyidle9.png": {
+			"frame": {
+				"x": 257,
+				"y": 205,
+				"w": 133,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 133,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 133,
+				"h": 100
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 421,
+			"h": 306
+		},
+		"scale": "1"
+	}
+}
