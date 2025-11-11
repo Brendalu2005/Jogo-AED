@@ -81,8 +81,8 @@
       "ataque2": { "nome": "Soco Super-mônico", "descricao": "Um soco com força total.", "dano": 3 },
       "anim": {
         "idle": "sprites/personagens/ravena/idle",
-        "ataque1": "sprites/personagens/monica/soco",
-        "ataque2": "sprites/personagens/monica/bolhaCura"
+        "ataque1": "sprites/personagens/ravena/soco",
+        "ataque2": "sprites/personagens/ravena/bolhaCura"
       }
     },
     {
@@ -217,8 +217,8 @@
       "ataque2": { "nome": "Tigre", "descricao": "Um ataque fofo.", "dano": 4 },
       "anim": {
         "idle": "sprites/personagens/mutano/idle",
-        "ataque1": "sprites/personagens/mutano/ataque_gorila",
-        "ataque2": "sprites/personagens/mutano/ataque_tigre"
+        "ataque1": "sprites/personagens/mutano/gorila",
+        "ataque2": "sprites/personagens/mutano/tigre"
       }
     },
     {

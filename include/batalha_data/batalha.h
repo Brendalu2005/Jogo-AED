@@ -5,11 +5,18 @@
 #include "database.h"
 #include "selecao.h" 
 
-// --- Structs ---
+// --- MUDANÇA IMPORTANTE ---
+// Inclui a definição de 'ListaTime' do arquivo raiz 'include/'
+#include "lista_personagem.h" 
+// --------------------------
+
 typedef enum {
     TURNO_JOGADOR,
     TURNO_IA
 } TurnoDe;
+
+// As structs da lista NÃO estão mais aqui
+
 typedef enum {
     ESTADO_INICIANDO,      
     ESTADO_ESPERANDO_JOGADOR, 
@@ -17,6 +24,7 @@ typedef enum {
     ESTADO_TURNO_IA,        
     ESTADO_FIM_DE_JOGO
 } EstadoTurno;
+
 typedef struct {
     AnimacaoData* anim;
     int frameAtual;
@@ -29,17 +37,22 @@ typedef struct {
 } EstadoAnimacao;
 
 typedef struct {
-    TimesBatalha times;
+    // Agora o C sabe o que é "ListaTime" 
+    ListaTime timeJogador;
+    ListaTime timeIA;
+    
     int hpJogador[3];
     int hpIA[3];
+
     PersonagemData* ordemDeAtaque[6]; 
     int personagemAgindoIdx; 
-    EstadoTurno estadoTurno;
     TurnoDe turnoDe;
-    int ataqueSelecionado; 
-    int alvoSelecionado;   
+    EstadoTurno estadoTurno;
+    int ataqueSelecionado;
+    int alvoSelecionado;
+    char mensagemBatalha[256];
     EstadoAnimacao animacaoEmExecucao;
-    char mensagemBatalha[100];
+    int roundAtual;
     
     int idleFrameJogador[3];
     int idleTimerJogador[3];

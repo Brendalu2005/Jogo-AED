@@ -5,6 +5,10 @@
 #include <string.h>
 #include <stdio.h>
 
+// --- CORREÇÃO ---
+// Precisamos das definições da lista e da função ObterNoNaPosicao()
+#include "lista_personagem.h" 
+
 typedef struct RespostaWeb {
     char *buffer;
     size_t tamanho;
@@ -31,15 +35,59 @@ static size_t EscreverDadosCallback(void *dados, size_t tamanho, size_t nmemb, v
 static char* ConstruirPrompt(EstadoBatalha *estado) {
     PersonagemData* atacante = estado->ordemDeAtaque[estado->personagemAgindoIdx];
     
+    // --- CORREÇÃO INICIA AQUI ---
+    // 'estado->times' não existe mais. Devemos buscar os alvos da lista 'estado->timeJogador'
+    // usando a função 'ObterNoNaPosicao' e tratar casos de alvos mortos (NULL).
+
+    NoPersonagem* noAlvo0 = ObterNoNaPosicao(&estado->timeJogador, 0);
+    NoPersonagem* noAlvo1 = ObterNoNaPosicao(&estado->timeJogador, 1);
+    NoPersonagem* noAlvo2 = ObterNoNaPosicao(&estado->timeJogador, 2);
+
+    // Prepara nomes e HP Max, seguindo a regra de não usar ternários
+    const char* nomeAlvo0;
+    int hpMaxAlvo0;
+    if (noAlvo0 != NULL) {
+        nomeAlvo0 = noAlvo0->personagem->nome;
+        hpMaxAlvo0 = noAlvo0->personagem->hpMax;
+    } else {
+        nomeAlvo0 = "Morto";
+        hpMaxAlvo0 = 0;
+    }
+
+    const char* nomeAlvo1;
+    int hpMaxAlvo1;
+    if (noAlvo1 != NULL) {
+        nomeAlvo1 = noAlvo1->personagem->nome;
+        hpMaxAlvo1 = noAlvo1->personagem->hpMax;
+    } else {
+        nomeAlvo1 = "Morto";
+        hpMaxAlvo1 = 0;
+    }
+
+    const char* nomeAlvo2;
+    int hpMaxAlvo2;
+    if (noAlvo2 != NULL) {
+        nomeAlvo2 = noAlvo2->personagem->nome;
+        hpMaxAlvo2 = noAlvo2->personagem->hpMax;
+    } else {
+        nomeAlvo2 = "Morto";
+        hpMaxAlvo2 = 0;
+    }
+    // --- FIM DA PREPARAÇÃO ---
+
     char promptBuffer[2048];
     
     // prompt *(guto)
     snprintf(promptBuffer, sizeof(promptBuffer),
-        "Voce eh a IA de um jogo. O personagem %s (HP: ??/??) esta atacando.\n" 
+        // --- CORREÇÃO (Trigraph warning) --- 
+        // Escapamos os '?' para evitar o warning "trigraph" (??/ vira \)
+        "Voce eh a IA de um jogo. O personagem %s (HP: ?\?/?\?) esta atacando.\n" 
         "Seus ataques sao:\n"
         "1. %s (%s, Dano: %d)\n"
         "2. %s (%s, Dano: %d)\n\n"
         "O time inimigo (Jogador) eh:\n"
+        // --- CORREÇÃO (estado->times) ---
+        // Usamos as variáveis que preparamos acima
         "Alvo 0: %s (HP: %d/%d)\n"
         "Alvo 1: %s (HP: %d/%d)\n"
         "Alvo 2: %s (HP: %d/%d)\n\n"
@@ -50,9 +98,11 @@ static char* ConstruirPrompt(EstadoBatalha *estado) {
         atacante->ataque1.nome, atacante->ataque1.descricao, atacante->ataque1.dano,
         atacante->ataque2.nome, atacante->ataque2.descricao, atacante->ataque2.dano,
         
-        estado->times.timeJogador[0]->nome, estado->hpJogador[0], estado->times.timeJogador[0]->hpMax,
-        estado->times.timeJogador[1]->nome, estado->hpJogador[1], estado->times.timeJogador[1]->hpMax,
-        estado->times.timeJogador[2]->nome, estado->hpJogador[2], estado->times.timeJogador[2]->hpMax
+        // --- CORREÇÃO (estado->times) ---
+        // Passamos as variáveis preparadas para o snprintf
+        nomeAlvo0, estado->hpJogador[0], hpMaxAlvo0,
+        nomeAlvo1, estado->hpJogador[1], hpMaxAlvo1,
+        nomeAlvo2, estado->hpJogador[2], hpMaxAlvo2
     );
 
     char* promptFinal = (char*)malloc(strlen(promptBuffer) + 1);
