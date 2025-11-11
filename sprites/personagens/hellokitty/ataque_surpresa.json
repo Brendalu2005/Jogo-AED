@@ -20,46 +20,6 @@
 				"h": 100
 			}
 		},
-		"hellokittyataque2.11.png": {
-			"frame": {
-				"x": 1,
-				"y": 103,
-				"w": 482,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 482,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 482,
-				"h": 100
-			}
-		},
-		"hellokittyataque2.12.png": {
-			"frame": {
-				"x": 1,
-				"y": 205,
-				"w": 482,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 482,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 482,
-				"h": 100
-			}
-		},
 		"hellokittyataque2.2.png": {
 			"frame": {
 				"x": 1,
@@ -204,6 +164,46 @@
 			"frame": {
 				"x": 485,
 				"y": 409,
+				"w": 482,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 482,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 482,
+				"h": 100
+			}
+		},
+		"hellokittyataque2.11.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 482,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 482,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 482,
+				"h": 100
+			}
+		},
+		"hellokittyataque2.12.png": {
+			"frame": {
+				"x": 1,
+				"y": 205,
 				"w": 482,
 				"h": 100
 			},

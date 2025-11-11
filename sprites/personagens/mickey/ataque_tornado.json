@@ -1,25 +1,5 @@
 {
 	"frames": {
-		"mickey-ataquesdireitaPincel1.png": {
-			"frame": {
-				"x": 1,
-				"y": 1,
-				"w": 100,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 100,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 100,
-				"h": 100
-			}
-		},
 		"mickey-ataquesdireitaTornado1.png": {
 			"frame": {
 				"x": 103,

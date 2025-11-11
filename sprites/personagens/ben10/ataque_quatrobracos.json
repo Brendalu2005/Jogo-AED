@@ -40,26 +40,6 @@
 				"h": 100
 			}
 		},
-		"ben10-ataquesdireitaQuatrobracos10.png": {
-			"frame": {
-				"x": 123,
-				"y": 1,
-				"w": 137,
-				"h": 110
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 137,
-				"h": 110
-			},
-			"sourceSize": {
-				"w": 137,
-				"h": 110
-			}
-		},
 		"ben10-ataquesdireitaQuatrobracos2.png": {
 			"frame": {
 				"x": 262,
@@ -204,6 +184,26 @@
 			"frame": {
 				"x": 96,
 				"y": 225,
+				"w": 137,
+				"h": 110
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 137,
+				"h": 110
+			},
+			"sourceSize": {
+				"w": 137,
+				"h": 110
+			}
+		},
+		"ben10-ataquesdireitaQuatrobracos10.png": {
+			"frame": {
+				"x": 123,
+				"y": 1,
 				"w": 137,
 				"h": 110
 			},

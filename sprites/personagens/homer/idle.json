@@ -20,66 +20,6 @@
 				"h": 100
 			}
 		},
-		"homer_idle10.png": {
-			"frame": {
-				"x": 44,
-				"y": 1,
-				"w": 52,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 52,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 52,
-				"h": 100
-			}
-		},
-		"homer_idle11.png": {
-			"frame": {
-				"x": 98,
-				"y": 1,
-				"w": 38,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 38,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 38,
-				"h": 100
-			}
-		},
-		"homer_idle12.png": {
-			"frame": {
-				"x": 138,
-				"y": 1,
-				"w": 40,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 40,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 40,
-				"h": 100
-			}
-		},
 		"homer_idle2.png": {
 			"frame": {
 				"x": 180,
@@ -237,6 +177,66 @@
 			},
 			"sourceSize": {
 				"w": 41,
+				"h": 100
+			}
+		},
+		"homer_idle10.png": {
+			"frame": {
+				"x": 44,
+				"y": 1,
+				"w": 52,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 52,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 52,
+				"h": 100
+			}
+		},
+		"homer_idle11.png": {
+			"frame": {
+				"x": 98,
+				"y": 1,
+				"w": 38,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 38,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 38,
+				"h": 100
+			}
+		},
+		"homer_idle12.png": {
+			"frame": {
+				"x": 138,
+				"y": 1,
+				"w": 40,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 40,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 40,
 				"h": 100
 			}
 		}

@@ -20,146 +20,6 @@
 				"h": 100
 			}
 		},
-		"elsa-ataquesdireita2.10.png": {
-			"frame": {
-				"x": 42,
-				"y": 1,
-				"w": 55,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 55,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 55,
-				"h": 100
-			}
-		},
-		"elsa-ataquesdireita2.11.png": {
-			"frame": {
-				"x": 99,
-				"y": 1,
-				"w": 86,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 86,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 86,
-				"h": 100
-			}
-		},
-		"elsa-ataquesdireita2.12.png": {
-			"frame": {
-				"x": 187,
-				"y": 1,
-				"w": 89,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 89,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 89,
-				"h": 100
-			}
-		},
-		"elsa-ataquesdireita2.13.png": {
-			"frame": {
-				"x": 1,
-				"y": 103,
-				"w": 87,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 87,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 87,
-				"h": 100
-			}
-		},
-		"elsa-ataquesdireita2.14.png": {
-			"frame": {
-				"x": 90,
-				"y": 103,
-				"w": 105,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 105,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 105,
-				"h": 100
-			}
-		},
-		"elsa-ataquesdireita2.15.png": {
-			"frame": {
-				"x": 197,
-				"y": 103,
-				"w": 111,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 111,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 111,
-				"h": 100
-			}
-		},
-		"elsa-ataquesdireita2.16.png": {
-			"frame": {
-				"x": 1,
-				"y": 205,
-				"w": 113,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 113,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 113,
-				"h": 100
-			}
-		},
 		"elsa-ataquesdireita2.2.png": {
 			"frame": {
 				"x": 278,
@@ -317,6 +177,146 @@
 			},
 			"sourceSize": {
 				"w": 51,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.10.png": {
+			"frame": {
+				"x": 42,
+				"y": 1,
+				"w": 55,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 55,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 55,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.11.png": {
+			"frame": {
+				"x": 99,
+				"y": 1,
+				"w": 86,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 86,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 86,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.12.png": {
+			"frame": {
+				"x": 187,
+				"y": 1,
+				"w": 89,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 89,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 89,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.13.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 87,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 87,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 87,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.14.png": {
+			"frame": {
+				"x": 90,
+				"y": 103,
+				"w": 105,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 105,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 105,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.15.png": {
+			"frame": {
+				"x": 197,
+				"y": 103,
+				"w": 111,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 111,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 111,
+				"h": 100
+			}
+		},
+		"elsa-ataquesdireita2.16.png": {
+			"frame": {
+				"x": 1,
+				"y": 205,
+				"w": 113,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 113,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 113,
 				"h": 100
 			}
 		}

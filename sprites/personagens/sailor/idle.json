@@ -1,45 +1,5 @@
 {
 	"frames": {
-		"sailoridle11.png": {
-			"frame": {
-				"x": 1,
-				"y": 1,
-				"w": 32,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 32,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 32,
-				"h": 100
-			}
-		},
-		"sailoridle12.png": {
-			"frame": {
-				"x": 35,
-				"y": 1,
-				"w": 37,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 37,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 37,
-				"h": 100
-			}
-		},
 		"sailoridle2.png": {
 			"frame": {
 				"x": 74,
@@ -197,6 +157,46 @@
 			},
 			"sourceSize": {
 				"w": 40,
+				"h": 100
+			}
+		},
+		"sailoridle11.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 32,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 32,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 32,
+				"h": 100
+			}
+		},
+		"sailoridle12.png": {
+			"frame": {
+				"x": 35,
+				"y": 1,
+				"w": 37,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 37,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 37,
 				"h": 100
 			}
 		}

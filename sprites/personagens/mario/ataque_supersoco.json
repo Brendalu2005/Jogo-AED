@@ -20,26 +20,6 @@
 				"h": 100
 			}
 		},
-		"MarioAtaque1.10.png": {
-			"frame": {
-				"x": 109,
-				"y": 1,
-				"w": 109,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 109,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 109,
-				"h": 100
-			}
-		},
 		"MarioAtaque1.2.png": {
 			"frame": {
 				"x": 1,
@@ -197,6 +177,26 @@
 			},
 			"sourceSize": {
 				"w": 125,
+				"h": 100
+			}
+		},
+		"MarioAtaque1.10.png": {
+			"frame": {
+				"x": 109,
+				"y": 1,
+				"w": 109,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 109,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 109,
 				"h": 100
 			}
 		}

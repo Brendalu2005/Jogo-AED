@@ -20,146 +20,6 @@
 				"h": 100
 			}
 		},
-		"NarutoAtaque2.10.png": {
-			"frame": {
-				"x": 73,
-				"y": 1,
-				"w": 98,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 98,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 98,
-				"h": 100
-			}
-		},
-		"NarutoAtaque2.11.png": {
-			"frame": {
-				"x": 173,
-				"y": 1,
-				"w": 125,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 125,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 125,
-				"h": 100
-			}
-		},
-		"NarutoAtaque2.12.png": {
-			"frame": {
-				"x": 1,
-				"y": 103,
-				"w": 149,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 149,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 149,
-				"h": 100
-			}
-		},
-		"NarutoAtaque2.13.png": {
-			"frame": {
-				"x": 152,
-				"y": 103,
-				"w": 170,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 170,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 170,
-				"h": 100
-			}
-		},
-		"NarutoAtaque2.14.png": {
-			"frame": {
-				"x": 1,
-				"y": 205,
-				"w": 128,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 128,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 128,
-				"h": 100
-			}
-		},
-		"NarutoAtaque2.15.png": {
-			"frame": {
-				"x": 131,
-				"y": 205,
-				"w": 164,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 164,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 164,
-				"h": 100
-			}
-		},
-		"NarutoAtaque2.16.png": {
-			"frame": {
-				"x": 1,
-				"y": 307,
-				"w": 180,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 180,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 180,
-				"h": 100
-			}
-		},
 		"NarutoAtaque2.2.png": {
 			"frame": {
 				"x": 300,
@@ -317,6 +177,146 @@
 			},
 			"sourceSize": {
 				"w": 88,
+				"h": 100
+			}
+		},
+		"NarutoAtaque2.10.png": {
+			"frame": {
+				"x": 73,
+				"y": 1,
+				"w": 98,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 98,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 98,
+				"h": 100
+			}
+		},
+		"NarutoAtaque2.11.png": {
+			"frame": {
+				"x": 173,
+				"y": 1,
+				"w": 125,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 125,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 125,
+				"h": 100
+			}
+		},
+		"NarutoAtaque2.12.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 149,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 149,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 149,
+				"h": 100
+			}
+		},
+		"NarutoAtaque2.13.png": {
+			"frame": {
+				"x": 152,
+				"y": 103,
+				"w": 170,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 170,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 170,
+				"h": 100
+			}
+		},
+		"NarutoAtaque2.14.png": {
+			"frame": {
+				"x": 1,
+				"y": 205,
+				"w": 128,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 128,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 128,
+				"h": 100
+			}
+		},
+		"NarutoAtaque2.15.png": {
+			"frame": {
+				"x": 131,
+				"y": 205,
+				"w": 164,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 164,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 164,
+				"h": 100
+			}
+		},
+		"NarutoAtaque2.16.png": {
+			"frame": {
+				"x": 1,
+				"y": 307,
+				"w": 180,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 180,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 180,
 				"h": 100
 			}
 		}

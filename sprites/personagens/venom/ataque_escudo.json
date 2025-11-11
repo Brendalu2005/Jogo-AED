@@ -20,26 +20,6 @@
 				"h": 100
 			}
 		},
-		"ataqueE10.png": {
-			"frame": {
-				"x": 123,
-				"y": 1,
-				"w": 95,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 95,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 95,
-				"h": 100
-			}
-		},
 		"ataqueE2.png": {
 			"frame": {
 				"x": 220,
@@ -183,6 +163,26 @@
 		"ataqueE9.png": {
 			"frame": {
 				"x": 318,
+				"y": 1,
+				"w": 95,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 95,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 95,
+				"h": 100
+			}
+		},
+		"ataqueE10.png": {
+			"frame": {
+				"x": 123,
 				"y": 1,
 				"w": 95,
 				"h": 100

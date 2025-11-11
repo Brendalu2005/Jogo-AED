@@ -20,66 +20,6 @@
 				"h": 100
 			}
 		},
-		"mutano_atk1_10.png": {
-			"frame": {
-				"x": 76,
-				"y": 1,
-				"w": 102,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 102,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 102,
-				"h": 100
-			}
-		},
-		"mutano_atk1_11.png": {
-			"frame": {
-				"x": 180,
-				"y": 1,
-				"w": 96,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 96,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 96,
-				"h": 100
-			}
-		},
-		"mutano_atk1_12.png": {
-			"frame": {
-				"x": 1,
-				"y": 103,
-				"w": 79,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 79,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 79,
-				"h": 100
-			}
-		},
 		"mutano_atk1_2.png": {
 			"frame": {
 				"x": 82,
@@ -237,6 +177,66 @@
 			},
 			"sourceSize": {
 				"w": 69,
+				"h": 100
+			}
+		},
+		"mutano_atk1_10.png": {
+			"frame": {
+				"x": 76,
+				"y": 1,
+				"w": 102,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 102,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 102,
+				"h": 100
+			}
+		},
+		"mutano_atk1_11.png": {
+			"frame": {
+				"x": 180,
+				"y": 1,
+				"w": 96,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 96,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 96,
+				"h": 100
+			}
+		},
+		"mutano_atk1_12.png": {
+			"frame": {
+				"x": 1,
+				"y": 103,
+				"w": 79,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 79,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 79,
 				"h": 100
 			}
 		}

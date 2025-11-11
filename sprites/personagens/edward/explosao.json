@@ -1,25 +1,5 @@
 {
 	"frames": {
-		"edwar_altk1_18.png": {
-			"frame": {
-				"x": 1,
-				"y": 1,
-				"w": 104,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 104,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 104,
-				"h": 100
-			}
-		},
 		"edwar_atk1_1.png": {
 			"frame": {
 				"x": 107,
@@ -37,6 +17,166 @@
 			},
 			"sourceSize": {
 				"w": 69,
+				"h": 100
+			}
+		},
+		"edwar_atk1_2.png": {
+			"frame": {
+				"x": 352,
+				"y": 205,
+				"w": 74,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 74,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 74,
+				"h": 100
+			}
+		},
+		"edwar_atk1_3.png": {
+			"frame": {
+				"x": 1,
+				"y": 307,
+				"w": 92,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 92,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 92,
+				"h": 100
+			}
+		},
+		"edwar_atk1_4.png": {
+			"frame": {
+				"x": 95,
+				"y": 307,
+				"w": 88,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 88,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 88,
+				"h": 100
+			}
+		},
+		"edwar_atk1_5.png": {
+			"frame": {
+				"x": 185,
+				"y": 307,
+				"w": 122,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 122,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 122,
+				"h": 100
+			}
+		},
+		"edwar_atk1_6.png": {
+			"frame": {
+				"x": 309,
+				"y": 307,
+				"w": 140,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 140,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 140,
+				"h": 100
+			}
+		},
+		"edwar_atk1_7.png": {
+			"frame": {
+				"x": 429,
+				"y": 1,
+				"w": 141,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 141,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 141,
+				"h": 100
+			}
+		},
+		"edwar_atk1_8.png": {
+			"frame": {
+				"x": 406,
+				"y": 103,
+				"w": 124,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 124,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 124,
+				"h": 100
+			}
+		},
+		"edwar_atk1_9.png": {
+			"frame": {
+				"x": 428,
+				"y": 205,
+				"w": 136,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 136,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 136,
 				"h": 100
 			}
 		},
@@ -200,111 +340,11 @@
 				"h": 100
 			}
 		},
-		"edwar_atk1_2.png": {
-			"frame": {
-				"x": 352,
-				"y": 205,
-				"w": 74,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 74,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 74,
-				"h": 100
-			}
-		},
-		"edwar_atk1_3.png": {
+		"edwar_altk1_18.png": {
 			"frame": {
 				"x": 1,
-				"y": 307,
-				"w": 92,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 92,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 92,
-				"h": 100
-			}
-		},
-		"edwar_atk1_4.png": {
-			"frame": {
-				"x": 95,
-				"y": 307,
-				"w": 88,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 88,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 88,
-				"h": 100
-			}
-		},
-		"edwar_atk1_5.png": {
-			"frame": {
-				"x": 185,
-				"y": 307,
-				"w": 122,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 122,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 122,
-				"h": 100
-			}
-		},
-		"edwar_atk1_6.png": {
-			"frame": {
-				"x": 309,
-				"y": 307,
-				"w": 140,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 140,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 140,
-				"h": 100
-			}
-		},
-		"edwar_atk1_7.png": {
-			"frame": {
-				"x": 429,
 				"y": 1,
-				"w": 141,
+				"w": 104,
 				"h": 100
 			},
 			"rotated": false,
@@ -312,51 +352,11 @@
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 141,
+				"w": 104,
 				"h": 100
 			},
 			"sourceSize": {
-				"w": 141,
-				"h": 100
-			}
-		},
-		"edwar_atk1_8.png": {
-			"frame": {
-				"x": 406,
-				"y": 103,
-				"w": 124,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 124,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 124,
-				"h": 100
-			}
-		},
-		"edwar_atk1_9.png": {
-			"frame": {
-				"x": 428,
-				"y": 205,
-				"w": 136,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 136,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 136,
+				"w": 104,
 				"h": 100
 			}
 		}

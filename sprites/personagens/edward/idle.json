@@ -20,6 +20,26 @@
 				"h": 100
 			}
 		},
+		"edwar_idle8.png": {
+			"frame": {
+				"x": 142,
+				"y": 103,
+				"w": 69,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 69,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 69,
+				"h": 100
+			}
+		},
 		"edwar_idle10.png": {
 			"frame": {
 				"x": 72,
@@ -97,26 +117,6 @@
 			},
 			"sourceSize": {
 				"w": 67,
-				"h": 100
-			}
-		},
-		"edwar_idle8.png": {
-			"frame": {
-				"x": 142,
-				"y": 103,
-				"w": 69,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 69,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 69,
 				"h": 100
 			}
 		}

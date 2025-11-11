@@ -1,5 +1,25 @@
 {
 	"frames": {
+		"supermanidle1.png": {
+			"frame": {
+				"x": 140,
+				"y": 1,
+				"w": 65,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 65,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 65,
+				"h": 100
+			}
+		},
 		"Supermanidle2.png": {
 			"frame": {
 				"x": 1,
@@ -37,26 +57,6 @@
 			},
 			"sourceSize": {
 				"w": 68,
-				"h": 100
-			}
-		},
-		"supermanidle1.png": {
-			"frame": {
-				"x": 140,
-				"y": 1,
-				"w": 65,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 65,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 65,
 				"h": 100
 			}
 		}

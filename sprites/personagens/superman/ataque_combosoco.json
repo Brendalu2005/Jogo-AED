@@ -20,26 +20,6 @@
 				"h": 100
 			}
 		},
-		"supermanatk10.png": {
-			"frame": {
-				"x": 69,
-				"y": 1,
-				"w": 58,
-				"h": 100
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 58,
-				"h": 100
-			},
-			"sourceSize": {
-				"w": 58,
-				"h": 100
-			}
-		},
 		"supermanatk2.png": {
 			"frame": {
 				"x": 129,
@@ -177,6 +157,26 @@
 			},
 			"sourceSize": {
 				"w": 74,
+				"h": 100
+			}
+		},
+		"supermanatk10.png": {
+			"frame": {
+				"x": 69,
+				"y": 1,
+				"w": 58,
+				"h": 100
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 58,
+				"h": 100
+			},
+			"sourceSize": {
+				"w": 58,
 				"h": 100
 			}
 		}
