@@ -4,7 +4,7 @@
 #include "telas.h"
 #include "menu.h"
 
-void AtualizarTelaModoJogo(GameScreen *telaAtual);
+void AtualizarTelaModoJogo(GameScreen *telaAtual, ModoDeJogo *modo);
 void DesenharTelaModoJogo(MenuOpcao res);
 
 #endif

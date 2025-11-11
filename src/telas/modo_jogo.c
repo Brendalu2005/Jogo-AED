@@ -3,7 +3,10 @@
 #include "menu.h"
 #include "selecao.h"
 
-void AtualizarTelaModoJogo(GameScreen *telaAtual) {
+// --- MODIFICADO ---
+// A assinatura da função agora aceita os 2 argumentos (ponteiros)
+void AtualizarTelaModoJogo(GameScreen *telaAtual, ModoDeJogo *modo) {
+// ------------------
     Vector2 mouse = GetMouseVirtual();
 
     int btnWidth = 300;
@@ -17,12 +20,15 @@ void AtualizarTelaModoJogo(GameScreen *telaAtual) {
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         
         if (CheckCollisionPointRec(mouse, btnSolo)){
-            *telaAtual = SCREEN_SELECAO; // modo solo
+            *telaAtual = SCREEN_SELECAO; // Vai para a seleção
+            *modo = MODO_SOLO;          // Define o modo para Solo
         } 
-        // -- MODO DOIS JOGADORES AINDA NÃO IMPLEMENTADO --
-        // else if (CheckCollisionPointRec(mouse, btnDois)) {
-        //     *telaAtual = SCREEN_PLACEHOLDER; 
-        // }
+        // --- LÓGICA ATIVADA ---
+        else if (CheckCollisionPointRec(mouse, btnDois)) {
+            *telaAtual = SCREEN_SELECAO; // Vai para a seleção
+            *modo = MODO_PVP;           // Define o modo para PvP
+        }
+        // ------------------
     }
 
     if (IsKeyPressed(KEY_ESCAPE)) {

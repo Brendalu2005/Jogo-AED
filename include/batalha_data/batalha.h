@@ -23,7 +23,9 @@ typedef enum {
     ESTADO_ZOOM_IN_ATAQUE,  
     ESTADO_ANIMACAO_ATAQUE, 
     ESTADO_ZOOM_OUT_ATAQUE, 
-    ESTADO_TURNO_IA,        
+    // --- MODIFICADO ---
+    ESTADO_AGUARDANDO_OPONENTE, // Renomeado de ESTADO_TURNO_IA
+    // ------------------
     ESTADO_FIM_DE_JOGO
 } EstadoTurno;
 
@@ -76,7 +78,12 @@ typedef struct {
 
 
 void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados);
-void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual);
+
+// --- MODIFICADO ---
+// AtualizarTelaBatalha agora recebe o modo de jogo
+void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJogo modo);
+// ------------------
+
 void DesenharTelaBatalha(EstadoBatalha *estado);
 
 #endif

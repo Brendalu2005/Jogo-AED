@@ -23,6 +23,10 @@ SOURCES = $(wildcard $(SRC_DIR)/*.c $(SRC_DIR)/**/*.c)
 # Converte a lista de "src/telas/menu.c" para "object/telas/menu.o"
 OBJECTS = $(SOURCES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
+# --- NOVO: Lista de todos os headers ---
+# Isto garante que se um .h mudar, os .o serão recompilados.
+HEADERS = $(wildcard include/*.h include/tela/*.h include/batalha_data/*.h include/AI/*.h include/json/*.h)
+
 # --- Regras ---
 
 # Regra padrão (o que acontece quando você digita "make")
@@ -34,8 +38,8 @@ $(TARGET): $(OBJECTS)
 	$(CC) $(OBJECTS) -o $(TARGET) $(LDFLAGS)
 	@echo "Pronto! Execute com: ./$(TARGET)"
 
-# Regra para compilar C (src/%.c) para Objeto (object/%.o)
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+# --- MODIFICADO: A regra de compilação agora depende dos HEADERS ---
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)
 	@echo "Compilando $< -> $@"
 	# Cria a subpasta (ex: object/telas) ANTES de compilar.
 	# Isso é essencial para funcionar depois de um "clean".

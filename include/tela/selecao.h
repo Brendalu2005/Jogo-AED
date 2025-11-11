@@ -12,7 +12,7 @@ typedef struct {
 
 // Funções da tela
 void InicializarSelecao(TimesBatalha* times);
-void AtualizarTelaSelecao(GameScreen *telaAtual, SpriteDatabase* db, TimesBatalha* times);
-void DesenharTelaSelecao(SpriteDatabase* db, TimesBatalha* times);
+void AtualizarTelaSelecao(GameScreen *telaAtual, SpriteDatabase* db, TimesBatalha* times, ModoDeJogo modo);
+void DesenharTelaSelecao(SpriteDatabase* db, TimesBatalha* times, ModoDeJogo modo);
 
 #endif

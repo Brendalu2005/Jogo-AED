@@ -26,9 +26,13 @@ int backgroundCarregado = 0;
  */
 
 static NoPersonagem* ObterNoPorPersonagem(ListaTime* lista, PersonagemData* p) {
-    if (lista == NULL || p == NULL) {
+    if (lista == NULL) {
         return NULL;
     }
+    if (p == NULL) {
+        return NULL;
+    }
+
     NoPersonagem* atual = lista->inicio;
     while (atual != NULL) {
         if (atual->personagem == p) {
@@ -184,8 +188,15 @@ static void IniciarZoomEAnimacao(EstadoBatalha* estado, PersonagemData* atacante
 
 
 void DesenharAnimacao(EstadoAnimacao* anim) {
-    if (!anim->ativo) return;
-    if (anim->anim == NULL || anim->anim->def.numFrames == 0) return;
+    if (anim->ativo == false) {
+         return;
+    }
+    if (anim->anim == NULL) {
+         return;
+    }
+    if (anim->anim->def.numFrames == 0) {
+         return;
+    }
 
     if (anim->frameAtual >= anim->anim->def.numFrames) {
         anim->frameAtual = 0;
@@ -211,10 +222,11 @@ void DesenharAnimacao(EstadoAnimacao* anim) {
     }
 
     if (anim->flip){
-        DrawText("IA", anim->pos.x - 20, anim->pos.y - 100, 20, RED);
+        // "IA" aqui significa Oponente (Time 2)
+        DrawText("Oponente", anim->pos.x - 40, anim->pos.y - 100, 20, RED);
     }
     else{
-        DrawText("Jogador", anim->pos.x - 40, anim->pos.y - 100, 20, BLUE);
+        DrawText("Jogador 1", anim->pos.x - 40, anim->pos.y - 100, 20, BLUE);
         
     }
 
@@ -233,8 +245,11 @@ static int CompararVelocidade(const void* a, const void* b) {
     PersonagemData* pA = *(PersonagemData**)a;
     PersonagemData* pB = *(PersonagemData**)b;
     
-    if (pA == NULL || pB == NULL) {
-        return 0;
+    if (pA == NULL) {
+        return 1; // Coloca nulos no fim
+    }
+    if (pB == NULL) {
+        return -1; // Coloca nulos no fim
     }
     
     if (pA->velocidade > pB->velocidade) {
@@ -256,7 +271,9 @@ static void ProximoTurno(EstadoBatalha *estado) {
     }
     
     if (estado->ordemDeAtaque[estado->personagemAgindoIdx] == NULL) {
-        printf("ERRO: Personagem na ordem de ataque e nulo!\n");
+        printf("ERRO: Personagem na ordem de ataque e nulo! Pulando turno.\n");
+        // Chama o próximo turno recursivamente para pular este
+        ProximoTurno(estado);
         return;
     }
     
@@ -278,7 +295,7 @@ static void ProximoTurno(EstadoBatalha *estado) {
         noAtual = noAtual->proximo;
     }
 
-    // Se não encontrou, procura na lista da IA
+    // Se não encontrou, procura na lista da IA/Oponente
     if (ehJogador == false) {
         noAtual = estado->timeIA.inicio;
         while (noAtual != NULL) {
@@ -298,16 +315,17 @@ static void ProximoTurno(EstadoBatalha *estado) {
         return;
     }
 
+    // Define o estado baseado em quem joga
     if (ehJogador) {
         estado->turnoDe = TURNO_JOGADOR;
         estado->estadoTurno = ESTADO_ESPERANDO_JOGADOR;
         estado->ataqueSelecionado = -1; 
         estado->alvoSelecionado = -1;
-        sprintf(estado->mensagemBatalha, "Vez de: %s! Escolha um ataque.", personagemAtual->nome);
+        sprintf(estado->mensagemBatalha, "Vez de: %s! (J1) Escolha um ataque.", personagemAtual->nome);
     } else {
-        estado->turnoDe = TURNO_IA;
-        estado->estadoTurno = ESTADO_TURNO_IA;
-        sprintf(estado->mensagemBatalha, "Vez de: %s!", personagemAtual->nome);
+        estado->turnoDe = TURNO_IA; // Enum "IA" significa Time 2 / Oponente
+        estado->estadoTurno = ESTADO_AGUARDANDO_OPONENTE; // Novo estado
+        sprintf(estado->mensagemBatalha, "Vez de: %s! (Oponente)", personagemAtual->nome);
     }
 }
 
@@ -325,11 +343,13 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
     int* hpArrayAtacante;
 
     if (ehJogadorAtacando) {
+        // Jogador 1 ataca
         listaAlvo = &estado->timeIA;
         hpArrayAlvo = estado->hpIA;
         listaAtacante = &estado->timeJogador;
         hpArrayAtacante = estado->hpJogador;
     } else {
+        // Oponente (IA ou J2) ataca
         listaAlvo = &estado->timeJogador;
         hpArrayAlvo = estado->hpJogador;
         listaAtacante = &estado->timeIA;
@@ -345,9 +365,9 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
             noAlvo = ObterNoNaPosicao(listaAlvo, alvoIdx);
             if (noAlvo == NULL) {
                  if (ehJogadorAtacando) {
-                    printf("ATAQUE: Jogador tentou atacar posicao %d vazia.\n", alvoIdx);
+                    printf("ATAQUE: Jogador 1 tentou atacar posicao %d vazia.\n", alvoIdx);
                  } else {
-                    printf("ATAQUE: IA tentou atacar posicao %d vazia.\n", alvoIdx);
+                    printf("ATAQUE: Oponente tentou atacar posicao %d vazia.\n", alvoIdx);
                  }
                  ProximoTurno(estado); // Pula o turno se o alvo não existe
                  return; 
@@ -446,10 +466,15 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
     estado->timeIA = CriarLista();
 
     for (int i = 0; i < 3; i++) {
-        if (timesSelecionados->timeJogador[i] == NULL || timesSelecionados->timeIA[i] == NULL) {
-            printf("ERRO FATAL: Time nao selecionado corretamente!\n");
+        if (timesSelecionados->timeJogador[i] == NULL) {
+            printf("ERRO FATAL: Time do Jogador 1 nao selecionado corretamente!\n");
             return;
         }
+         if (timesSelecionados->timeIA[i] == NULL) {
+            printf("ERRO FATAL: Time do Oponente nao selecionado corretamente!\n");
+            return;
+        }
+        
         InserirPersonagem(&estado->timeJogador, timesSelecionados->timeJogador[i], i);
         estado->hpJogador[i] = timesSelecionados->timeJogador[i]->hpMax;
 
@@ -503,14 +528,15 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
     // Inicializa as novas variáveis de foco
     estado->atacanteEmFoco = NULL;
     estado->alvoEmFoco = NULL;
-    estado->alvoEmFocoIdx = -1; // --- CORREÇÃO --- (Inicializa a nova variável)
+    estado->alvoEmFocoIdx = -1; 
     estado->timerFoco = 0.0f;
     estado->animParaTocar = NULL;
     estado->animFlip = false;
     estado->alphaOutrosPersonagens = 1.0f;
 }
 
-void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
+// Assinatura modificada para aceitar ModoDeJogo
+void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJogo modo) {
     if (IsKeyPressed(KEY_ESCAPE)) {
 
         if (backgroundCarregado == 1) {
@@ -558,22 +584,25 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
         noAtualIA = noAtualIA->proximo;
     }
 
-    if (estado->estadoTurno != ESTADO_INICIANDO && (estado->personagemAgindoIdx < 0 || estado->personagemAgindoIdx >= 6 || estado->ordemDeAtaque[estado->personagemAgindoIdx] == NULL)) {
-        if(estado->estadoTurno != ESTADO_FIM_DE_JOGO) {
-            ProximoTurno(estado);
+    if (estado->estadoTurno != ESTADO_INICIANDO) {
+        if (estado->personagemAgindoIdx < 0 || estado->personagemAgindoIdx >= 6 || estado->ordemDeAtaque[estado->personagemAgindoIdx] == NULL) {
+            if(estado->estadoTurno != ESTADO_FIM_DE_JOGO) {
+                ProximoTurno(estado);
+            }
+            return;
         }
-        return;
     }
+
 
     AtualizarAnimacao(&estado->animacaoEmExecucao);
 
     // Checagem de Fim de Jogo
     if (estado->timeJogador.tamanho == 0 && estado->estadoTurno != ESTADO_FIM_DE_JOGO) {
         estado->estadoTurno = ESTADO_FIM_DE_JOGO;
-        sprintf(estado->mensagemBatalha, "VOCE PERDEU! Pressione ESC para sair.");
+        sprintf(estado->mensagemBatalha, "OPONENTE VENCEU! Pressione ESC para sair.");
     } else if (estado->timeIA.tamanho == 0 && estado->estadoTurno != ESTADO_FIM_DE_JOGO) {
         estado->estadoTurno = ESTADO_FIM_DE_JOGO;
-        sprintf(estado->mensagemBatalha, "VOCE VENCEU! Pressione ESC para sair.");
+        sprintf(estado->mensagemBatalha, "JOGADOR 1 VENCEU! Pressione ESC para sair.");
     }
 
 
@@ -583,8 +612,12 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
             ProximoTurno(estado);
             break;
 
+        // Este estado agora serve para J1 e J2
         case ESTADO_ESPERANDO_JOGADOR:
             {
+                // Verifica de quem é o turno
+                bool ehJogador1 = (estado->turnoDe == TURNO_JOGADOR);
+
                 int arenaY = 80;
                 int arenaHeight = 550; 
                 int menuY = arenaY + arenaHeight + 10; 
@@ -594,9 +627,23 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
                 Rectangle btnAtk1 = { colAtaquesX, textoYBase + 35, 200, 40 }; 
                 Rectangle btnAtk2 = { colAtaquesX, textoYBase + 90, 200, 40 }; 
                 
-                Rectangle alvoIA_0 = {posIA[0].x - 50, posIA[0].y - 50, 100, 100};
-                Rectangle alvoIA_1 = {posIA[1].x - 50, posIA[1].y - 50, 100, 100};
-                Rectangle alvoIA_2 = {posIA[2].x - 50, posIA[2].y - 50, 100, 100};
+                // Define os alvos baseado em quem está jogando
+                Rectangle alvo_0, alvo_1, alvo_2;
+                ListaTime* listaAlvo;
+                
+                if (ehJogador1) {
+                    // P1 ataca P2/IA
+                    alvo_0 = (Rectangle){posIA[0].x - 50, posIA[0].y - 50, 100, 100};
+                    alvo_1 = (Rectangle){posIA[1].x - 50, posIA[1].y - 50, 100, 100};
+                    alvo_2 = (Rectangle){posIA[2].x - 50, posIA[2].y - 50, 100, 100};
+                    listaAlvo = &estado->timeIA;
+                } else {
+                    // P2 ataca P1
+                    alvo_0 = (Rectangle){posJogador[0].x - 50, posJogador[0].y - 50, 100, 100};
+                    alvo_1 = (Rectangle){posJogador[1].x - 50, posJogador[1].y - 50, 100, 100};
+                    alvo_2 = (Rectangle){posJogador[2].x - 50, posJogador[2].y - 50, 100, 100};
+                    listaAlvo = &estado->timeJogador;
+                }
                 
                 Vector2 mousePos = GetMouseVirtual();
 
@@ -612,24 +659,25 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
                 if (estado->ataqueSelecionado != -1) {
                     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
                         int alvo = -1;
-                        if (CheckCollisionPointRec(mousePos, alvoIA_0)) {
-                            if (ObterNoNaPosicao(&estado->timeIA, 0) != NULL) {
+                        
+                        if (CheckCollisionPointRec(mousePos, alvo_0)) {
+                            if (ObterNoNaPosicao(listaAlvo, 0) != NULL) {
                                 alvo = 0;
                             }
                         }
-                        if (CheckCollisionPointRec(mousePos, alvoIA_1)) {
-                             if (ObterNoNaPosicao(&estado->timeIA, 1) != NULL) {
+                        if (CheckCollisionPointRec(mousePos, alvo_1)) {
+                             if (ObterNoNaPosicao(listaAlvo, 1) != NULL) {
                                 alvo = 1;
                              }
                         }
-                        if (CheckCollisionPointRec(mousePos, alvoIA_2)) {
-                            if (ObterNoNaPosicao(&estado->timeIA, 2) != NULL) {
+                        if (CheckCollisionPointRec(mousePos, alvo_2)) {
+                            if (ObterNoNaPosicao(listaAlvo, 2) != NULL) {
                                 alvo = 2;
                             }
                         }
                         
                         if (alvo != -1) {
-                            estado->alvoSelecionado = alvo; // Guarda o alvo selecionado (0, 1, ou 2)
+                            estado->alvoSelecionado = alvo; 
                             PersonagemData* atacante = estado->ordemDeAtaque[estado->personagemAgindoIdx];
                             Ataque* att;
                             if (estado->ataqueSelecionado == 0) {
@@ -637,8 +685,8 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
                             } else {
                                 att = &atacante->ataque2;
                             }
-                            // O índice 'alvo' (0, 1, ou 2) é passado para ExecutarAtaque
-                            ExecutarAtaque(estado, atacante, att, alvo, true);
+                            // Passa 'ehJogador1' para ExecutarAtaque
+                            ExecutarAtaque(estado, atacante, att, alvo, ehJogador1);
                         }
                     }
                 }
@@ -652,7 +700,6 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
             }
             break;
 
-        // --- ATUALIZAÇÃO DOS ESTADOS DE ZOOM (COM CORREÇÕES) ---
         case ESTADO_ZOOM_IN_ATAQUE:
             {
                 float duracaoZoom = 0.3f; 
@@ -663,10 +710,10 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
                     progresso = 1.0f;
                 }
 
-                bool ehIAAtacando = estado->animFlip;
+                bool ehOponenteAtacando = estado->animFlip; // 'flip' é true se o Oponente (J2/IA) ataca
 
                 NoPersonagem* noAtacante = NULL;
-                if (ehIAAtacando == true) {
+                if (ehOponenteAtacando) {
                     noAtacante = ObterNoPorPersonagem(&estado->timeIA, estado->atacanteEmFoco);
                 } else {
                     noAtacante = ObterNoPorPersonagem(&estado->timeJogador, estado->atacanteEmFoco);
@@ -674,7 +721,7 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
                 
                 Vector2 posOriginalAtacante;
                 if (noAtacante != NULL) {
-                     posOriginalAtacante = ehIAAtacando ? posIA[noAtacante->posicaoNoTime] : posJogador[noAtacante->posicaoNoTime];
+                     posOriginalAtacante = ehOponenteAtacando ? posIA[noAtacante->posicaoNoTime] : posJogador[noAtacante->posicaoNoTime];
                 } else {
                     posOriginalAtacante = (Vector2){ -200.0f, 350.0f }; 
                 }
@@ -683,11 +730,11 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
                 float zoomOriginalAtacante = estado->atacanteEmFoco->batalhaZoom;
                 float zoomAlvo = 2.5f; 
 
-                // MODIFICADO: Verifica se há um alvo para o zoom
+                // Verifica se há um alvo para o zoom
                 if (estado->alvoEmFoco != NULL || estado->alvoEmFocoIdx != -1) {
                     // --- Lógica de zoom com alvo (Dano Único ou Área) ---
                     NoPersonagem* noAlvo = NULL;
-                    if (ehIAAtacando == true) {
+                    if (ehOponenteAtacando) {
                         noAlvo = ObterNoPorPersonagem(&estado->timeJogador, estado->alvoEmFoco);
                     } else {
                         noAlvo = ObterNoPorPersonagem(&estado->timeIA, estado->alvoEmFoco);
@@ -697,15 +744,16 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
                     float zoomOriginalAlvo = 2.0f; // Valor padrão se alvo estiver morto
                     
                     if (noAlvo != NULL) {
-                         posOriginalAlvo = ehIAAtacando ? posJogador[noAlvo->posicaoNoTime] : posIA[noAlvo->posicaoNoTime];
+                         posOriginalAlvo = ehOponenteAtacando ? posJogador[noAlvo->posicaoNoTime] : posIA[noAlvo->posicaoNoTime];
                          zoomOriginalAlvo = estado->alvoEmFoco->batalhaZoom;
                     } else {
-                         posOriginalAlvo = ehIAAtacando ? posJogador[estado->alvoEmFocoIdx] : posIA[estado->alvoEmFocoIdx];
+                         // Se o nó do alvo é nulo (morto), usa o índice guardado para a posição
+                         posOriginalAlvo = ehOponenteAtacando ? posJogador[estado->alvoEmFocoIdx] : posIA[estado->alvoEmFocoIdx];
                     }
 
                     Vector2 posAlvoAlvo;
 
-                    if (ehIAAtacando == true) {
+                    if (ehOponenteAtacando) {
                         posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f + 200.0f, 350.0f };
                         posAlvoAlvo = (Vector2){ (float)SCREEN_WIDTH / 2.0f - 200.0f, 350.0f };
                     } else {
@@ -750,10 +798,10 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
                     progresso = 1.0f;
                 }
 
-                bool ehIAAtacando = estado->animFlip;
+                bool ehOponenteAtacando = estado->animFlip;
                 
                 NoPersonagem* noAtacante = NULL;
-                if (ehIAAtacando == true) {
+                if (ehOponenteAtacando) {
                     noAtacante = ObterNoPorPersonagem(&estado->timeIA, estado->atacanteEmFoco);
                 } else {
                     noAtacante = ObterNoPorPersonagem(&estado->timeJogador, estado->atacanteEmFoco);
@@ -761,8 +809,9 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
                 
                 Vector2 posOriginalAtacante;
                 if (noAtacante != NULL) {
-                     posOriginalAtacante = ehIAAtacando ? posIA[noAtacante->posicaoNoTime] : posJogador[noAtacante->posicaoNoTime];
+                     posOriginalAtacante = ehOponenteAtacando ? posIA[noAtacante->posicaoNoTime] : posJogador[noAtacante->posicaoNoTime];
                 } else {
+                    // Se o atacante morreu (ex: recuo) e foi removido, volta da posição de foco
                     posOriginalAtacante = estado->posFocoAtacante; 
                 }
 
@@ -770,11 +819,11 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
                 Vector2 posAlvoAtacante;
                 float zoomAlvo = 2.5f;
                 
-                // MODIFICADO: Verifica se há um alvo para o zoom
+                // Verifica se há um alvo para o zoom
                 if (estado->alvoEmFoco != NULL || estado->alvoEmFocoIdx != -1) {
                     // --- Lógica de zoom com alvo (Dano Único ou Área) ---
                     NoPersonagem* noAlvo = NULL;
-                    if (ehIAAtacando == true) {
+                    if (ehOponenteAtacando) {
                         noAlvo = ObterNoPorPersonagem(&estado->timeJogador, estado->alvoEmFoco);
                     } else {
                         noAlvo = ObterNoPorPersonagem(&estado->timeIA, estado->alvoEmFoco);
@@ -784,15 +833,15 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
                     float zoomOriginalAlvo = 2.0f;
                     
                     if (noAlvo != NULL) {
-                        posOriginalAlvo = ehIAAtacando ? posJogador[noAlvo->posicaoNoTime] : posIA[noAlvo->posicaoNoTime];
+                        posOriginalAlvo = ehOponenteAtacando ? posJogador[noAlvo->posicaoNoTime] : posIA[noAlvo->posicaoNoTime];
                         zoomOriginalAlvo = estado->alvoEmFoco->batalhaZoom;
                     } else {
-                        posOriginalAlvo = ehIAAtacando ? posJogador[estado->alvoEmFocoIdx] : posIA[estado->alvoEmFocoIdx];
+                        posOriginalAlvo = ehOponenteAtacando ? posJogador[estado->alvoEmFocoIdx] : posIA[estado->alvoEmFocoIdx];
                     }
 
                     Vector2 posAlvoAlvo;
 
-                    if (ehIAAtacando == true) {
+                    if (ehOponenteAtacando) {
                         posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f + 200.0f, 350.0f };
                         posAlvoAlvo = (Vector2){ (float)SCREEN_WIDTH / 2.0f - 200.0f, 350.0f };
                     } else {
@@ -822,8 +871,14 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
                     estado->alvoEmFocoIdx = -1; 
                     estado->alphaOutrosPersonagens = 1.0f;
                     
+                    // Reseta o flip do oponente (caso J1 tenha atacado P2)
+                    if (ehOponenteAtacando == false && estado->alvoEmFoco != NULL) {
+                         // estado->alvoEmFoco->animIdle.flip = false; // (O alvo já é NULL aqui, esta lógica precisa ser revista se quiser que o P2 vire de volta)
+                    }
+
+                    
                     if (estado->timeJogador.tamanho == 0 || estado->timeIA.tamanho == 0) {
-                        // Não faz nada, o loop principal vai apanhar o FIM_DE_JOGO
+                        // Não faz nada, o loop principal vai pegar o FIM_DE_JOGO
                     } else {
                         ProximoTurno(estado);
                     }
@@ -831,8 +886,17 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
             }
             break;
 
-        case ESTADO_TURNO_IA:
-            ExecutarTurnoIA(estado);
+        // Renomeado
+        case ESTADO_AGUARDANDO_OPONENTE:
+            if (modo == MODO_SOLO) {
+                ExecutarTurnoIA(estado); // Chama a IA (Gemini)
+            } else {
+                // Modo PVP: É a vez do Jogador 2
+                // Apenas muda o estado para esperar o input do P2
+                estado->estadoTurno = ESTADO_ESPERANDO_JOGADOR;
+                // Atualiza a mensagem para o P2
+                sprintf(estado->mensagemBatalha, "Vez de: %s! (J2) Escolha um ataque.", estado->ordemDeAtaque[estado->personagemAgindoIdx]->nome);
+            }
             break;
             
         case ESTADO_FIM_DE_JOGO:
@@ -848,7 +912,8 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
     int larguraTextoRound = MeasureText(textoRound, 20);
     DrawText(textoRound, (SCREEN_WIDTH - larguraTextoRound) / 2, 15, 20, RAYWHITE);
 
-    DrawText("IA", SCREEN_WIDTH - 20 - 200 - 35, 15, 20, RAYWHITE);
+    // Texto do Oponente (IA ou J2)
+    DrawText("Oponente", SCREEN_WIDTH - MeasureText("Oponente", 20) - 20, 15, 20, RAYWHITE);
 
     int arenaY = 80;
     int arenaHeight = 550; 
@@ -874,86 +939,85 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
     Color corHpFadeIA = ColorAlpha(RED, estado->alphaOutrosPersonagens);
     Color corBordaFade = ColorAlpha(LIGHTGRAY, estado->alphaOutrosPersonagens);
 
+    // --- Desenha personagens do JOGADOR 1 (que NÃO estão em foco) ---
     NoPersonagem* noAtualJogador = estado->timeJogador.inicio;
     while (noAtualJogador != NULL) {
-        // ... (código de pular se estiver em foco) ...
+        
+        // Pula o desenho se este personagem for o atacante ou o alvo em foco
+        if (estado->atacanteEmFoco != noAtualJogador->personagem && estado->alvoEmFoco != noAtualJogador->personagem) {
+            int i = noAtualJogador->posicaoNoTime;
+            PersonagemData* pData = noAtualJogador->personagem;
+            AnimacaoData* anim = &pData->animIdle;
 
-        int i = noAtualJogador->posicaoNoTime;
-        PersonagemData* pData = noAtualJogador->personagem;
-        AnimacaoData* anim = &pData->animIdle;
+            if (anim->def.numFrames > 0) {
+                // Desenha o Jogador (sem flip)
+                int frameIndex = estado->idleFrameJogador[i];
+                if (frameIndex >= anim->def.numFrames) {
+                    frameIndex = 0;
+                }
+                Rectangle frame = anim->def.frames[frameIndex];
+                float zoom = pData->batalhaZoom;
+                
+                DrawTexturePro(anim->textura, frame,
+                (Rectangle){posJogador[i].x, posJogador[i].y, frame.width * zoom, frame.height * zoom},
+                (Vector2){frame.width * zoom / 2, frame.height * zoom / 2}, 0, corFade);
 
-        if (anim->def.numFrames > 0) {
-            // Desenha o Jogador (sem flip)
-            int frameIndex = estado->idleFrameJogador[i];
-            if (frameIndex >= anim->def.numFrames) {
-            frameIndex = 0;
+                // Barra de HP
+                int posXBarra = (int)posJogador[i].x - 50; 
+                int posYBarra = (int)hpBarYFixo; 
+                int larguraBarra = 100;
+                int alturaBarra = 10;
+
+                DrawRectangle(posXBarra, posYBarra, larguraBarra, alturaBarra, corBgFade);
+
+                int larguraPreenchimento = (int)((float)larguraBarra * (float)estado->hpJogador[i] / (float)pData->hpMax);
+                DrawRectangle(posXBarra, posYBarra, larguraPreenchimento, alturaBarra, corHpFadeJ);
+
+                DrawRectangleLines(posXBarra, posYBarra, larguraBarra, alturaBarra, corBordaFade);
+            }
         }
-            Rectangle frame = anim->def.frames[frameIndex];
-            float zoom = pData->batalhaZoom;
-            // --- FIM DO CÓDIGO A ADICIONAR ---
-            DrawTexturePro(anim->textura, frame,
-            (Rectangle){posJogador[i].x, posJogador[i].y, frame.width * zoom, frame.height * zoom},
-            (Vector2){frame.width * zoom / 2, frame.height * zoom / 2}, 0, corFade);
-
-            // Barra de HP
-            int posXBarra = (int)posJogador[i].x - 50; // DECLARAÇÃO
-            int posYBarra = (int)hpBarYFixo; // DECLARAÇÃO
-            int larguraBarra = 100;
-            int alturaBarra = 10;
-
-            // USO CORRETO (corrige o aviso)
-            DrawRectangle(posXBarra, posYBarra, larguraBarra, alturaBarra, corBgFade);
-
-            int larguraPreenchimento = (int)((float)larguraBarra * (float)estado->hpJogador[i] / (float)pData->hpMax);
-            DrawRectangle(posXBarra, posYBarra, larguraPreenchimento, alturaBarra, corHpFadeJ);
-
-            DrawRectangleLines(posXBarra, posYBarra, larguraBarra, alturaBarra, corBordaFade);
-        }
-
         noAtualJogador = noAtualJogador->proximo;
     }
 
     
-    // --- Desenha personagens da IA (que NÃO estão em foco) ---
+    // --- Desenha personagens do OPONENTE (IA/J2) (que NÃO estão em foco) ---
     NoPersonagem* noAtualIA = estado->timeIA.inicio;
     while (noAtualIA != NULL) {
-        // ... (código de pular se estiver em foco) ...
+        
+        // Pula o desenho se este personagem for o atacante ou o alvo em foco
+         if (estado->atacanteEmFoco != noAtualIA->personagem && estado->alvoEmFoco != noAtualIA->personagem) {
+            int i = noAtualIA->posicaoNoTime;
+            PersonagemData* pDataIA = noAtualIA->personagem;
+            AnimacaoData* anim = &pDataIA->animIdle;
 
-        int i = noAtualIA->posicaoNoTime;
-        PersonagemData* pDataIA = noAtualIA->personagem;
-        AnimacaoData* anim = &pDataIA->animIdle;
+            if (anim->def.numFrames > 0) {
+                int frameIndexIA = estado->idleFrameIA[i];
+                if (frameIndexIA >= anim->def.numFrames) {
+                    frameIndexIA = 0;
+                }
 
-        if (anim->def.numFrames > 0) {
+                Rectangle frame = anim->def.frames[frameIndexIA];
+                float zoomIA = pDataIA->batalhaZoom;
+                Rectangle frameIA = frame;
+                frameIA.width = -frame.width; // Flip
 
-            // ... (código do DrawTexturePro da IA que corrigimos antes) ...
-            // --- INÍCIO DO CÓDIGO DO SPRITE (O QUE FALTAVA) ---
-            int frameIndexIA = estado->idleFrameIA[i];
-            if (frameIndexIA >= anim->def.numFrames) {
-                frameIndexIA = 0;
+                DrawTexturePro(anim->textura, frameIA,
+                (Rectangle){posIA[i].x, posIA[i].y, frame.width * zoomIA, frame.height * zoomIA},
+                (Vector2){frame.width * zoomIA / 2, frame.height * zoomIA / 2}, 0, corFade);
+                
+                // Barra de HP
+                int posXBarra = (int)posIA[i].x - 50; 
+                int posYBarra = (int)hpBarYFixo; 
+                int larguraBarraIA = 100;
+                int alturaBarraIA = 10;
+
+                DrawRectangle(posXBarra, posYBarra, larguraBarraIA, alturaBarraIA, corBgFade);
+
+                int larguraPreenchimentoIA = (int)((float)larguraBarraIA * (float)estado->hpIA[i] / (float)pDataIA->hpMax);
+                DrawRectangle(posXBarra, posYBarra, larguraPreenchimentoIA, alturaBarraIA, corHpFadeIA);
+
+                DrawRectangleLines(posXBarra, posYBarra, larguraBarraIA, alturaBarraIA, corBordaFade);
             }
-
-            Rectangle frame = anim->def.frames[frameIndexIA];
-            float zoomIA = pDataIA->batalhaZoom;
-             Rectangle frameIA = frame;
-            frameIA.width = -frame.width; // Flip
-
-            DrawTexturePro(anim->textura, frameIA,
-            (Rectangle){posIA[i].x, posIA[i].y, frame.width * zoomIA, frame.height * zoomIA},
-            (Vector2){frame.width * zoomIA / 2, frame.height * zoomIA / 2}, 0, corFade);
-            // --- FIM DO CÓDIGO DO SPRITE ---
-            // Barra de HP
-            int posXBarra = (int)posIA[i].x - 50; // DECLARAÇÃO CORRETA
-            int posYBarra = (int)hpBarYFixo; // DECLARAÇÃO CORRETA
-            int larguraBarraIA = 100;
-            int alturaBarraIA = 10;
-
-            // USO CORRETO (corrige o erro)
-            DrawRectangle(posXBarra, posYBarra, larguraBarraIA, alturaBarraIA, corBgFade);
-
-            int larguraPreenchimentoIA = (int)((float)larguraBarraIA * (float)estado->hpIA[i] / (float)pDataIA->hpMax);
-            DrawRectangle(posXBarra, posYBarra, larguraPreenchimentoIA, alturaBarraIA, corHpFadeIA);
-
-            DrawRectangleLines(posXBarra, posYBarra, larguraBarraIA, alturaBarraIA, corBordaFade);
         }
         noAtualIA = noAtualIA->proximo;
     }
@@ -962,19 +1026,18 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
     // --- Desenha Personagens em Foco ---
     if (estado->atacanteEmFoco != NULL) {
         PersonagemData* pData = estado->atacanteEmFoco;
-        bool ehIA = estado->animFlip;
+        bool ehOponente = estado->animFlip;
         int frameIdx = 0;
         int hpAtual = 0;
         int posAtacante = -1;
 
-        // --- CORREÇÃO: Encontra o nó do atacante para saber a sua POSIÇÃO ---
-        NoPersonagem* noAtacante = ObterNoPorPersonagem(ehIA ? &estado->timeIA : &estado->timeJogador, pData);
+        NoPersonagem* noAtacante = ObterNoPorPersonagem(ehOponente ? &estado->timeIA : &estado->timeJogador, pData);
         if (noAtacante != NULL) {
             posAtacante = noAtacante->posicaoNoTime;
         }
 
         if (posAtacante != -1) { // Só desenha se o atacante for encontrado
-            if (ehIA == true) {
+            if (ehOponente) {
                 frameIdx = estado->idleFrameIA[posAtacante];
                 hpAtual = estado->hpIA[posAtacante];
             } else {
@@ -1010,20 +1073,19 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
             
             DrawRectangle(posXBarra, (int)hpBarY, larguraBarra, alturaBarra, DARKGRAY);
             int larguraPreenchimento = (int)((float)larguraBarra * (float)hpAtual / (float)pData->hpMax);
-            DrawRectangle(posXBarra, (int)hpBarY, larguraPreenchimento, alturaBarra, ehIA ? RED : GREEN);
+            DrawRectangle(posXBarra, (int)hpBarY, larguraPreenchimento, alturaBarra, ehOponente ? RED : GREEN);
             DrawRectangleLines(posXBarra, (int)hpBarY, larguraBarra, alturaBarra, LIGHTGRAY);
         }
     }
     
     if (estado->alvoEmFoco != NULL) {
         PersonagemData* pData = estado->alvoEmFoco;
-        bool ehIA = !estado->animFlip; // Alvo é o oposto
+        bool ehOponente = !estado->animFlip; // Alvo é o oposto do atacante
         int frameIdx = 0;
         int hpAtual = 0;
         int posAlvo = -1;
 
-        // --- CORREÇÃO: Encontra o nó do alvo para saber a sua POSIÇÃO ---
-        NoPersonagem* noAlvo = ObterNoPorPersonagem(ehIA ? &estado->timeIA : &estado->timeJogador, pData);
+        NoPersonagem* noAlvo = ObterNoPorPersonagem(ehOponente ? &estado->timeIA : &estado->timeJogador, pData);
         
         if (noAlvo != NULL) {
             // Alvo está vivo, pega a posição do nó
@@ -1034,7 +1096,7 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
         }
 
         if (posAlvo != -1) { // Só desenha se tivermos uma posição válida
-            if (ehIA == true) {
+            if (ehOponente) {
                 frameIdx = estado->idleFrameIA[posAlvo];
                 hpAtual = estado->hpIA[posAlvo];
             } else {
@@ -1053,7 +1115,7 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
                 }
                 
                 Rectangle frame = pData->animIdle.def.frames[frameIdx];
-                if (ehIA == true) { // Flip alvo se for IA
+                if (ehOponente) { // Flip alvo se for Oponente
                     frame.width = -frame.width; 
                 } 
                 
@@ -1063,7 +1125,11 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
             }
 
             // Barra de HP do Alvo (desenha sempre, mesmo se morto, para mostrar o 0)
-            float alturaFrame = (pData->animIdle.def.numFrames > 0) ? pData->animIdle.def.frames[0].height : 100.0f; // Altura de fallback
+            float alturaFrame = 100.0f; // Altura de fallback
+            if (pData->animIdle.def.numFrames > 0) {
+                 alturaFrame = pData->animIdle.def.frames[0].height;
+            }
+           
             float hpBarY = estado->posFocoAlvo.y + (alturaFrame * estado->zoomFocoAlvo / 2) + 5;
             int posXBarra = (int)estado->posFocoAlvo.x - 50;
             int larguraBarra = 100;
@@ -1071,7 +1137,7 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
             
             DrawRectangle(posXBarra, (int)hpBarY, larguraBarra, alturaBarra, DARKGRAY);
             int larguraPreenchimento = (int)((float)larguraBarra * (float)hpAtual / (float)pData->hpMax);
-            DrawRectangle(posXBarra, (int)hpBarY, larguraPreenchimento, alturaBarra, ehIA ? RED : GREEN);
+            DrawRectangle(posXBarra, (int)hpBarY, larguraPreenchimento, alturaBarra, ehOponente ? RED : GREEN);
             DrawRectangleLines(posXBarra, (int)hpBarY, larguraBarra, alturaBarra, LIGHTGRAY);
         }
     }
@@ -1081,15 +1147,31 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
     DesenharAnimacao(&estado->animacaoEmExecucao);
     
     // Desenha as caixas de seleção de alvo
-    if (estado->estadoTurno == ESTADO_ESPERANDO_JOGADOR && estado->ataqueSelecionado != -1) {
-        // Itera na lista da IA para desenhar a caixa apenas nos vivos
-        noAtualIA = estado->timeIA.inicio;
-        while (noAtualIA != NULL) {
-            int i = noAtualIA->posicaoNoTime;
-            DrawRectangleLines((int)posIA[i].x - 50, (int)posIA[i].y - 50, 100, 100, YELLOW);
-            noAtualIA = noAtualIA->proximo;
+    if (estado->estadoTurno == ESTADO_ESPERANDO_JOGADOR) {
+        if (estado->ataqueSelecionado != -1) {
+            
+            bool ehJogador1 = (estado->turnoDe == TURNO_JOGADOR);
+
+            if (ehJogador1) {
+                // P1 está atacando: desenha caixas no Time IA/P2
+                noAtualIA = estado->timeIA.inicio;
+                while (noAtualIA != NULL) {
+                    int i = noAtualIA->posicaoNoTime;
+                    DrawRectangleLines((int)posIA[i].x - 50, (int)posIA[i].y - 50, 100, 100, YELLOW);
+                    noAtualIA = noAtualIA->proximo;
+                }
+            } else {
+                // P2 está atacando: desenha caixas no Time P1
+                noAtualJogador = estado->timeJogador.inicio;
+                while (noAtualJogador != NULL) {
+                    int i = noAtualJogador->posicaoNoTime;
+                    DrawRectangleLines((int)posJogador[i].x - 50, (int)posJogador[i].y - 50, 100, 100, YELLOW);
+                    noAtualJogador = noAtualJogador->proximo;
+                }
+            }
         }
     }
+
 
     // --- Menu Inferior ---
     int menuY = arenaY + arenaHeight + 10; 

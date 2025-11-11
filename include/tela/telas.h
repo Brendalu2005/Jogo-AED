@@ -16,6 +16,11 @@ typedef enum GameScreen {
     SCREEN_SAIR 
 } GameScreen;
 
+typedef enum {
+    MODO_SOLO,
+    MODO_PVP
+} ModoDeJogo;
+
 Vector2 GetMouseVirtual(void);
 // ------------------
 
