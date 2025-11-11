@@ -8,6 +8,7 @@
 #include "sobre.h"
 #include "modo_jogo.h"
 
+
 Texture2D backgroundSelecao;
 
 void AtualizarTelaPlaceholder(GameScreen *telaAtual);

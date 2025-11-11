@@ -4,6 +4,7 @@
 #include <stdlib.h> 
 #include <string.h> 
 #include "ConsumoAPI_Gemini.h" 
+#include "math.h"
 
 // Inclui a definição de 'GetMouseVirtual()'
 #include "telas.h"
@@ -15,6 +16,10 @@
 static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataque* ataque, int alvoIdx, bool ehJogadorAtacando);
 static void ProximoTurno(EstadoBatalha *estado);
 static void ExecutarTurnoIA(EstadoBatalha *estado);
+
+Texture2D backgroundArena;
+int backgroundCarregado = 0;
+
 
 // --- NOVA FUNÇÃO AUXILIAR ---
 /**
@@ -331,6 +336,12 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
 
 void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) {
     printf("INICIALIZANDO BATALHA!\n");
+
+    if (backgroundCarregado == 0) {
+        backgroundArena = LoadTexture("sprites/background/backgroundbatalha.png");
+        backgroundCarregado = 1;
+    }
+
     estado->roundAtual = 1;
 
     // --- LÓGICA MODIFICADA (Usa Listas) ---
@@ -404,6 +415,12 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
 
 void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
     if (IsKeyPressed(KEY_ESCAPE)) {
+
+        if (backgroundCarregado == 1) {
+            UnloadTexture(backgroundArena);
+            backgroundCarregado = 0;
+        }
+
         *telaAtual = SCREEN_MENU;
         LiberarLista(&estado->timeJogador);
         LiberarLista(&estado->timeIA);
@@ -713,6 +730,17 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
     int arenaY = 80;
     int arenaHeight = 550; 
     DrawRectangleLines(10, arenaY, SCREEN_WIDTH - 20, arenaHeight, LIGHTGRAY);
+
+    if (backgroundCarregado == 1) {
+        DrawTexturePro(
+            backgroundArena,
+            (Rectangle){0, 0, backgroundArena.width, backgroundArena.height},
+            (Rectangle){10, arenaY, SCREEN_WIDTH - 20, arenaHeight},
+            (Vector2){0, 0},
+            0.0f,
+            WHITE
+        );
+    }
     
     // Cores para o fade
     Color corFade = ColorAlpha(WHITE, estado->alphaOutrosPersonagens);
