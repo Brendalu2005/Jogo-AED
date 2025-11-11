@@ -149,13 +149,32 @@ static ClassePersonagem GetClasseSafe(cJSON* obj, const char* key) {
     return CLASSE_LINHA_MEIO; 
 }
 
+// NOVO: Função helper para converter string do JSON para o enum TipoAtaque
+static TipoAtaque GetTipoAtaqueSafe(cJSON* obj, const char* key) {
+    const char* tipoStr = GetStringSafe(obj, key);
+    
+    if (strcmp(tipoStr, "DANO_AREA") == 0) {
+        return TIPO_DANO_AREA;
+    }
+    
+    if (strcmp(tipoStr, "CURA_SI") == 0) {
+        return TIPO_CURA_SI;
+    }
+    
+    // Se o campo não existir ou for inválido, assume DANO_UNICO
+    return TIPO_DANO_UNICO;
+}
+
+// MODIFICADO: Esta função SUBSTITUI a original
 static Ataque GetAtaqueSafe(cJSON* obj, const char* key) {
     Ataque att = {0};
     cJSON* attObj = cJSON_GetObjectItem(obj, key);
+    
     if (attObj) {
         att.nome = c99_strdup(GetStringSafe(attObj, "nome"));
         att.descricao = c99_strdup(GetStringSafe(attObj, "descricao"));
         att.dano = GetIntSafe(attObj, "dano");
+        att.tipo = GetTipoAtaqueSafe(attObj, "tipo"); // Lê o novo tipo
     }
     return att;
 }

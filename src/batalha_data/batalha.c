@@ -70,6 +70,7 @@ static const char* CarregarChaveApi(const char* caminhoArquivo) {
     return CHAVE_API_BUFFER;
 }
 
+
 //IA do GEMINI
 static void ExecutarTurnoIA(EstadoBatalha *estado) {
     PersonagemData* atacante = estado->ordemDeAtaque[estado->personagemAgindoIdx];
@@ -110,6 +111,7 @@ static void ExecutarTurnoIA(EstadoBatalha *estado) {
     LiberarDecisaoIA(&decisao);
 }
 
+
 static Vector2 posJogador[3];
 static Vector2 posIA[3];
 static int animVelocidadeIdle = 15; 
@@ -145,6 +147,41 @@ static void AtualizarAnimacao(EstadoAnimacao* anim) {
         }
     }
 }
+
+static void IniciarZoomEAnimacao(EstadoBatalha* estado, PersonagemData* atacante, PersonagemData* alvo, int alvoIdx, bool ehJogadorAtacando, Ataque* ataque) {
+    
+    bool deveFlipar;
+    if (ehJogadorAtacando) {
+        deveFlipar = false;
+    } else {
+        deveFlipar = true;
+    }
+
+    // Prepara para o Zoom In
+    estado->atacanteEmFoco = atacante;
+    estado->alvoEmFoco = alvo; // Pode ser NULL (no caso de cura)
+    estado->alvoEmFocoIdx = alvoIdx; // Pode ser -1 (no caso de cura)
+    estado->timerFoco = 0.0f;
+    estado->alphaOutrosPersonagens = 1.0f;
+    estado->animFlip = deveFlipar;
+
+    // --- NOVO: faz o personagem atacado (se houver) virar ---
+    if (ehJogadorAtacando == false && alvo != NULL) {
+        // A IA está atacando ? o alvo (jogador) vira para a esquerda
+        alvo->animIdle.flip = true;
+    }
+    
+    // Guarda qual animação deve tocar depois do zoom
+    if (strcmp(ataque->nome, atacante->ataque1.nome) == 0) {
+        estado->animParaTocar = &atacante->animAtaque1;
+    } else {
+        estado->animParaTocar = &atacante->animAtaque2;
+    }
+
+    // Define o próximo estado como o Zoom In
+    estado->estadoTurno = ESTADO_ZOOM_IN_ATAQUE;
+}
+
 
 void DesenharAnimacao(EstadoAnimacao* anim) {
     if (!anim->ativo) return;
@@ -278,95 +315,119 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
     int dano = ataque->dano;
     PersonagemData* alvo = NULL;
     NoPersonagem* noAlvo = NULL; 
+
+    // Variáveis para o time alvo (depende de quem ataca)
+    ListaTime* listaAlvo;
+    int* hpArrayAlvo;
     
-    // --- LÓGICA MODIFICADA (Usa Listas) ---
-    if (ehJogadorAtacando) {
-        // 1. (REMOVIDO: Não precisamos mais da posição do atacante aqui)
-
-        // 2. Encontra o alvo (IA) usando a lista
-        noAlvo = ObterNoNaPosicao(&estado->timeIA, alvoIdx);
-        if (noAlvo == NULL) {
-             printf("ATAQUE: Jogador tentou atacar posicao %d vazia.\n", alvoIdx);
-             ProximoTurno(estado); // Pula o turno se o alvo não existe
-             return; 
-        }
-        alvo = noAlvo->personagem; 
-        
-        // 3. Aplica dano e mensagem
-        estado->hpIA[alvoIdx] -= dano; // O HP ainda é controlado pelo array
-        sprintf(estado->mensagemBatalha, "%s usou %s em %s e causou %d de dano!", atacante->nome, ataque->nome, alvo->nome, dano);
-        
-        // 4. Verifica se morreu e remove da lista
-        if (estado->hpIA[alvoIdx] <= 0) {
-            estado->hpIA[alvoIdx] = 0;
-            RemoverPersonagem(&estado->timeIA, noAlvo);
-        }
-
-    } else { // é a IA atacando
-        // 1. (REMOVIDO)
-
-        // 2. Encontra o alvo (Jogador) usando a lista
-        noAlvo = ObterNoNaPosicao(&estado->timeJogador, alvoIdx);
-         if (noAlvo == NULL) {
-             printf("ATAQUE: IA tentou atacar posicao %d vazia.\n", alvoIdx);
-             ProximoTurno(estado); // Pula o turno se o alvo não existe
-             return; 
-        }
-        alvo = noAlvo->personagem;
-
-        // 3. Aplica dano e mensagem
-        estado->hpJogador[alvoIdx] -= dano;
-        sprintf(estado->mensagemBatalha, "%s usou %s em %s e causou %d de dano!", atacante->nome, ataque->nome, alvo->nome, dano);
-
-        
-        // 4. Verifica se morreu e remove da lista
-        if (estado->hpJogador[alvoIdx] <= 0) {
-            estado->hpJogador[alvoIdx] = 0;
-            RemoverPersonagem(&estado->timeJogador, noAlvo);
-        }
-    }
-    // --- FIM DA LÓGICA MODIFICADA ---
-
-    bool deveFlipar;
+    // Variáveis para o time atacante (usado na CURA)
+    ListaTime* listaAtacante;
+    int* hpArrayAtacante;
 
     if (ehJogadorAtacando) {
-        // Jogador ataca: ele deve estar virado para a direita
-        deveFlipar = false;
+        listaAlvo = &estado->timeIA;
+        hpArrayAlvo = estado->hpIA;
+        listaAtacante = &estado->timeJogador;
+        hpArrayAtacante = estado->hpJogador;
     } else {
-        // IA ataca: ela deve estar virada para a esquerda
-        deveFlipar = true;
+        listaAlvo = &estado->timeJogador;
+        hpArrayAlvo = estado->hpJogador;
+        listaAtacante = &estado->timeIA;
+        hpArrayAtacante = estado->hpIA;
     }
 
-    // Prepara para o Zoom In
-    estado->atacanteEmFoco = atacante;
-    estado->alvoEmFoco = alvo; // 'alvo' foi pego da lista logo acima
-    // --- CORREÇÃO ---
-    // Precisamos guardar o ÍNDICE do alvo (0, 1, ou 2) para o caso de ele morrer
-    // (O ponteiro noAlvo ficará NULL, mas o índice ainda será necessário para o zoom out)
-    estado->alvoEmFocoIdx = alvoIdx; 
-    // --- FIM DA CORREÇÃO ---
-    estado->timerFoco = 0.0f;
-    estado->alphaOutrosPersonagens = 1.0f;
-    estado->animFlip = deveFlipar;
+    // --- LÓGICA PRINCIPAL DOS TIPOS DE ATAQUE ---
+    switch (ataque->tipo) {
+        
+        // --- CASO 1: DANO EM ALVO ÚNICO (Lógica antiga) ---
+        case TIPO_DANO_UNICO:
+        {
+            noAlvo = ObterNoNaPosicao(listaAlvo, alvoIdx);
+            if (noAlvo == NULL) {
+                 if (ehJogadorAtacando) {
+                    printf("ATAQUE: Jogador tentou atacar posicao %d vazia.\n", alvoIdx);
+                 } else {
+                    printf("ATAQUE: IA tentou atacar posicao %d vazia.\n", alvoIdx);
+                 }
+                 ProximoTurno(estado); // Pula o turno se o alvo não existe
+                 return; 
+            }
+            alvo = noAlvo->personagem; 
+            
+            hpArrayAlvo[alvoIdx] -= dano;
+            sprintf(estado->mensagemBatalha, "%s usou %s em %s e causou %d de dano!", atacante->nome, ataque->nome, alvo->nome, dano);
+            
+            if (hpArrayAlvo[alvoIdx] <= 0) {
+                hpArrayAlvo[alvoIdx] = 0;
+                RemoverPersonagem(listaAlvo, noAlvo);
+            }
+            
+            // Inicia o zoom e a animação
+            IniciarZoomEAnimacao(estado, atacante, alvo, alvoIdx, ehJogadorAtacando, ataque);
+            break;
+        }
 
-        // --- NOVO: faz o personagem atacado pela IA virar para a esquerda ---
-    if (!ehJogadorAtacando && alvo != NULL) {
-        // A IA está atacando → o alvo (jogador) vira para a esquerda
-        alvo->animIdle.flip = true;
+        // --- CASO 2: DANO EM ÁREA ---
+        case TIPO_DANO_AREA:
+        {
+            sprintf(estado->mensagemBatalha, "%s usou %s e atingiu TODOS por %d de dano!", atacante->nome, ataque->nome, dano);
+
+            // Loop pelos 3 alvos
+            for (int i = 0; i < 3; i++) {
+                noAlvo = ObterNoNaPosicao(listaAlvo, i);
+                
+                // Se o alvo existe (está vivo)
+                if (noAlvo != NULL) {
+                    hpArrayAlvo[i] -= dano; // Aplica dano
+                    
+                    if (hpArrayAlvo[i] <= 0) {
+                        hpArrayAlvo[i] = 0;
+                        RemoverPersonagem(listaAlvo, noAlvo);
+                    }
+                }
+            }
+            
+            // Para o zoom, vamos focar na POSIÇÃO 1 (meio) do time inimigo
+            alvoIdx = 1; 
+            noAlvo = ObterNoNaPosicao(listaAlvo, alvoIdx);
+            if (noAlvo != NULL) {
+                alvo = noAlvo->personagem;
+            } else {
+                alvo = NULL; // Posição 1 pode estar morta, o zoom foca no vazio
+            }
+
+            IniciarZoomEAnimacao(estado, atacante, alvo, alvoIdx, ehJogadorAtacando, ataque);
+            break;
+        }
+
+        // --- CASO 3: CURA EM SI MESMO ---
+        case TIPO_CURA_SI:
+        {
+            int cura = ataque->dano; // Reinterpretamos 'dano' como 'cura'
+            NoPersonagem* noAtacante = ObterNoPorPersonagem(listaAtacante, atacante);
+
+            if (noAtacante != NULL) {
+                int posAtacante = noAtacante->posicaoNoTime;
+                int hpMax = atacante->hpMax;
+
+                hpArrayAtacante[posAtacante] += cura;
+                
+                // Impede sobrecura
+                if (hpArrayAtacante[posAtacante] > hpMax) {
+                    hpArrayAtacante[posAtacante] = hpMax;
+                }
+                
+                sprintf(estado->mensagemBatalha, "%s usou %s e curou %d de vida!", atacante->nome, ataque->nome, cura);
+
+            } else {
+                // Isso não deve acontecer se a lógica estiver correta
+                sprintf(estado->mensagemBatalha, "%s tentou se curar, mas falhou.", atacante->nome);
+            }
+
+            IniciarZoomEAnimacao(estado, atacante, NULL, -1, ehJogadorAtacando, ataque);
+            break;
+        }
     }
-    
-     
-
-
-    // Guarda qual animação deve tocar depois do zoom
-    if (strcmp(ataque->nome, atacante->ataque1.nome) == 0) {
-        estado->animParaTocar = &atacante->animAtaque1;
-    } else {
-        estado->animParaTocar = &atacante->animAtaque2;
-    }
-
-    // Define o próximo estado como o Zoom In
-    estado->estadoTurno = ESTADO_ZOOM_IN_ATAQUE;
 }
 
 
@@ -604,7 +665,6 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
 
                 bool ehIAAtacando = estado->animFlip;
 
-                // --- CORREÇÃO: Encontra o NÓ do atacante ---
                 NoPersonagem* noAtacante = NULL;
                 if (ehIAAtacando == true) {
                     noAtacante = ObterNoPorPersonagem(&estado->timeIA, estado->atacanteEmFoco);
@@ -612,54 +672,60 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
                     noAtacante = ObterNoPorPersonagem(&estado->timeJogador, estado->atacanteEmFoco);
                 }
                 
-                // --- CORREÇÃO: Encontra o NÓ do alvo ---
-                NoPersonagem* noAlvo = NULL;
-                if (ehIAAtacando == true) {
-                    noAlvo = ObterNoPorPersonagem(&estado->timeJogador, estado->alvoEmFoco);
-                } else {
-                    noAlvo = ObterNoPorPersonagem(&estado->timeIA, estado->alvoEmFoco);
-                }
-
                 Vector2 posOriginalAtacante;
                 if (noAtacante != NULL) {
-                     // CORREÇÃO: Usa o NÓ para pegar a posicaoNoTime
                      posOriginalAtacante = ehIAAtacando ? posIA[noAtacante->posicaoNoTime] : posJogador[noAtacante->posicaoNoTime];
                 } else {
                     posOriginalAtacante = (Vector2){ -200.0f, 350.0f }; 
                 }
                
-                Vector2 posOriginalAlvo;
-                if (noAlvo != NULL) {
-                     // CORREÇÃO: Usa o NÓ para pegar a posicaoNoTime
-                     posOriginalAlvo = ehIAAtacando ? posJogador[noAlvo->posicaoNoTime] : posIA[noAlvo->posicaoNoTime];
-                } else {
-                    // CORREÇÃO: Alvo já morreu, usa o índice (0,1,2) que guardámos
-                     posOriginalAlvo = ehIAAtacando ? posJogador[estado->alvoEmFocoIdx] : posIA[estado->alvoEmFocoIdx];
-                }
-
-                float zoomOriginalAtacante = estado->atacanteEmFoco->batalhaZoom;
-                float zoomOriginalAlvo = estado->alvoEmFoco->batalhaZoom;
-
                 Vector2 posAlvoAtacante;
-                Vector2 posAlvoAlvo;
+                float zoomOriginalAtacante = estado->atacanteEmFoco->batalhaZoom;
                 float zoomAlvo = 2.5f; 
 
-                if (ehIAAtacando == true) {
-                    posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f + 200.0f, 350.0f };
-                    posAlvoAlvo = (Vector2){ (float)SCREEN_WIDTH / 2.0f - 200.0f, 350.0f };
+                // MODIFICADO: Verifica se há um alvo para o zoom
+                if (estado->alvoEmFoco != NULL || estado->alvoEmFocoIdx != -1) {
+                    // --- Lógica de zoom com alvo (Dano Único ou Área) ---
+                    NoPersonagem* noAlvo = NULL;
+                    if (ehIAAtacando == true) {
+                        noAlvo = ObterNoPorPersonagem(&estado->timeJogador, estado->alvoEmFoco);
+                    } else {
+                        noAlvo = ObterNoPorPersonagem(&estado->timeIA, estado->alvoEmFoco);
+                    }
+                    
+                    Vector2 posOriginalAlvo;
+                    float zoomOriginalAlvo = 2.0f; // Valor padrão se alvo estiver morto
+                    
+                    if (noAlvo != NULL) {
+                         posOriginalAlvo = ehIAAtacando ? posJogador[noAlvo->posicaoNoTime] : posIA[noAlvo->posicaoNoTime];
+                         zoomOriginalAlvo = estado->alvoEmFoco->batalhaZoom;
+                    } else {
+                         posOriginalAlvo = ehIAAtacando ? posJogador[estado->alvoEmFocoIdx] : posIA[estado->alvoEmFocoIdx];
+                    }
+
+                    Vector2 posAlvoAlvo;
+
+                    if (ehIAAtacando == true) {
+                        posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f + 200.0f, 350.0f };
+                        posAlvoAlvo = (Vector2){ (float)SCREEN_WIDTH / 2.0f - 200.0f, 350.0f };
+                    } else {
+                        posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f - 200.0f, 350.0f };
+                        posAlvoAlvo = (Vector2){ (float)SCREEN_WIDTH / 2.0f + 200.0f, 350.0f };
+                    }
+                    
+                    estado->posFocoAlvo.x = posOriginalAlvo.x + (posAlvoAlvo.x - posOriginalAlvo.x) * progresso;
+                    estado->posFocoAlvo.y = posOriginalAlvo.y + (posAlvoAlvo.y - posOriginalAlvo.y) * progresso;
+                    estado->zoomFocoAlvo = zoomOriginalAlvo + (zoomAlvo - zoomOriginalAlvo) * progresso;
+
                 } else {
-                    posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f - 200.0f, 350.0f };
-                    posAlvoAlvo = (Vector2){ (float)SCREEN_WIDTH / 2.0f + 200.0f, 350.0f };
+                    // --- Lógica de zoom sem alvo (Cura) ---
+                    posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f, 350.0f }; // Foca no centro
                 }
 
+                // Interpola o atacante (sempre)
                 estado->posFocoAtacante.x = posOriginalAtacante.x + (posAlvoAtacante.x - posOriginalAtacante.x) * progresso;
                 estado->posFocoAtacante.y = posOriginalAtacante.y + (posAlvoAtacante.y - posOriginalAtacante.y) * progresso;
-                
-                estado->posFocoAlvo.x = posOriginalAlvo.x + (posAlvoAlvo.x - posOriginalAlvo.x) * progresso;
-                estado->posFocoAlvo.y = posOriginalAlvo.y + (posAlvoAlvo.y - posOriginalAlvo.y) * progresso;
-                
                 estado->zoomFocoAtacante = zoomOriginalAtacante + (zoomAlvo - zoomOriginalAtacante) * progresso;
-                estado->zoomFocoAlvo = zoomOriginalAlvo + (zoomAlvo - zoomOriginalAlvo) * progresso;
                 
                 estado->alphaOutrosPersonagens = 1.0f - progresso; 
 
@@ -686,7 +752,6 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
 
                 bool ehIAAtacando = estado->animFlip;
                 
-                // --- CORREÇÃO: Encontra o NÓ do atacante ---
                 NoPersonagem* noAtacante = NULL;
                 if (ehIAAtacando == true) {
                     noAtacante = ObterNoPorPersonagem(&estado->timeIA, estado->atacanteEmFoco);
@@ -694,63 +759,67 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
                     noAtacante = ObterNoPorPersonagem(&estado->timeJogador, estado->atacanteEmFoco);
                 }
                 
-                // --- CORREÇÃO: Encontra o NÓ do alvo ---
-                NoPersonagem* noAlvo = NULL;
-                if (ehIAAtacando == true) {
-                    noAlvo = ObterNoPorPersonagem(&estado->timeJogador, estado->alvoEmFoco);
-                } else {
-                    noAlvo = ObterNoPorPersonagem(&estado->timeIA, estado->alvoEmFoco);
-                }
-                
                 Vector2 posOriginalAtacante;
                 if (noAtacante != NULL) {
-                     // CORREÇÃO: Usa o NÓ
                      posOriginalAtacante = ehIAAtacando ? posIA[noAtacante->posicaoNoTime] : posJogador[noAtacante->posicaoNoTime];
                 } else {
                     posOriginalAtacante = estado->posFocoAtacante; 
                 }
 
-                Vector2 posOriginalAlvo;
-                if (noAlvo != NULL) {
-                     // CORREÇÃO: Usa o NÓ
-                    posOriginalAlvo = ehIAAtacando ? posJogador[noAlvo->posicaoNoTime] : posIA[noAlvo->posicaoNoTime];
-                } else {
-                    // CORREÇÃO: Usa o ÍNDICE
-                    posOriginalAlvo = ehIAAtacando ? posJogador[estado->alvoEmFocoIdx] : posIA[estado->alvoEmFocoIdx];
-                }
-
                 float zoomOriginalAtacante = estado->atacanteEmFoco->batalhaZoom;
-                float zoomOriginalAlvo = estado->alvoEmFoco->batalhaZoom;
-
                 Vector2 posAlvoAtacante;
-                Vector2 posAlvoAlvo;
                 float zoomAlvo = 2.5f;
+                
+                // MODIFICADO: Verifica se há um alvo para o zoom
+                if (estado->alvoEmFoco != NULL || estado->alvoEmFocoIdx != -1) {
+                    // --- Lógica de zoom com alvo (Dano Único ou Área) ---
+                    NoPersonagem* noAlvo = NULL;
+                    if (ehIAAtacando == true) {
+                        noAlvo = ObterNoPorPersonagem(&estado->timeJogador, estado->alvoEmFoco);
+                    } else {
+                        noAlvo = ObterNoPorPersonagem(&estado->timeIA, estado->alvoEmFoco);
+                    }
+                    
+                    Vector2 posOriginalAlvo;
+                    float zoomOriginalAlvo = 2.0f;
+                    
+                    if (noAlvo != NULL) {
+                        posOriginalAlvo = ehIAAtacando ? posJogador[noAlvo->posicaoNoTime] : posIA[noAlvo->posicaoNoTime];
+                        zoomOriginalAlvo = estado->alvoEmFoco->batalhaZoom;
+                    } else {
+                        posOriginalAlvo = ehIAAtacando ? posJogador[estado->alvoEmFocoIdx] : posIA[estado->alvoEmFocoIdx];
+                    }
 
-                if (ehIAAtacando == true) {
-                    // IA atacou: O Atacante (IA) estava na DIREITA, o Alvo (Jogador) na ESQUERDA
-                    posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f + 200.0f, 350.0f };
-                    posAlvoAlvo = (Vector2){ (float)SCREEN_WIDTH / 2.0f - 200.0f, 350.0f };
+                    Vector2 posAlvoAlvo;
+
+                    if (ehIAAtacando == true) {
+                        posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f + 200.0f, 350.0f };
+                        posAlvoAlvo = (Vector2){ (float)SCREEN_WIDTH / 2.0f - 200.0f, 350.0f };
+                    } else {
+                        posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f - 200.0f, 350.0f };
+                        posAlvoAlvo = (Vector2){ (float)SCREEN_WIDTH / 2.0f + 200.0f, 350.0f };
+                    }
+                    
+                    estado->posFocoAlvo.x = posAlvoAlvo.x + (posOriginalAlvo.x - posAlvoAlvo.x) * progresso;
+                    estado->posFocoAlvo.y = posAlvoAlvo.y + (posOriginalAlvo.y - posAlvoAlvo.y) * progresso;
+                    estado->zoomFocoAlvo = zoomAlvo + (zoomOriginalAlvo - zoomAlvo) * progresso;
+
                 } else {
-                    // Jogador atacou: O Atacante (Jogador) estava na ESQUERDA, o Alvo (IA) na DIREITA
-                    posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f - 200.0f, 350.0f };
-                    posAlvoAlvo = (Vector2){ (float)SCREEN_WIDTH / 2.0f + 200.0f, 350.0f };
+                    // --- Lógica de zoom sem alvo (Cura) ---
+                     posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f, 350.0f }; // Foca no centro
                 }
 
+                // Interpola o atacante (sempre)
                 estado->posFocoAtacante.x = posAlvoAtacante.x + (posOriginalAtacante.x - posAlvoAtacante.x) * progresso;
                 estado->posFocoAtacante.y = posAlvoAtacante.y + (posOriginalAtacante.y - posAlvoAtacante.y) * progresso;
-                
-                estado->posFocoAlvo.x = posAlvoAlvo.x + (posOriginalAlvo.x - posAlvoAlvo.x) * progresso;
-                estado->posFocoAlvo.y = posAlvoAlvo.y + (posOriginalAlvo.y - posAlvoAlvo.y) * progresso;
-                
                 estado->zoomFocoAtacante = zoomAlvo + (zoomOriginalAtacante - zoomAlvo) * progresso;
-                estado->zoomFocoAlvo = zoomAlvo + (zoomOriginalAlvo - zoomAlvo) * progresso;
                 
                 estado->alphaOutrosPersonagens = progresso; 
 
                 if (progresso >= 1.0f) {
                     estado->atacanteEmFoco = NULL;
                     estado->alvoEmFoco = NULL;
-                    estado->alvoEmFocoIdx = -1; // Limpa o índice
+                    estado->alvoEmFocoIdx = -1; 
                     estado->alphaOutrosPersonagens = 1.0f;
                     
                     if (estado->timeJogador.tamanho == 0 || estado->timeIA.tamanho == 0) {
@@ -1071,11 +1140,27 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
             Vector2 mousePos = GetMouseVirtual();
             if (CheckCollisionPointRec(mousePos, btnAtk1)) {
                 DrawText(atacante->ataque1.descricao, colSpecsX, textoYBase + 40, 20, RAYWHITE);
-                DrawText(TextFormat("Causa %d de Dano.", atacante->ataque1.dano), colSpecsX, textoYBase + 70, 20, RAYWHITE);
+                
+                if (atacante->ataque1.tipo == TIPO_CURA_SI) {
+                    DrawText(TextFormat("Cura %d de PV.", atacante->ataque1.dano), colSpecsX, textoYBase + 70, 20, RAYWHITE);
+                } else if (atacante->ataque1.tipo == TIPO_DANO_AREA) {
+                    DrawText(TextFormat("Causa %d de Dano em Área.", atacante->ataque1.dano), colSpecsX, textoYBase + 70, 20, RAYWHITE);
+                } else {
+                    DrawText(TextFormat("Causa %d de Dano.", atacante->ataque1.dano), colSpecsX, textoYBase + 70, 20, RAYWHITE);
+                }
+                
             } else {
+                // MODIFICADO: Atualiza texto de descrição do Ataque 2
                 if (CheckCollisionPointRec(mousePos, btnAtk2)) {
                     DrawText(atacante->ataque2.descricao, colSpecsX, textoYBase + 40, 20, RAYWHITE);
-                    DrawText(TextFormat("Causa %d de Dano.", atacante->ataque2.dano), colSpecsX, textoYBase + 70, 20, RAYWHITE);
+                    
+                    if (atacante->ataque2.tipo == TIPO_CURA_SI) {
+                        DrawText(TextFormat("Cura %d de PV.", atacante->ataque2.dano), colSpecsX, textoYBase + 70, 20, RAYWHITE);
+                    } else if (atacante->ataque2.tipo == TIPO_DANO_AREA) {
+                        DrawText(TextFormat("Causa %d de Dano em Área.", atacante->ataque2.dano), colSpecsX, textoYBase + 70, 20, RAYWHITE);
+                    } else {
+                        DrawText(TextFormat("Causa %d de Dano.", atacante->ataque2.dano), colSpecsX, textoYBase + 70, 20, RAYWHITE);
+                    }
                 }
             }
         }

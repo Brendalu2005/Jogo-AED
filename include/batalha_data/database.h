@@ -3,11 +3,18 @@
 
 #include "raylib.h"
     
+typedef enum TipoAtaque {
+    TIPO_DANO_UNICO, 
+    TIPO_DANO_AREA,  
+    TIPO_CURA_SI     
+} TipoAtaque;
+    
 // Define um único ataque
 typedef struct Ataque {
     char* nome;
     char* descricao;
     int dano;
+    TipoAtaque tipo; 
 } Ataque;
 
 // Define uma classe de personagem

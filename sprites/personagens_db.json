@@ -9,7 +9,7 @@
       "painelZoom": 1.7,
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/venom_icon.png",
-      "ataque1": { "nome": "Escudo", "descricao": "Um rolo compressor.", "dano": 8 },
+      "ataque1": { "nome": "Escudo", "descricao": "Um rolo compressor.", "dano": 8,"tipo": "CURA_SI" },
       "ataque2": { "nome": "Mordida", "descricao": "Um ataque fofo.", "dano": 4 },
       "anim": {
         "idle": "sprites/personagens/venom/idle",
@@ -26,8 +26,8 @@
       "painelZoom": 2.5,
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/hellokitty_icon.png",
-      "ataque1": { "nome": "Kityy surpresa", "descricao": "Um rolo compressor.", "dano": 8 },
-      "ataque2": { "nome": "???", "descricao": "Um ataque fofo.", "dano": 4 },
+      "ataque1": { "nome": "Kityy surpresa", "descricao": "Um rolo compressor.", "dano": 8, "tipo": "DANO_AREA" },
+      "ataque2": { "nome": "???", "descricao": "Um ataque fofo.", "dano": 4, "tipo": "DANO_AREA" },
       "anim": {
         "idle": "sprites/personagens/hellokitty/idle",
         "ataque1": "sprites/personagens/hellokitty/ataque_kittyesmaga",
@@ -61,7 +61,7 @@
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/kirby_icon.png",
       "ataque1": { "nome": "Espada", "descricao": "Um rolo compressor.", "dano": 8 },
-      "ataque2": { "nome": "Plasma", "descricao": "Um ataque fofo.", "dano": 4 },
+      "ataque2": { "nome": "Plasma", "descricao": "Um ataque fofo.", "dano": 4 , "tipo": "CURA_SI"},
       "anim": {
         "idle": "sprites/personagens/kirby/idle",
         "ataque1": "sprites/personagens/kirby/ataque_espada",
@@ -78,7 +78,7 @@
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/ravena_icon.png",
       "ataque1": { "nome": "Coelhada", "descricao": "Uma coelhada do Sansão.", "dano": 7 },
-      "ataque2": { "nome": "Soco Super-mônico", "descricao": "Um soco com força total.", "dano": 3 },
+      "ataque2": { "nome": "Soco Super-mônico", "descricao": "Um soco com força total.", "dano": 3, "tipo": "CURA_SI"},
       "anim": {
         "idle": "sprites/personagens/ravena/idle",
         "ataque1": "sprites/personagens/ravena/soco",
@@ -95,7 +95,7 @@
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/hulk_icon.png",
       "ataque1": { "nome": "Soco", "descricao": "Um rolo compressor.", "dano": 8 },
-      "ataque2": { "nome": "Onda de Choque", "descricao": "Um ataque fofo.", "dano": 4 },
+      "ataque2": { "nome": "Onda de Choque", "descricao": "Um ataque fofo.", "dano": 4, "tipo": "DANO_AREA" },
       "anim": {
         "idle": "sprites/personagens/hulk/idle",
         "ataque1": "sprites/personagens/hulk/ataque_soco",
@@ -129,7 +129,7 @@
       "batalhaZoom": 1.5,
       "thumbnailPath": "sprites/telaPersonagem/ben10_icon.png",
       "ataque1": { "nome": "Barragem Quatro Braços", "descricao": "Uma barragem de socos.", "dano": 10 },
-      "ataque2": { "nome": "Chama Frenética", "descricao": "Uma bola de fogo.", "dano": 5 },
+      "ataque2": { "nome": "Chama Frenética", "descricao": "Uma bola de fogo.", "dano": 5, "tipo": "DANO_AREA" },
       "anim": {
         "idle": "sprites/personagens/ben10/idle",
         "ataque1": "sprites/personagens/ben10/ataque_quatrobracos",
@@ -145,7 +145,7 @@
       "painelZoom": 1.8,
       "batalhaZoom": 1.5,
       "thumbnailPath": "sprites/telaPersonagem/taz_icon.png",
-      "ataque1": { "nome": "Tornado", "descricao": "Gira e destrói.", "dano": 11 },
+      "ataque1": { "nome": "Tornado", "descricao": "Gira e destrói.", "dano": 11, "tipo": "DANO_AREA" },
       "ataque2": { "nome": "Mordida", "descricao": "Uma mordida faminta.", "dano": 5 },
       "anim": {
         "idle": "sprites/personagens/taz/idle",
@@ -162,7 +162,7 @@
       "painelZoom": 2.5,
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/edward_icon.png",
-      "ataque1": { "nome": "Explosao Alquimica", "descricao": "Um rolo compressor.", "dano": 8 },
+      "ataque1": { "nome": "Explosao Alquimica", "descricao": "Um rolo compressor.", "dano": 8,"tipo": "DANO_AREA" },
       "ataque2": { "nome": "Invocar", "descricao": "Um ataque fofo.", "dano": 4 },
       "anim": {
         "idle": "sprites/personagens/edward/idle",
@@ -180,7 +180,7 @@
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/docinho_icon.png",
       "ataque1": { "nome": "Socada Doce", "descricao": "Um soco direto no oponente.", "dano": 13 },
-      "ataque2": { "nome": "Laser Carinhoso", "descricao": "Um laser ocular potente.", "dano": 6 },
+      "ataque2": { "nome": "Laser Carinhoso", "descricao": "Um laser ocular potente.", "dano": 6,"tipo": "DANO_AREA" },
       "anim": {
         "idle": "sprites/personagens/docinho/idle",
         "ataque1": "sprites/personagens/docinho/ataque_soco",
@@ -316,7 +316,7 @@
       "batalhaZoom": 1.5,
       "thumbnailPath": "sprites/telaPersonagem/mickey_icon.png",
       "ataque1": { "nome": "Pincel ameaçador", "descricao": "De uma pincelada no inimigo.", "dano": 11 },
-      "ataque2": { "nome": "Magic tornade", "descricao": "Um poderoso tornado.", "dano": 6 },
+      "ataque2": { "nome": "Magic tornade", "descricao": "Um poderoso tornado.", "dano": 6,"tipo": "DANO_AREA" },
       "anim": {
         "idle": "sprites/personagens/mickey/idle",
         "ataque1": "sprites/personagens/mickey/ataque_pincel",
@@ -333,7 +333,7 @@
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/naruto_icon.png",
       "ataque1": { "nome": "Rasengan", "descricao": "Um rolo compressor.", "dano": 8 },
-      "ataque2": { "nome": "Clones", "descricao": "Um ataque fofo.", "dano": 4 },
+      "ataque2": { "nome": "Clones", "descricao": "Um ataque fofo.", "dano": 4,"tipo": "DANO_AREA" },
       "anim": {
         "idle": "sprites/personagens/naruto/idle",
         "ataque1": "sprites/personagens/naruto/ataque_solo",
@@ -349,8 +349,8 @@
       "painelZoom": 2.5,
       "batalhaZoom": 1.5,
       "thumbnailPath": "sprites/telaPersonagem/goku_icon.png",
-      "ataque1": { "nome": "Kamehameha", "descricao": "Um poderoso raio de energia.", "dano": 12 },
-      "ataque2": { "nome": "Super Saiyajin", "descricao": "Transforma e intimida.", "dano": 7 },
+      "ataque1": { "nome": "Kamehameha", "descricao": "Um poderoso raio de energia.", "dano": 12,"tipo": "DANO_AREA" },
+      "ataque2": { "nome": "Super Saiyajin", "descricao": "Transforma e intimida.", "dano": 7, "tipo": "DANO_AREA" },
       "anim": {
         "idle": "sprites/personagens/goku/idle",
         "ataque1": "sprites/personagens/goku/ataque_superior",

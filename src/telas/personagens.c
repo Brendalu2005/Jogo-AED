@@ -148,11 +148,14 @@ void AtualizarTelaPersonagens(GameScreen *telaAtual, int *personagemSelecionado,
 }
 
 static void DesenharPainelDetalhes(int idPersonagem, SpriteDatabase* db) {
+    // --- INÍCIO DO CÓDIGO QUE FOI APAGADO ACIDENTALMENTE ---
     Rectangle painelDireito = { 1150, 100, 400, 750 };
     
+    // Estas linhas usam as variáveis que estavam dando warning
     DrawRectangleRec(painelDireito, corPainel);
     DrawRectangleLinesEx(painelDireito, 5.0f, corBordaPainel);
     
+    // Declaração das variáveis que faltavam
     int posX = (int)painelDireito.x + 25;
     int posYBase = (int)painelDireito.y + 400;
     int tamFonteTitulo = 20;
@@ -162,6 +165,7 @@ static void DesenharPainelDetalhes(int idPersonagem, SpriteDatabase* db) {
     if (idPersonagem >= 0 && idPersonagem < db->numPersonagens) {
         pData = &db->personagens[idPersonagem];
     }
+    // --- FIM DO CÓDIGO QUE FOI APAGADO ---
     
     if (pData != NULL) {
         Texture2D thumb = pData->thumbnail;
@@ -193,20 +197,36 @@ static void DesenharPainelDetalhes(int idPersonagem, SpriteDatabase* db) {
         DrawText("Velocidade:", posX, posYBlocoStats + 25, tamFonteTitulo, corTituloLinha);
         DrawText(TextFormat("%d", pData->velocidade), posX + 220, posYBlocoStats + 25, tamFonteTexto, LIGHTGRAY);
 
+        // --- ESTA É A PARTE QUE MODIFICAMOS NA ETAPA ANTERIOR ---
         int posYBlocoAtaques = posYBase + 140;
         DrawText("Ataques:", posX, posYBlocoAtaques, tamFonteTitulo, corTituloLinha);
         
+        // Ataque 1
         DrawText(pData->ataque1.nome, posX, posYBlocoAtaques + 25, tamFonteTexto, LIGHTGRAY);
-        DrawText(TextFormat("Dano: %d", pData->ataque1.dano), posX + 250, posYBlocoAtaques + 25, tamFonteTexto, LIGHTGRAY);
         
+        if (pData->ataque1.tipo == TIPO_CURA_SI) {
+            DrawText(TextFormat("Cura: %d", pData->ataque1.dano), posX + 250, posYBlocoAtaques + 25, tamFonteTexto, GREEN);
+        } else if (pData->ataque1.tipo == TIPO_DANO_AREA) {
+             DrawText(TextFormat("Dano em Área: %d", pData->ataque1.dano), posX + 250, posYBlocoAtaques + 25, tamFonteTexto, LIGHTGRAY);
+        } else {
+             DrawText(TextFormat("Dano: %d", pData->ataque1.dano), posX + 250, posYBlocoAtaques + 25, tamFonteTexto, LIGHTGRAY);
+        }
+        
+        // Ataque 2
         DrawText(pData->ataque2.nome, posX, posYBlocoAtaques + 55, tamFonteTexto, LIGHTGRAY);
-        DrawText(TextFormat("Dano: %d", pData->ataque2.dano), posX + 250, posYBlocoAtaques + 55, tamFonteTexto, LIGHTGRAY);
+        
+        if (pData->ataque2.tipo == TIPO_CURA_SI) {
+            DrawText(TextFormat("Cura: %d", pData->ataque2.dano), posX + 250, posYBlocoAtaques + 55, tamFonteTexto, GREEN);
+        } else if (pData->ataque2.tipo == TIPO_DANO_AREA) {
+            DrawText(TextFormat("Dano em Área: %d", pData->ataque2.dano), posX + 250, posYBlocoAtaques + 55, tamFonteTexto, LIGHTGRAY);
+        } else {
+            DrawText(TextFormat("Dano: %d", pData->ataque2.dano), posX + 250, posYBlocoAtaques + 55, tamFonteTexto, LIGHTGRAY);
+        }
         
     } else {
         DrawText("Selecione um personagem", (int)painelDireito.x + 40, (int)painelDireito.y + 400, 25, LIGHTGRAY);
     }
 }
-
 
 void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
 
