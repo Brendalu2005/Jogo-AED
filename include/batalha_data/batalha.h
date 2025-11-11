@@ -20,7 +20,9 @@ typedef enum {
 typedef enum {
     ESTADO_INICIANDO,      
     ESTADO_ESPERANDO_JOGADOR, 
+    ESTADO_ZOOM_IN_ATAQUE,  
     ESTADO_ANIMACAO_ATAQUE, 
+    ESTADO_ZOOM_OUT_ATAQUE, 
     ESTADO_TURNO_IA,        
     ESTADO_FIM_DE_JOGO
 } EstadoTurno;
@@ -37,7 +39,6 @@ typedef struct {
 } EstadoAnimacao;
 
 typedef struct {
-    // Agora o C sabe o que é "ListaTime" 
     ListaTime timeJogador;
     ListaTime timeIA;
     
@@ -54,6 +55,18 @@ typedef struct {
     EstadoAnimacao animacaoEmExecucao;
     int roundAtual;
     
+    PersonagemData* atacanteEmFoco;
+    PersonagemData* alvoEmFoco;
+    int alvoEmFocoIdx;
+    Vector2 posFocoAtacante;
+    Vector2 posFocoAlvo;
+    float zoomFocoAtacante;
+    float zoomFocoAlvo;
+    float timerFoco;
+    AnimacaoData* animParaTocar;
+    bool animFlip;
+    float alphaOutrosPersonagens;
+
     int idleFrameJogador[3];
     int idleTimerJogador[3];
     int idleFrameIA[3];
