@@ -26,6 +26,7 @@ typedef struct AnimacaoDef {
 typedef struct AnimacaoData {
     AnimacaoDef def;
     Texture2D textura;
+    bool flip;
 } AnimacaoData;
 
 // Guarda os atributos do personagem

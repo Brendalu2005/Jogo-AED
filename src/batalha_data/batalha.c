@@ -149,29 +149,50 @@ static void AtualizarAnimacao(EstadoAnimacao* anim) {
     }
 }
 
-static void DesenharAnimacao(EstadoAnimacao* anim) {
-    if (anim->ativo == false) {
-        return;
-    }
-    if (anim->anim == NULL || anim->anim->def.numFrames == 0) {
-        return;
-    }
+void DesenharAnimacao(EstadoAnimacao* anim) {
+    if (!anim->ativo) return;
+    if (anim->anim == NULL || anim->anim->def.numFrames == 0) return;
+
     if (anim->frameAtual >= anim->anim->def.numFrames) {
         anim->frameAtual = 0;
     }
-    
+
     Rectangle frameRec = anim->anim->def.frames[anim->frameAtual];
-    
-    if (anim->flip) {
-        frameRec.width = -frameRec.width; 
+    Rectangle destRec;
+    Vector2 origem;
+
+    // Área destino onde o sprite será desenhado
+    destRec.x = anim->pos.x;
+    destRec.y = anim->pos.y;
+    destRec.width  = frameRec.width * anim->zoom;
+    destRec.height = frameRec.height * anim->zoom;
+
+    // Origem: centro do sprite
+    origem.x = destRec.width / 2;
+    origem.y = destRec.height / 2;
+
+    // --- Corrigido: flip real ---
+    // if (anim->flip) {
+    //     frameRec.width = -frameRec.width;  // Inverte horizontalmente
+    // }
+
+    if (anim->flip){
+        DrawText("IA", anim->pos.x - 20, anim->pos.y - 100, 20, RED);
+    }
+    else{
+        DrawText("Jogador", anim->pos.x - 40, anim->pos.y - 100, 20, BLUE);
+        
     }
 
-    DrawTexturePro(anim->anim->textura,
-                   frameRec,
-                   (Rectangle){ anim->pos.x, anim->pos.y, fabsf(frameRec.width) * anim->zoom, frameRec.height * anim->zoom },
-                   (Vector2){ fabsf(frameRec.width) * anim->zoom / 2, frameRec.height * anim->zoom / 2 },
-                   0.0f,
-                   WHITE);
+
+    DrawTexturePro(
+        anim->anim->textura,
+        frameRec,     // parte da textura
+        destRec,      // onde desenhar
+        origem,       // ponto de origem
+        0.0f,         // rotação
+        WHITE
+    );
 }
 
 static int CompararVelocidade(const void* a, const void* b) {
@@ -300,6 +321,7 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
         estado->hpJogador[alvoIdx] -= dano;
         sprintf(estado->mensagemBatalha, "%s usou %s em %s e causou %d de dano!", atacante->nome, ataque->nome, alvo->nome, dano);
 
+        
         // 4. Verifica se morreu e remove da lista
         if (estado->hpJogador[alvoIdx] <= 0) {
             estado->hpJogador[alvoIdx] = 0;
@@ -308,8 +330,16 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
     }
     // --- FIM DA LÓGICA MODIFICADA ---
 
-    bool deveFlipar = !ehJogadorAtacando;
-    
+    bool deveFlipar;
+
+    if (ehJogadorAtacando) {
+        // Jogador ataca: ele deve estar virado para a direita
+        deveFlipar = false;
+    } else {
+        // IA ataca: ela deve estar virada para a esquerda
+        deveFlipar = true;
+    }
+
     // Prepara para o Zoom In
     estado->atacanteEmFoco = atacante;
     estado->alvoEmFoco = alvo; // 'alvo' foi pego da lista logo acima
@@ -321,6 +351,15 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
     estado->timerFoco = 0.0f;
     estado->alphaOutrosPersonagens = 1.0f;
     estado->animFlip = deveFlipar;
+
+        // --- NOVO: faz o personagem atacado pela IA virar para a esquerda ---
+    if (!ehJogadorAtacando && alvo != NULL) {
+        // A IA está atacando → o alvo (jogador) vira para a esquerda
+        alvo->animIdle.flip = true;
+    }
+    
+     
+
 
     // Guarda qual animação deve tocar depois do zoom
     if (strcmp(ataque->nome, atacante->ataque1.nome) == 0) {
