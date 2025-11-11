@@ -6,13 +6,9 @@
 #include "ConsumoAPI_Gemini.h" 
 #include "math.h"
 
-// Inclui a definição de 'GetMouseVirtual()'
 #include "telas.h"
 
-// NÃO precisa incluir "lista_personagem.h" aqui,
-// pois "batalha.h" já o inclui.
 
-// Declarações (protótipos) das funções estáticas
 static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataque* ataque, int alvoIdx, bool ehJogadorAtacando);
 static void ProximoTurno(EstadoBatalha *estado);
 static void ExecutarTurnoIA(EstadoBatalha *estado);
@@ -28,6 +24,7 @@ int backgroundCarregado = 0;
  * @param p O ponteiro para o PersonagemData que procuramos.
  * @return O NoPersonagem* correspondente ou NULL se não for encontrado.
  */
+
 static NoPersonagem* ObterNoPorPersonagem(ListaTime* lista, PersonagemData* p) {
     if (lista == NULL || p == NULL) {
         return NULL;
@@ -172,9 +169,9 @@ void DesenharAnimacao(EstadoAnimacao* anim) {
     origem.y = destRec.height / 2;
 
     // --- Corrigido: flip real ---
-    // if (anim->flip) {
-    //     frameRec.width = -frameRec.width;  // Inverte horizontalmente
-    // }
+    if (anim->flip) {
+        frameRec.width = -frameRec.width;  // Inverte horizontalmente
+    }
 
     if (anim->flip){
         DrawText("IA", anim->pos.x - 20, anim->pos.y - 100, 20, RED);
@@ -643,9 +640,17 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
                 float zoomOriginalAtacante = estado->atacanteEmFoco->batalhaZoom;
                 float zoomOriginalAlvo = estado->alvoEmFoco->batalhaZoom;
 
-                Vector2 posAlvoAtacante = { (float)SCREEN_WIDTH / 2.0f - 200.0f, 350.0f };
-                Vector2 posAlvoAlvo = { (float)SCREEN_WIDTH / 2.0f + 200.0f, 350.0f };
+                Vector2 posAlvoAtacante;
+                Vector2 posAlvoAlvo;
                 float zoomAlvo = 2.5f; 
+
+                if (ehIAAtacando == true) {
+                    posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f + 200.0f, 350.0f };
+                    posAlvoAlvo = (Vector2){ (float)SCREEN_WIDTH / 2.0f - 200.0f, 350.0f };
+                } else {
+                    posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f - 200.0f, 350.0f };
+                    posAlvoAlvo = (Vector2){ (float)SCREEN_WIDTH / 2.0f + 200.0f, 350.0f };
+                }
 
                 estado->posFocoAtacante.x = posOriginalAtacante.x + (posAlvoAtacante.x - posOriginalAtacante.x) * progresso;
                 estado->posFocoAtacante.y = posOriginalAtacante.y + (posAlvoAtacante.y - posOriginalAtacante.y) * progresso;
@@ -717,9 +722,19 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual) {
                 float zoomOriginalAtacante = estado->atacanteEmFoco->batalhaZoom;
                 float zoomOriginalAlvo = estado->alvoEmFoco->batalhaZoom;
 
-                Vector2 posAlvoAtacante = { (float)SCREEN_WIDTH / 2.0f - 200.0f, 350.0f };
-                Vector2 posAlvoAlvo = { (float)SCREEN_WIDTH / 2.0f + 200.0f, 350.0f };
+                Vector2 posAlvoAtacante;
+                Vector2 posAlvoAlvo;
                 float zoomAlvo = 2.5f;
+
+                if (ehIAAtacando == true) {
+                    // IA atacou: O Atacante (IA) estava na DIREITA, o Alvo (Jogador) na ESQUERDA
+                    posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f + 200.0f, 350.0f };
+                    posAlvoAlvo = (Vector2){ (float)SCREEN_WIDTH / 2.0f - 200.0f, 350.0f };
+                } else {
+                    // Jogador atacou: O Atacante (Jogador) estava na ESQUERDA, o Alvo (IA) na DIREITA
+                    posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f - 200.0f, 350.0f };
+                    posAlvoAlvo = (Vector2){ (float)SCREEN_WIDTH / 2.0f + 200.0f, 350.0f };
+                }
 
                 estado->posFocoAtacante.x = posAlvoAtacante.x + (posOriginalAtacante.x - posAlvoAtacante.x) * progresso;
                 estado->posFocoAtacante.y = posAlvoAtacante.y + (posOriginalAtacante.y - posAlvoAtacante.y) * progresso;

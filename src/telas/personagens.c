@@ -13,7 +13,7 @@ static int animVelocidade = 10;
 static int animFrameSelecionado = 0;
 static int animTimerSelecionado = 0;
 
-static int personagemHover = -1; // Guarda o ID do personagem sob o cursor
+static int personagemHover = -1;
 
 
 static Color corTituloLinha = { 100, 255, 100, 255 }; 
