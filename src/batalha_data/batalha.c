@@ -397,7 +397,7 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
     }
     
     // Posições de desenho
-    float posY = 350.0f;
+    float posY = 450.0f;
     float espacamentoX = 200.0f;
     float offsetInicialJogador = 100.0f;
     float offsetInicialIA = SCREEN_WIDTH - 100.0f;
@@ -795,6 +795,8 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
             WHITE
         );
     }
+
+    const float hpBarYFixo = 530.0f;
     
     // Cores para o fade
     Color corFade = ColorAlpha(WHITE, estado->alphaOutrosPersonagens);
@@ -803,90 +805,86 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
     Color corHpFadeIA = ColorAlpha(RED, estado->alphaOutrosPersonagens);
     Color corBordaFade = ColorAlpha(LIGHTGRAY, estado->alphaOutrosPersonagens);
 
-    
-    // --- Desenha personagens do Jogador (que NÃO estão em foco) ---
     NoPersonagem* noAtualJogador = estado->timeJogador.inicio;
     while (noAtualJogador != NULL) {
-        // Pula o desenho se este personagem estiver em foco (será desenhado depois)
-        if (noAtualJogador->personagem == estado->atacanteEmFoco || noAtualJogador->personagem == estado->alvoEmFoco) {
-            noAtualJogador = noAtualJogador->proximo;
-            continue; 
-        }
-        
+        // ... (código de pular se estiver em foco) ...
+
         int i = noAtualJogador->posicaoNoTime;
         PersonagemData* pData = noAtualJogador->personagem;
         AnimacaoData* anim = &pData->animIdle;
-        
+
         if (anim->def.numFrames > 0) {
+            // Desenha o Jogador (sem flip)
             int frameIndex = estado->idleFrameJogador[i];
             if (frameIndex >= anim->def.numFrames) {
-                frameIndex = 0;
-            }
+            frameIndex = 0;
+        }
             Rectangle frame = anim->def.frames[frameIndex];
             float zoom = pData->batalhaZoom;
-
+            // --- FIM DO CÓDIGO A ADICIONAR ---
             DrawTexturePro(anim->textura, frame,
-                (Rectangle){posJogador[i].x, posJogador[i].y, frame.width * zoom, frame.height * zoom},
-                (Vector2){frame.width * zoom / 2, frame.height * zoom / 2}, 0, corFade);
-            
+            (Rectangle){posJogador[i].x, posJogador[i].y, frame.width * zoom, frame.height * zoom},
+            (Vector2){frame.width * zoom / 2, frame.height * zoom / 2}, 0, corFade);
+
             // Barra de HP
-            float hpBarY = posJogador[i].y + (frame.height * zoom / 2) + 5;
-            int posXBarra = (int)posJogador[i].x - 50;
-            int posYBarra = (int)hpBarY;
+            int posXBarra = (int)posJogador[i].x - 50; // DECLARAÇÃO
+            int posYBarra = (int)hpBarYFixo; // DECLARAÇÃO
             int larguraBarra = 100;
             int alturaBarra = 10;
-            
+
+            // USO CORRETO (corrige o aviso)
             DrawRectangle(posXBarra, posYBarra, larguraBarra, alturaBarra, corBgFade);
-            
+
             int larguraPreenchimento = (int)((float)larguraBarra * (float)estado->hpJogador[i] / (float)pData->hpMax);
             DrawRectangle(posXBarra, posYBarra, larguraPreenchimento, alturaBarra, corHpFadeJ);
-            
+
             DrawRectangleLines(posXBarra, posYBarra, larguraBarra, alturaBarra, corBordaFade);
         }
-        
+
         noAtualJogador = noAtualJogador->proximo;
     }
+
     
     // --- Desenha personagens da IA (que NÃO estão em foco) ---
     NoPersonagem* noAtualIA = estado->timeIA.inicio;
     while (noAtualIA != NULL) {
-        // Pula o desenho se este personagem estiver em foco
-        if (noAtualIA->personagem == estado->atacanteEmFoco || noAtualIA->personagem == estado->alvoEmFoco) {
-            noAtualIA = noAtualIA->proximo;
-            continue;
-        }
+        // ... (código de pular se estiver em foco) ...
 
         int i = noAtualIA->posicaoNoTime;
         PersonagemData* pDataIA = noAtualIA->personagem;
         AnimacaoData* anim = &pDataIA->animIdle;
 
         if (anim->def.numFrames > 0) {
+
+            // ... (código do DrawTexturePro da IA que corrigimos antes) ...
+            // --- INÍCIO DO CÓDIGO DO SPRITE (O QUE FALTAVA) ---
             int frameIndexIA = estado->idleFrameIA[i];
             if (frameIndexIA >= anim->def.numFrames) {
                 frameIndexIA = 0;
             }
+
             Rectangle frame = anim->def.frames[frameIndexIA];
             float zoomIA = pDataIA->batalhaZoom;
-            Rectangle frameIA = frame;
+             Rectangle frameIA = frame;
             frameIA.width = -frame.width; // Flip
 
             DrawTexturePro(anim->textura, frameIA,
-                (Rectangle){posIA[i].x, posIA[i].y, frame.width * zoomIA, frame.height * zoomIA},
-                (Vector2){frame.width * zoomIA / 2, frame.height * zoomIA / 2}, 0, corFade);
-            
+            (Rectangle){posIA[i].x, posIA[i].y, frame.width * zoomIA, frame.height * zoomIA},
+            (Vector2){frame.width * zoomIA / 2, frame.height * zoomIA / 2}, 0, corFade);
+            // --- FIM DO CÓDIGO DO SPRITE ---
             // Barra de HP
-            float hpBarY = posIA[i].y + (frame.height * zoomIA / 2) + 5;
-            int posXBarraIA = (int)posIA[i].x - 50;
-            int posYBarraIA = (int)hpBarY;
+            int posXBarra = (int)posIA[i].x - 50; // DECLARAÇÃO CORRETA
+            int posYBarra = (int)hpBarYFixo; // DECLARAÇÃO CORRETA
             int larguraBarraIA = 100;
             int alturaBarraIA = 10;
 
-            DrawRectangle(posXBarraIA, posYBarraIA, larguraBarraIA, alturaBarraIA, corBgFade);
-            
+            // USO CORRETO (corrige o erro)
+            DrawRectangle(posXBarra, posYBarra, larguraBarraIA, alturaBarraIA, corBgFade);
+
             int larguraPreenchimentoIA = (int)((float)larguraBarraIA * (float)estado->hpIA[i] / (float)pDataIA->hpMax);
-            DrawRectangle(posXBarraIA, posYBarraIA, larguraPreenchimentoIA, alturaBarraIA, corHpFadeIA);
-            
-            DrawRectangleLines(posXBarraIA, posYBarraIA, larguraBarraIA, alturaBarraIA, corBordaFade);
+            DrawRectangle(posXBarra, posYBarra, larguraPreenchimentoIA, alturaBarraIA, corHpFadeIA);
+
+            DrawRectangleLines(posXBarra, posYBarra, larguraBarraIA, alturaBarraIA, corBordaFade);
         }
         noAtualIA = noAtualIA->proximo;
     }
