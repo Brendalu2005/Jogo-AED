@@ -73,6 +73,9 @@ typedef struct {
     int idleTimerJogador[3];
     int idleFrameIA[3];
     int idleTimerIA[3];
+
+    float timerDanoJogador[3];
+    float timerDanoIA[3];
     
 } EstadoBatalha;
 

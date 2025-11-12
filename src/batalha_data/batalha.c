@@ -13,6 +13,8 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
 static void ProximoTurno(EstadoBatalha *estado);
 static void ExecutarTurnoIA(EstadoBatalha *estado);
 
+static const float DURACAO_PISCAR_DANO = 0.5f;
+
 Texture2D backgroundArena;
 int backgroundCarregado = 0;
 
@@ -375,6 +377,13 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
             alvo = noAlvo->personagem; 
             
             hpArrayAlvo[alvoIdx] -= dano;
+
+            if (ehJogadorAtacando) {
+                estado->timerDanoIA[alvoIdx] = DURACAO_PISCAR_DANO;
+            } else {
+                estado->timerDanoJogador[alvoIdx] = DURACAO_PISCAR_DANO;
+            }
+
             sprintf(estado->mensagemBatalha, "%s usou %s em %s e causou %d de dano!", atacante->nome, ataque->nome, alvo->nome, dano);
             
             if (hpArrayAlvo[alvoIdx] <= 0) {
@@ -399,6 +408,12 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
                 // Se o alvo existe (está vivo)
                 if (noAlvo != NULL) {
                     hpArrayAlvo[i] -= dano; // Aplica dano
+
+                    if (ehJogadorAtacando) {
+                        estado->timerDanoIA[i] = DURACAO_PISCAR_DANO;
+                    } else {
+                        estado->timerDanoJogador[i] = DURACAO_PISCAR_DANO;
+                    }
                     
                     if (hpArrayAlvo[i] <= 0) {
                         hpArrayAlvo[i] = 0;
@@ -523,7 +538,10 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
         estado->idleTimerJogador[i] = 0;
         estado->idleFrameIA[i] = 0;
         estado->idleTimerIA[i] = 0;
+        estado->timerDanoJogador[i] = 0.0f;
+        estado->timerDanoIA[i] = 0.0f;
     }
+
 
     // Inicializa as novas variáveis de foco
     estado->atacanteEmFoco = NULL;
@@ -548,6 +566,16 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
         LiberarLista(&estado->timeJogador);
         LiberarLista(&estado->timeIA);
         return;
+    }
+
+    float dt = GetFrameTime();
+    for (int i = 0; i < 3; i++) {
+        if (estado->timerDanoJogador[i] > 0.0f) {
+            estado->timerDanoJogador[i] -= dt;
+        }
+        if (estado->timerDanoIA[i] > 0.0f) {
+            estado->timerDanoIA[i] -= dt;
+        }
     }
     
     // Atualiza animação idle de todos os personagens VIVOS na lista do Jogador
@@ -949,6 +977,16 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
             PersonagemData* pData = noAtualJogador->personagem;
             AnimacaoData* anim = &pData->animIdle;
 
+            // --- LÓGICA DE COR MODIFICADA ---
+            Color corPersonagem = corFade; // Usa a cor de fade padrão
+            if (estado->timerDanoJogador[i] > 0.0f) {
+                // Faz piscar (0.1s vermelho, 0.1s normal)
+                if (fmod(estado->timerDanoJogador[i], 0.2f) < 0.1f) {
+                    corPersonagem = ColorAlpha(RED, estado->alphaOutrosPersonagens);
+                }
+            }
+            // --- FIM DA LÓGICA DE COR ---
+
             if (anim->def.numFrames > 0) {
                 // Desenha o Jogador (sem flip)
                 int frameIndex = estado->idleFrameJogador[i];
@@ -960,7 +998,7 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
                 
                 DrawTexturePro(anim->textura, frame,
                 (Rectangle){posJogador[i].x, posJogador[i].y, frame.width * zoom, frame.height * zoom},
-                (Vector2){frame.width * zoom / 2, frame.height * zoom / 2}, 0, corFade);
+                (Vector2){frame.width * zoom / 2, frame.height * zoom / 2}, 0, corPersonagem);
 
                 // Barra de HP
                 int posXBarra = (int)posJogador[i].x - 50; 
@@ -990,6 +1028,16 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
             PersonagemData* pDataIA = noAtualIA->personagem;
             AnimacaoData* anim = &pDataIA->animIdle;
 
+            // --- Bloco de LÓGICA DE COR (Declara corPersonagem) ---
+            Color corPersonagem = corFade; // Usa a cor de fade padrão
+            if (estado->timerDanoIA[i] > 0.0f) {
+                 // Faz piscar (0.1s vermelho, 0.1s normal)
+                if (fmod(estado->timerDanoIA[i], 0.2f) < 0.1f) {
+                    corPersonagem = ColorAlpha(RED, estado->alphaOutrosPersonagens);
+                }
+            }
+            // --- FIM DA LÓGICA DE COR ---
+
             if (anim->def.numFrames > 0) {
                 int frameIndexIA = estado->idleFrameIA[i];
                 if (frameIndexIA >= anim->def.numFrames) {
@@ -1003,7 +1051,7 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
 
                 DrawTexturePro(anim->textura, frameIA,
                 (Rectangle){posIA[i].x, posIA[i].y, frame.width * zoomIA, frame.height * zoomIA},
-                (Vector2){frame.width * zoomIA / 2, frame.height * zoomIA / 2}, 0, corFade);
+                (Vector2){frame.width * zoomIA / 2, frame.height * zoomIA / 2}, 0, corPersonagem);
                 
                 // Barra de HP
                 int posXBarra = (int)posIA[i].x - 50; 
@@ -1045,6 +1093,23 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
                 hpAtual = estado->hpJogador[posAtacante];
             }
 
+            // --- LÓGICA DE COR ADICIONADA ---
+            Color corAtacante = WHITE; // Cor padrão (sem alpha, está em foco)
+            if (ehOponente) {
+                if (estado->timerDanoIA[posAtacante] > 0.0f) {
+                     if (fmod(estado->timerDanoIA[posAtacante], 0.2f) < 0.1f) {
+                        corAtacante = RED;
+                    }
+                }
+            } else {
+                 if (estado->timerDanoJogador[posAtacante] > 0.0f) {
+                     if (fmod(estado->timerDanoJogador[posAtacante], 0.2f) < 0.1f) {
+                        corAtacante = RED;
+                    }
+                }
+            }
+            // --- FIM DA LÓGICA DE COR ---
+
             if (pData->animIdle.def.numFrames > 0) {
                  if (frameIdx >= pData->animIdle.def.numFrames) {
                      frameIdx = 0;
@@ -1062,7 +1127,7 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
             if (estado->animacaoEmExecucao.ativo == false) {
                  DrawTexturePro(pData->animIdle.textura, frame,
                     (Rectangle){ estado->posFocoAtacante.x, estado->posFocoAtacante.y, fabsf(frame.width) * estado->zoomFocoAtacante, frame.height * estado->zoomFocoAtacante },
-                    (Vector2){ fabsf(frame.width) * estado->zoomFocoAtacante / 2, frame.height * estado->zoomFocoAtacante / 2 }, 0, WHITE);
+                    (Vector2){ fabsf(frame.width) * estado->zoomFocoAtacante / 2, frame.height * estado->zoomFocoAtacante / 2 }, 0, corAtacante);
             }
            
             // Barra de HP do Atacante
@@ -1113,6 +1178,23 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
                 } else {
                     frameIdx = 0;
                 }
+
+                // --- LÓGICA DE COR ADICIONADA ---
+                Color corAlvo = WHITE; // Cor padrão (sem alpha, está em foco)
+                if (ehOponente) {
+                    if (estado->timerDanoIA[posAlvo] > 0.0f) {
+                         if (fmod(estado->timerDanoIA[posAlvo], 0.2f) < 0.1f) {
+                            corAlvo = RED;
+                        }
+                    }
+                } else {
+                     if (estado->timerDanoJogador[posAlvo] > 0.0f) {
+                         if (fmod(estado->timerDanoJogador[posAlvo], 0.2f) < 0.1f) {
+                            corAlvo = RED;
+                        }
+                    }
+                }
+                // --- FIM DA LÓGICA DE COR ---
                 
                 Rectangle frame = pData->animIdle.def.frames[frameIdx];
                 if (ehOponente) { // Flip alvo se for Oponente
@@ -1121,7 +1203,7 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
                 
                  DrawTexturePro(pData->animIdle.textura, frame,
                     (Rectangle){ estado->posFocoAlvo.x, estado->posFocoAlvo.y, fabsf(frame.width) * estado->zoomFocoAlvo, frame.height * estado->zoomFocoAlvo },
-                    (Vector2){ fabsf(frame.width) * estado->zoomFocoAlvo / 2, frame.height * estado->zoomFocoAlvo / 2 }, 0, WHITE);
+                    (Vector2){ fabsf(frame.width) * estado->zoomFocoAlvo / 2, frame.height * estado->zoomFocoAlvo / 2 }, 0, corAlvo);
             }
 
             // Barra de HP do Alvo (desenha sempre, mesmo se morto, para mostrar o 0)
