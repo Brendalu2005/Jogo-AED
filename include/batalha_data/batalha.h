@@ -76,6 +76,9 @@ typedef struct {
 
     float timerDanoJogador[3];
     float timerDanoIA[3];
+
+    EstadoAnimacao animLapideJogador[3];
+    EstadoAnimacao animLapideIA[3];
     
 } EstadoBatalha;
 

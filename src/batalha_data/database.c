@@ -83,7 +83,7 @@ static AnimacaoDef ParseAnimacaoTexturePacker(const char* jsonPath) {
     return def;
 }
 
-static void LiberarAnimDef(AnimacaoDef* def) {
+void LiberarAnimDef(AnimacaoDef* def) {
     if (def && def->frames) {
         free(def->frames);
         def->frames = NULL;
@@ -91,7 +91,7 @@ static void LiberarAnimDef(AnimacaoDef* def) {
     }
 }
 
-static AnimacaoData CarregarAnimacaoData(const char* pathBase) {
+AnimacaoData CarregarAnimacaoData(const char* pathBase) {
     AnimacaoData data = {0};
     char jsonPath[256];
     char pngPath[256];
@@ -112,7 +112,7 @@ static AnimacaoData CarregarAnimacaoData(const char* pathBase) {
     return data;
 }
 
-static void LiberarAnimacaoData(AnimacaoData* data) {
+void LiberarAnimacaoData(AnimacaoData* data) {
     LiberarAnimDef(&data->def);
     UnloadTexture(data->textura);
 }

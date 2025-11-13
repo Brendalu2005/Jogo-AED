@@ -70,4 +70,9 @@ SpriteDatabase CarregarDatabase(const char* masterJsonPath);
 void LiberarDatabase(SpriteDatabase* db);
 PersonagemData* GetPersonagemData(SpriteDatabase* db, const char* nome);
 
+// deixei publica pra adicionar a lápide em batalha.c
+AnimacaoData CarregarAnimacaoData(const char* pathBase);
+void LiberarAnimacaoData(AnimacaoData* data);
+void LiberarAnimDef(AnimacaoDef* def);
+
 #endif 

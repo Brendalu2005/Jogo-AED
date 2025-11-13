@@ -13,10 +13,12 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
 static void ProximoTurno(EstadoBatalha *estado);
 static void ExecutarTurnoIA(EstadoBatalha *estado);
 
-static const float DURACAO_PISCAR_DANO = 0.5f;
+static const float DURACAO_PISCAR_DANO = 0.3f; // teste (antigo: 0.5)
 
 Texture2D backgroundArena;
 int backgroundCarregado = 0;
+
+static AnimacaoData g_animLapide;
 
 
 // --- NOVA FUNÇÃO AUXILIAR ---
@@ -139,6 +141,8 @@ static void IniciarAnimacao(EstadoAnimacao* anim, AnimacaoData* data, Vector2 po
     anim->flip = flip;
 }
 
+
+
 static void AtualizarAnimacao(EstadoAnimacao* anim) {
     if (anim->ativo == false) {
         return;
@@ -152,6 +156,69 @@ static void AtualizarAnimacao(EstadoAnimacao* anim) {
             PararAnimacao(anim);
         }
     }
+}
+
+static void AtualizarAnimacaoLapide(EstadoAnimacao* anim) {
+    if (anim->ativo == false || anim->anim == NULL) {
+        return;
+    }
+    
+    int ultimoFrame = anim->anim->def.numFrames - 1;
+
+    // Se já chegou no último frame, não faz nada (fica parado)
+    if (anim->frameAtual >= ultimoFrame) {
+        anim->frameAtual = ultimoFrame; 
+        return; // Para a animação no último frame
+    }
+    
+    anim->timer++;
+    if (anim->timer >= anim->velocidade) {
+        anim->timer = 0;
+        anim->frameAtual++;
+    }
+}
+
+
+static void DesenharAnimacaoLapide(EstadoAnimacao* anim) {
+    if (anim->ativo == false){ 
+        return; 
+    }
+    if (anim->anim == NULL){ 
+        return; 
+    }
+    if (anim->anim->def.numFrames == 0){ 
+        return; 
+    }
+
+    if (anim->frameAtual >= anim->anim->def.numFrames) {
+        anim->frameAtual = anim->anim->def.numFrames - 1; // Garante que é o último
+    }
+
+    Rectangle frameRec = anim->anim->def.frames[anim->frameAtual];
+    Rectangle destRec;
+    Vector2 origem;
+
+    destRec.x = anim->pos.x;
+    destRec.y = anim->pos.y;
+    destRec.width  = frameRec.width * anim->zoom;
+    destRec.height = frameRec.height * anim->zoom;
+
+    origem.x = destRec.width / 2;
+    origem.y = destRec.height / 2;
+
+    // Lápide flip
+    if (anim->flip) { 
+        frameRec.width = -frameRec.width; 
+    }
+
+    DrawTexturePro(
+        anim->anim->textura,
+        frameRec,
+        destRec,
+        origem,
+        0.0f,
+        WHITE
+    );
 }
 
 static void IniciarZoomEAnimacao(EstadoBatalha* estado, PersonagemData* atacante, PersonagemData* alvo, int alvoIdx, bool ehJogadorAtacando, Ataque* ataque) {
@@ -388,6 +455,15 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
             
             if (hpArrayAlvo[alvoIdx] <= 0) {
                 hpArrayAlvo[alvoIdx] = 0;
+
+                if (ehJogadorAtacando) {
+                // Oponente (alvoIdx) morreu
+                IniciarAnimacao(&estado->animLapideIA[alvoIdx], &g_animLapide, posIA[alvoIdx], 1.5f, false);
+                } else {
+                    // Jogador (alvoIdx) morreu
+                    IniciarAnimacao(&estado->animLapideJogador[alvoIdx], &g_animLapide, posJogador[alvoIdx], 1.5f, false);
+                }
+
                 RemoverPersonagem(listaAlvo, noAlvo);
             }
             
@@ -417,6 +493,14 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
                     
                     if (hpArrayAlvo[i] <= 0) {
                         hpArrayAlvo[i] = 0;
+
+                        if (ehJogadorAtacando) {
+                        // Oponente (i) morreu
+                        IniciarAnimacao(&estado->animLapideIA[i], &g_animLapide, posIA[i], 1.5f, false);
+                        } else {
+                            // Jogador (i) morreu
+                            IniciarAnimacao(&estado->animLapideJogador[i], &g_animLapide, posJogador[i], 1.5f, false);
+                        }
                         RemoverPersonagem(listaAlvo, noAlvo);
                     }
                 }
@@ -473,6 +557,8 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
         backgroundArena = LoadTexture("sprites/background/backgroundbatalha.png");
         backgroundCarregado = 1;
     }
+
+    g_animLapide = CarregarAnimacaoData("sprites/personagens/lapide/lapide");
 
     estado->roundAtual = 1;
 
@@ -540,6 +626,8 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
         estado->idleTimerIA[i] = 0;
         estado->timerDanoJogador[i] = 0.0f;
         estado->timerDanoIA[i] = 0.0f;
+        PararAnimacao(&estado->animLapideJogador[i]);
+        PararAnimacao(&estado->animLapideIA[i]);
     }
 
 
@@ -561,6 +649,8 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
             UnloadTexture(backgroundArena);
             backgroundCarregado = 0;
         }
+
+        LiberarAnimacaoData(&g_animLapide);
 
         *telaAtual = SCREEN_MENU;
         LiberarLista(&estado->timeJogador);
@@ -610,6 +700,11 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
             }
         }
         noAtualIA = noAtualIA->proximo;
+    }
+
+    for (int i = 0; i < 3; i++) {
+        AtualizarAnimacaoLapide(&estado->animLapideJogador[i]);
+        AtualizarAnimacaoLapide(&estado->animLapideIA[i]);
     }
 
     if (estado->estadoTurno != ESTADO_INICIANDO) {
@@ -967,295 +1062,270 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
     Color corHpFadeIA = ColorAlpha(RED, estado->alphaOutrosPersonagens);
     Color corBordaFade = ColorAlpha(LIGHTGRAY, estado->alphaOutrosPersonagens);
 
-    // --- Desenha personagens do JOGADOR 1 (que NÃO estão em foco) ---
-    NoPersonagem* noAtualJogador = estado->timeJogador.inicio;
-    while (noAtualJogador != NULL) {
-        
-        // Pula o desenho se este personagem for o atacante ou o alvo em foco
-        if (estado->atacanteEmFoco != noAtualJogador->personagem && estado->alvoEmFoco != noAtualJogador->personagem) {
-            int i = noAtualJogador->posicaoNoTime;
-            PersonagemData* pData = noAtualJogador->personagem;
-            AnimacaoData* anim = &pData->animIdle;
+    // --- 1. IDENTIFICAR QUEM ESTÁ EM FOCO (PARA NÃO DESENHAR NO FUNDO) ---
+    int idxAtacanteFoco = -1;
+    bool atacanteEhIA = false;
+    int idxAlvoFoco = -1;
+    bool alvoEhIA = false;
 
-            // --- LÓGICA DE COR MODIFICADA ---
-            Color corPersonagem = corFade; // Usa a cor de fade padrão
-            if (estado->timerDanoJogador[i] > 0.0f) {
-                // Faz piscar (0.1s vermelho, 0.1s normal)
-                if (fmod(estado->timerDanoJogador[i], 0.2f) < 0.1f) {
-                    corPersonagem = ColorAlpha(RED, estado->alphaOutrosPersonagens);
-                }
-            }
-            // --- FIM DA LÓGICA DE COR ---
-
-            if (anim->def.numFrames > 0) {
-                // Desenha o Jogador (sem flip)
-                int frameIndex = estado->idleFrameJogador[i];
-                if (frameIndex >= anim->def.numFrames) {
-                    frameIndex = 0;
-                }
-                Rectangle frame = anim->def.frames[frameIndex];
-                float zoom = pData->batalhaZoom;
-                
-                DrawTexturePro(anim->textura, frame,
-                (Rectangle){posJogador[i].x, posJogador[i].y, frame.width * zoom, frame.height * zoom},
-                (Vector2){frame.width * zoom / 2, frame.height * zoom / 2}, 0, corPersonagem);
-
-                // Barra de HP
-                int posXBarra = (int)posJogador[i].x - 50; 
-                int posYBarra = (int)hpBarYFixo; 
-                int larguraBarra = 100;
-                int alturaBarra = 10;
-
-                DrawRectangle(posXBarra, posYBarra, larguraBarra, alturaBarra, corBgFade);
-
-                int larguraPreenchimento = (int)((float)larguraBarra * (float)estado->hpJogador[i] / (float)pData->hpMax);
-                DrawRectangle(posXBarra, posYBarra, larguraPreenchimento, alturaBarra, corHpFadeJ);
-
-                DrawRectangleLines(posXBarra, posYBarra, larguraBarra, alturaBarra, corBordaFade);
-            }
-        }
-        noAtualJogador = noAtualJogador->proximo;
-    }
-
-    
-    // --- Desenha personagens do OPONENTE (IA/J2) (que NÃO estão em foco) ---
-    NoPersonagem* noAtualIA = estado->timeIA.inicio;
-    while (noAtualIA != NULL) {
-        
-        // Pula o desenho se este personagem for o atacante ou o alvo em foco
-         if (estado->atacanteEmFoco != noAtualIA->personagem && estado->alvoEmFoco != noAtualIA->personagem) {
-            int i = noAtualIA->posicaoNoTime;
-            PersonagemData* pDataIA = noAtualIA->personagem;
-            AnimacaoData* anim = &pDataIA->animIdle;
-
-            // --- Bloco de LÓGICA DE COR (Declara corPersonagem) ---
-            Color corPersonagem = corFade; // Usa a cor de fade padrão
-            if (estado->timerDanoIA[i] > 0.0f) {
-                 // Faz piscar (0.1s vermelho, 0.1s normal)
-                if (fmod(estado->timerDanoIA[i], 0.2f) < 0.1f) {
-                    corPersonagem = ColorAlpha(RED, estado->alphaOutrosPersonagens);
-                }
-            }
-            // --- FIM DA LÓGICA DE COR ---
-
-            if (anim->def.numFrames > 0) {
-                int frameIndexIA = estado->idleFrameIA[i];
-                if (frameIndexIA >= anim->def.numFrames) {
-                    frameIndexIA = 0;
-                }
-
-                Rectangle frame = anim->def.frames[frameIndexIA];
-                float zoomIA = pDataIA->batalhaZoom;
-                Rectangle frameIA = frame;
-                frameIA.width = -frame.width; // Flip
-
-                DrawTexturePro(anim->textura, frameIA,
-                (Rectangle){posIA[i].x, posIA[i].y, frame.width * zoomIA, frame.height * zoomIA},
-                (Vector2){frame.width * zoomIA / 2, frame.height * zoomIA / 2}, 0, corPersonagem);
-                
-                // Barra de HP
-                int posXBarra = (int)posIA[i].x - 50; 
-                int posYBarra = (int)hpBarYFixo; 
-                int larguraBarraIA = 100;
-                int alturaBarraIA = 10;
-
-                DrawRectangle(posXBarra, posYBarra, larguraBarraIA, alturaBarraIA, corBgFade);
-
-                int larguraPreenchimentoIA = (int)((float)larguraBarraIA * (float)estado->hpIA[i] / (float)pDataIA->hpMax);
-                DrawRectangle(posXBarra, posYBarra, larguraPreenchimentoIA, alturaBarraIA, corHpFadeIA);
-
-                DrawRectangleLines(posXBarra, posYBarra, larguraBarraIA, alturaBarraIA, corBordaFade);
-            }
-        }
-        noAtualIA = noAtualIA->proximo;
-    }
-
-
-    // --- Desenha Personagens em Foco ---
     if (estado->atacanteEmFoco != NULL) {
-        PersonagemData* pData = estado->atacanteEmFoco;
-        bool ehOponente = estado->animFlip;
-        int frameIdx = 0;
-        int hpAtual = 0;
-        int posAtacante = -1;
-
-        NoPersonagem* noAtacante = ObterNoPorPersonagem(ehOponente ? &estado->timeIA : &estado->timeJogador, pData);
-        if (noAtacante != NULL) {
-            posAtacante = noAtacante->posicaoNoTime;
-        }
-
-        if (posAtacante != -1) { // Só desenha se o atacante for encontrado
-            if (ehOponente) {
-                frameIdx = estado->idleFrameIA[posAtacante];
-                hpAtual = estado->hpIA[posAtacante];
-            } else {
-                frameIdx = estado->idleFrameJogador[posAtacante];
-                hpAtual = estado->hpJogador[posAtacante];
+        // Procura atacante no Jogador
+        NoPersonagem* no = ObterNoPorPersonagem(&estado->timeJogador, estado->atacanteEmFoco);
+        if (no != NULL) {
+            idxAtacanteFoco = no->posicaoNoTime;
+            atacanteEhIA = false;
+        } else {
+            // Procura atacante na IA
+            no = ObterNoPorPersonagem(&estado->timeIA, estado->atacanteEmFoco);
+            if (no != NULL) {
+                idxAtacanteFoco = no->posicaoNoTime;
+                atacanteEhIA = true;
             }
-
-            // --- LÓGICA DE COR ADICIONADA ---
-            Color corAtacante = WHITE; // Cor padrão (sem alpha, está em foco)
-            if (ehOponente) {
-                if (estado->timerDanoIA[posAtacante] > 0.0f) {
-                     if (fmod(estado->timerDanoIA[posAtacante], 0.2f) < 0.1f) {
-                        corAtacante = RED;
-                    }
-                }
-            } else {
-                 if (estado->timerDanoJogador[posAtacante] > 0.0f) {
-                     if (fmod(estado->timerDanoJogador[posAtacante], 0.2f) < 0.1f) {
-                        corAtacante = RED;
-                    }
-                }
-            }
-            // --- FIM DA LÓGICA DE COR ---
-
-            if (pData->animIdle.def.numFrames > 0) {
-                 if (frameIdx >= pData->animIdle.def.numFrames) {
-                     frameIdx = 0;
-                 }
-            } else {
-                frameIdx = 0; // Evita erro se não houver frames
-            }
-           
-            Rectangle frame = pData->animIdle.def.frames[frameIdx];
-            if (estado->animFlip == true) { 
-                frame.width = -frame.width; // Flip atacante
-            }
-            
-            // Desenha o IDLE do atacante, APENAS se a animação NÃO estiver tocando
-            if (estado->animacaoEmExecucao.ativo == false) {
-                 DrawTexturePro(pData->animIdle.textura, frame,
-                    (Rectangle){ estado->posFocoAtacante.x, estado->posFocoAtacante.y, fabsf(frame.width) * estado->zoomFocoAtacante, frame.height * estado->zoomFocoAtacante },
-                    (Vector2){ fabsf(frame.width) * estado->zoomFocoAtacante / 2, frame.height * estado->zoomFocoAtacante / 2 }, 0, corAtacante);
-            }
-           
-            // Barra de HP do Atacante
-            float hpBarY = estado->posFocoAtacante.y + (fabsf(frame.height) * estado->zoomFocoAtacante / 2) + 5;
-            int posXBarra = (int)estado->posFocoAtacante.x - 50;
-            int larguraBarra = 100;
-            int alturaBarra = 10;
-            
-            DrawRectangle(posXBarra, (int)hpBarY, larguraBarra, alturaBarra, DARKGRAY);
-            int larguraPreenchimento = (int)((float)larguraBarra * (float)hpAtual / (float)pData->hpMax);
-            DrawRectangle(posXBarra, (int)hpBarY, larguraPreenchimento, alturaBarra, ehOponente ? RED : GREEN);
-            DrawRectangleLines(posXBarra, (int)hpBarY, larguraBarra, alturaBarra, LIGHTGRAY);
         }
     }
-    
-    if (estado->alvoEmFoco != NULL) {
-        PersonagemData* pData = estado->alvoEmFoco;
-        bool ehOponente = !estado->animFlip; // Alvo é o oposto do atacante
-        int frameIdx = 0;
-        int hpAtual = 0;
-        int posAlvo = -1;
 
-        NoPersonagem* noAlvo = ObterNoPorPersonagem(ehOponente ? &estado->timeIA : &estado->timeJogador, pData);
+    if (estado->alvoEmFoco != NULL || estado->alvoEmFocoIdx != -1) {
+        // O alvo geralmente é o oposto do atacante (definido pelo animFlip da lógica de update)
+        // Mas vamos garantir olhando as listas ou o índice salvo
+        if (estado->animFlip) { // Se flip é true, Oponente está atacando -> Alvo é Jogador
+             alvoEhIA = false;
+        } else { // Jogador ataca -> Alvo é IA
+             alvoEhIA = true;
+        }
         
-        if (noAlvo != NULL) {
-            // Alvo está vivo, pega a posição do nó
-            posAlvo = noAlvo->posicaoNoTime;
+        // Tenta pegar o índice pelo ponteiro (se vivo) ou usa o índice salvo (se morto)
+        NoPersonagem* no = ObterNoPorPersonagem(alvoEhIA ? &estado->timeIA : &estado->timeJogador, estado->alvoEmFoco);
+        if (no != NULL) {
+            idxAlvoFoco = no->posicaoNoTime;
         } else {
-            // Alvo está morto, usa o índice guardado
-            posAlvo = estado->alvoEmFocoIdx;
+            idxAlvoFoco = estado->alvoEmFocoIdx;
+        }
+    }
+
+    // --- 2. DESENHAR BACKGROUND (LÁPIDES E PERSONAGENS VIVOS) ---
+    // Nota: Desenhamos APENAS se não for o personagem em foco atual
+
+    // A) Time JOGADOR (Background)
+    for (int i = 0; i < 3; i++) {
+        // Verifica se este índice é o foco atual (se for, PULA, pois será desenhado no passo 3 com zoom)
+        bool ehFoco = ( (!atacanteEhIA && idxAtacanteFoco == i) || (!alvoEhIA && idxAlvoFoco == i) );
+
+        if (!ehFoco) {
+            // 1. Desenha Lápide se estiver ativa
+            if (estado->animLapideJogador[i].ativo) {
+                estado->animLapideJogador[i].pos = posJogador[i];
+                estado->animLapideJogador[i].zoom = 1.5f;
+                
+                // Aplica Alpha na lápide manualmente (hack para usar a função existente ou desenhar direto)
+                // Como a função DesenharAnimacaoLapide usa WHITE fixo, vamos desenhar manualmente aqui para aplicar alpha
+                if (estado->animLapideJogador[i].anim != NULL) {
+                     Rectangle frame = estado->animLapideJogador[i].anim->def.frames[estado->animLapideJogador[i].frameAtual];
+                     Rectangle dest = { posJogador[i].x, posJogador[i].y, frame.width * 1.5f, frame.height * 1.5f };
+                     Vector2 orig = { dest.width/2, dest.height/2 };
+                     DrawTexturePro(estado->animLapideJogador[i].anim->textura, frame, dest, orig, 0.0f, corFade);
+                }
+            }
+            // 2. Se não tem lápide, verifica se tem personagem vivo na lista
+            else {
+                 NoPersonagem* no = ObterNoNaPosicao(&estado->timeJogador, i);
+                 if (no != NULL) {
+                    PersonagemData* pData = no->personagem;
+                    AnimacaoData* anim = &pData->animIdle;
+                    
+                    Color corPersonagem = corFade; 
+                    if (estado->timerDanoJogador[i] > 0.0f && fmod(estado->timerDanoJogador[i], 0.2f) < 0.1f) {
+                        corPersonagem = ColorAlpha(RED, estado->alphaOutrosPersonagens);
+                    }
+
+                    if (anim->def.numFrames > 0) {
+                        int frameIndex = estado->idleFrameJogador[i];
+                        if (frameIndex >= anim->def.numFrames) frameIndex = 0;
+                        
+                        Rectangle frame = anim->def.frames[frameIndex];
+                        float zoom = pData->batalhaZoom;
+                        
+                        DrawTexturePro(anim->textura, frame,
+                        (Rectangle){posJogador[i].x, posJogador[i].y, frame.width * zoom, frame.height * zoom},
+                        (Vector2){frame.width * zoom / 2, frame.height * zoom / 2}, 0, corPersonagem);
+
+                        // Barra HP
+                        int posXBarra = (int)posJogador[i].x - 50; 
+                        int posYBarra = (int)hpBarYFixo; 
+                        int larguraPreenchimento = (int)(100.0f * (float)estado->hpJogador[i] / (float)pData->hpMax);
+                        
+                        DrawRectangle(posXBarra, posYBarra, 100, 10, corBgFade);
+                        DrawRectangle(posXBarra, posYBarra, larguraPreenchimento, 10, corHpFadeJ);
+                        DrawRectangleLines(posXBarra, posYBarra, 100, 10, corBordaFade);
+                    }
+                 }
+            }
+        }
+    }
+
+    // B) Time IA/OPONENTE (Background)
+    for (int i = 0; i < 3; i++) {
+        bool ehFoco = ( (atacanteEhIA && idxAtacanteFoco == i) || (alvoEhIA && idxAlvoFoco == i) );
+
+        if (!ehFoco) {
+            // 1. Lápide
+            if (estado->animLapideIA[i].ativo) {
+                estado->animLapideIA[i].pos = posIA[i];
+                estado->animLapideIA[i].zoom = 1.5f;
+                
+                if (estado->animLapideIA[i].anim != NULL) {
+                     Rectangle frame = estado->animLapideIA[i].anim->def.frames[estado->animLapideIA[i].frameAtual];
+                     if (estado->animLapideIA[i].flip) frame.width = -frame.width; // Respeita o flip da lápide
+                     Rectangle dest = { posIA[i].x, posIA[i].y, fabsf(frame.width) * 1.5f, frame.height * 1.5f };
+                     Vector2 orig = { dest.width/2, dest.height/2 };
+                     DrawTexturePro(estado->animLapideIA[i].anim->textura, frame, dest, orig, 0.0f, corFade);
+                }
+            }
+            // 2. Vivo
+            else {
+                 NoPersonagem* no = ObterNoNaPosicao(&estado->timeIA, i);
+                 if (no != NULL) {
+                    PersonagemData* pData = no->personagem;
+                    AnimacaoData* anim = &pData->animIdle;
+                    
+                    Color corPersonagem = corFade;
+                    if (estado->timerDanoIA[i] > 0.0f && fmod(estado->timerDanoIA[i], 0.2f) < 0.1f) {
+                        corPersonagem = ColorAlpha(RED, estado->alphaOutrosPersonagens);
+                    }
+
+                    if (anim->def.numFrames > 0) {
+                        int frameIndex = estado->idleFrameIA[i];
+                        if (frameIndex >= anim->def.numFrames) frameIndex = 0;
+
+                        Rectangle frame = anim->def.frames[frameIndex];
+                        float zoom = pData->batalhaZoom;
+                        Rectangle frameFlip = frame;
+                        frameFlip.width = -frame.width; // Flip padrão da IA
+
+                        DrawTexturePro(anim->textura, frameFlip,
+                        (Rectangle){posIA[i].x, posIA[i].y, frame.width * zoom, frame.height * zoom},
+                        (Vector2){frame.width * zoom / 2, frame.height * zoom / 2}, 0, corPersonagem);
+                        
+                        // Barra HP
+                        int posXBarra = (int)posIA[i].x - 50; 
+                        int posYBarra = (int)hpBarYFixo; 
+                        int larguraPreenchimento = (int)(100.0f * (float)estado->hpIA[i] / (float)pData->hpMax);
+
+                        DrawRectangle(posXBarra, posYBarra, 100, 10, corBgFade);
+                        DrawRectangle(posXBarra, posYBarra, larguraPreenchimento, 10, corHpFadeIA);
+                        DrawRectangleLines(posXBarra, posYBarra, 100, 10, corBordaFade);
+                    }
+                 }
+            }
+        }
+    }
+
+
+    // --- 3. DESENHAR PERSONAGENS EM FOCO (ATACANTE E ALVO) ---
+    // Estes são desenhados SEM alpha e interpolados (movimento)
+    
+    if (estado->atacanteEmFoco != NULL) {
+        // --- ATACANTE ---
+        PersonagemData* pDataAtacante = estado->atacanteEmFoco;
+        
+        // Verifica se o atacante está morto (Lápide) ou vivo
+        EstadoAnimacao* animLapide = atacanteEhIA ? &estado->animLapideIA[idxAtacanteFoco] : &estado->animLapideJogador[idxAtacanteFoco];
+        
+        if (animLapide->ativo) {
+            // Desenha Lápide em foco
+            animLapide->pos = estado->posFocoAtacante;
+            DesenharAnimacaoLapide(animLapide); // Esta função usa WHITE (opaco), correto para foco
+        } 
+        else if (estado->animacaoEmExecucao.ativo == false) {
+             // Desenha Personagem Vivo (Somente se não estiver rolando a animação de ataque específica)
+             int frameIdx = atacanteEhIA ? estado->idleFrameIA[idxAtacanteFoco] : estado->idleFrameJogador[idxAtacanteFoco];
+             if (pDataAtacante->animIdle.def.numFrames > 0 && frameIdx >= pDataAtacante->animIdle.def.numFrames) frameIdx = 0;
+             
+             Color corAtacante = WHITE;
+             if (atacanteEhIA) {
+                if (estado->timerDanoIA[idxAtacanteFoco] > 0.0f && fmod(estado->timerDanoIA[idxAtacanteFoco], 0.2f) < 0.1f) corAtacante = RED;
+             } else {
+                if (estado->timerDanoJogador[idxAtacanteFoco] > 0.0f && fmod(estado->timerDanoJogador[idxAtacanteFoco], 0.2f) < 0.1f) corAtacante = RED;
+             }
+             
+             Rectangle frame = pDataAtacante->animIdle.def.frames[frameIdx];
+             if (estado->animFlip) frame.width = -frame.width; // O atacante vira dependendo da direção do ataque
+
+             DrawTexturePro(pDataAtacante->animIdle.textura, frame,
+                (Rectangle){ estado->posFocoAtacante.x, estado->posFocoAtacante.y, fabsf(frame.width) * estado->zoomFocoAtacante, frame.height * estado->zoomFocoAtacante },
+                (Vector2){ fabsf(frame.width) * estado->zoomFocoAtacante / 2, frame.height * estado->zoomFocoAtacante / 2 }, 0, corAtacante);
         }
 
-        if (posAlvo != -1) { // Só desenha se tivermos uma posição válida
-            if (ehOponente) {
-                frameIdx = estado->idleFrameIA[posAlvo];
-                hpAtual = estado->hpIA[posAlvo];
+        // Barra de HP do Atacante
+        int hpAtual = atacanteEhIA ? estado->hpIA[idxAtacanteFoco] : estado->hpJogador[idxAtacanteFoco];
+        float alturaFrame = (pDataAtacante->animIdle.def.numFrames > 0) ? pDataAtacante->animIdle.def.frames[0].height : 100.0f;
+        float hpBarY = estado->posFocoAtacante.y + (alturaFrame * estado->zoomFocoAtacante / 2) + 5;
+        DrawRectangle((int)estado->posFocoAtacante.x - 50, (int)hpBarY, 100, 10, DARKGRAY);
+        DrawRectangle((int)estado->posFocoAtacante.x - 50, (int)hpBarY, (int)(100.0f * hpAtual / pDataAtacante->hpMax), 10, atacanteEhIA ? RED : GREEN);
+        DrawRectangleLines((int)estado->posFocoAtacante.x - 50, (int)hpBarY, 100, 10, LIGHTGRAY);
+
+
+        // --- ALVO (Se houver) ---
+        if (estado->alvoEmFoco != NULL) {
+            PersonagemData* pDataAlvo = estado->alvoEmFoco;
+            
+            EstadoAnimacao* animLapideAlvo = alvoEhIA ? &estado->animLapideIA[idxAlvoFoco] : &estado->animLapideJogador[idxAlvoFoco];
+
+            if (animLapideAlvo->ativo) {
+                animLapideAlvo->pos = estado->posFocoAlvo;
+                DesenharAnimacaoLapide(animLapideAlvo);
             } else {
-                frameIdx = estado->idleFrameJogador[posAlvo];
-                hpAtual = estado->hpJogador[posAlvo];
-            }
+                int frameIdx = alvoEhIA ? estado->idleFrameIA[idxAlvoFoco] : estado->idleFrameJogador[idxAlvoFoco];
+                if (pDataAlvo->animIdle.def.numFrames > 0 && frameIdx >= pDataAlvo->animIdle.def.numFrames) frameIdx = 0;
 
-            // Só desenha o sprite do alvo se ele ainda estiver vivo (na lista)
-            if (noAlvo != NULL) {
-                if (pData->animIdle.def.numFrames > 0) {
-                    if (frameIdx >= pData->animIdle.def.numFrames) {
-                        frameIdx = 0;
-                    }
+                Color corAlvo = WHITE;
+                if (alvoEhIA) {
+                    if (estado->timerDanoIA[idxAlvoFoco] > 0.0f && fmod(estado->timerDanoIA[idxAlvoFoco], 0.2f) < 0.1f) corAlvo = RED;
                 } else {
-                    frameIdx = 0;
+                    if (estado->timerDanoJogador[idxAlvoFoco] > 0.0f && fmod(estado->timerDanoJogador[idxAlvoFoco], 0.2f) < 0.1f) corAlvo = RED;
                 }
+                
+                Rectangle frame = pDataAlvo->animIdle.def.frames[frameIdx];
+                if (alvoEhIA) frame.width = -frame.width; // Alvo IA geralmente olha pra esquerda
 
-                // --- LÓGICA DE COR ADICIONADA ---
-                Color corAlvo = WHITE; // Cor padrão (sem alpha, está em foco)
-                if (ehOponente) {
-                    if (estado->timerDanoIA[posAlvo] > 0.0f) {
-                         if (fmod(estado->timerDanoIA[posAlvo], 0.2f) < 0.1f) {
-                            corAlvo = RED;
-                        }
-                    }
-                } else {
-                     if (estado->timerDanoJogador[posAlvo] > 0.0f) {
-                         if (fmod(estado->timerDanoJogador[posAlvo], 0.2f) < 0.1f) {
-                            corAlvo = RED;
-                        }
-                    }
-                }
-                // --- FIM DA LÓGICA DE COR ---
-                
-                Rectangle frame = pData->animIdle.def.frames[frameIdx];
-                if (ehOponente) { // Flip alvo se for Oponente
-                    frame.width = -frame.width; 
-                } 
-                
-                 DrawTexturePro(pData->animIdle.textura, frame,
+                DrawTexturePro(pDataAlvo->animIdle.textura, frame,
                     (Rectangle){ estado->posFocoAlvo.x, estado->posFocoAlvo.y, fabsf(frame.width) * estado->zoomFocoAlvo, frame.height * estado->zoomFocoAlvo },
                     (Vector2){ fabsf(frame.width) * estado->zoomFocoAlvo / 2, frame.height * estado->zoomFocoAlvo / 2 }, 0, corAlvo);
             }
 
-            // Barra de HP do Alvo (desenha sempre, mesmo se morto, para mostrar o 0)
-            float alturaFrame = 100.0f; // Altura de fallback
-            if (pData->animIdle.def.numFrames > 0) {
-                 alturaFrame = pData->animIdle.def.frames[0].height;
-            }
-           
-            float hpBarY = estado->posFocoAlvo.y + (alturaFrame * estado->zoomFocoAlvo / 2) + 5;
-            int posXBarra = (int)estado->posFocoAlvo.x - 50;
-            int larguraBarra = 100;
-            int alturaBarra = 10;
-            
-            DrawRectangle(posXBarra, (int)hpBarY, larguraBarra, alturaBarra, DARKGRAY);
-            int larguraPreenchimento = (int)((float)larguraBarra * (float)hpAtual / (float)pData->hpMax);
-            DrawRectangle(posXBarra, (int)hpBarY, larguraPreenchimento, alturaBarra, ehOponente ? RED : GREEN);
-            DrawRectangleLines(posXBarra, (int)hpBarY, larguraBarra, alturaBarra, LIGHTGRAY);
+            // Barra de HP do Alvo
+            int hpAlvo = alvoEhIA ? estado->hpIA[idxAlvoFoco] : estado->hpJogador[idxAlvoFoco];
+            float alturaFrameAlvo = (pDataAlvo->animIdle.def.numFrames > 0) ? pDataAlvo->animIdle.def.frames[0].height : 100.0f;
+            float hpBarYAlvo = estado->posFocoAlvo.y + (alturaFrameAlvo * estado->zoomFocoAlvo / 2) + 5;
+            DrawRectangle((int)estado->posFocoAlvo.x - 50, (int)hpBarYAlvo, 100, 10, DARKGRAY);
+            DrawRectangle((int)estado->posFocoAlvo.x - 50, (int)hpBarYAlvo, (int)(100.0f * hpAlvo / pDataAlvo->hpMax), 10, alvoEhIA ? RED : GREEN);
+            DrawRectangleLines((int)estado->posFocoAlvo.x - 50, (int)hpBarYAlvo, 100, 10, LIGHTGRAY);
         }
     }
-    // --- FIM DO DESENHO EM FOCO ---
-
-    // Desenha a animação de ataque por cima de tudo
+    
+    // Desenha a animação de ataque por cima de tudo (explosão, soco, etc)
     DesenharAnimacao(&estado->animacaoEmExecucao);
     
-    // Desenha as caixas de seleção de alvo
-    if (estado->estadoTurno == ESTADO_ESPERANDO_JOGADOR) {
-        if (estado->ataqueSelecionado != -1) {
-            
-            bool ehJogador1 = (estado->turnoDe == TURNO_JOGADOR);
-
-            if (ehJogador1) {
-                // P1 está atacando: desenha caixas no Time IA/P2
-                noAtualIA = estado->timeIA.inicio;
-                while (noAtualIA != NULL) {
-                    int i = noAtualIA->posicaoNoTime;
-                    DrawRectangleLines((int)posIA[i].x - 50, (int)posIA[i].y - 50, 100, 100, YELLOW);
-                    noAtualIA = noAtualIA->proximo;
-                }
-            } else {
-                // P2 está atacando: desenha caixas no Time P1
-                noAtualJogador = estado->timeJogador.inicio;
-                while (noAtualJogador != NULL) {
-                    int i = noAtualJogador->posicaoNoTime;
-                    DrawRectangleLines((int)posJogador[i].x - 50, (int)posJogador[i].y - 50, 100, 100, YELLOW);
-                    noAtualJogador = noAtualJogador->proximo;
-                }
+    // --- DESENHA CAIXAS DE SELEÇÃO (SE TURNO DO JOGADOR) ---
+    if (estado->estadoTurno == ESTADO_ESPERANDO_JOGADOR && estado->ataqueSelecionado != -1) {
+        bool ehJogador1 = (estado->turnoDe == TURNO_JOGADOR);
+        if (ehJogador1) {
+            NoPersonagem* noAtual = estado->timeIA.inicio;
+            while (noAtual != NULL) {
+                int i = noAtual->posicaoNoTime;
+                DrawRectangleLines((int)posIA[i].x - 50, (int)posIA[i].y - 50, 100, 100, YELLOW);
+                noAtual = noAtual->proximo;
+            }
+        } else {
+            NoPersonagem* noAtual = estado->timeJogador.inicio;
+            while (noAtual != NULL) {
+                int i = noAtual->posicaoNoTime;
+                DrawRectangleLines((int)posJogador[i].x - 50, (int)posJogador[i].y - 50, 100, 100, YELLOW);
+                noAtual = noAtual->proximo;
             }
         }
     }
 
-
-    // --- Menu Inferior ---
+    // --- MENU INFERIOR ---
     int menuY = arenaY + arenaHeight + 10; 
     int menuHeight = 240; 
     Color menuBG = (Color){ 40, 40, 40, 255 };
@@ -1275,7 +1345,6 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
     Rectangle btnAtk1 = { colAtaquesX, textoYBase + 35, 200, 40 };
     Rectangle btnAtk2 = { colAtaquesX, textoYBase + 90, 200, 40 };
 
-    // Só mostra o menu de ataque se for o turno do jogador E ele não estiver no meio de um zoom
     if (estado->estadoTurno == ESTADO_ESPERANDO_JOGADOR) {
         DrawText("Ataque:", colAtaquesX, textoYBase, 20, GREEN);
         DrawText("Especificações:", colSpecsX, textoYBase, 20, GREEN);
@@ -1283,15 +1352,8 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
 
         PersonagemData* atacante = estado->ordemDeAtaque[estado->personagemAgindoIdx];
         if (atacante != NULL) {
-            
-            Color corAtk1 = corBotaoNormal;
-            Color corAtk2 = corBotaoNormal;
-            if (estado->ataqueSelecionado == 0) {
-                corAtk1 = corBotaoSelecionado;
-            }
-            if (estado->ataqueSelecionado == 1) {
-                corAtk2 = corBotaoSelecionado;
-            }
+            Color corAtk1 = (estado->ataqueSelecionado == 0) ? corBotaoSelecionado : corBotaoNormal;
+            Color corAtk2 = (estado->ataqueSelecionado == 1) ? corBotaoSelecionado : corBotaoNormal;
 
             DrawRectangleRounded(btnAtk1, 0.2f, 4, corAtk1);
             DrawRectangleRoundedLinesEx(btnAtk1, 0.2f, 4, espessuraBorda, BLACK);
@@ -1302,40 +1364,23 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
             DrawText(atacante->ataque2.nome, (int)btnAtk2.x + ((int)btnAtk2.width - MeasureText(atacante->ataque2.nome, 20)) / 2, (int)btnAtk2.y + 10, 20, corTexto);
         
             Vector2 mousePos = GetMouseVirtual();
-            if (CheckCollisionPointRec(mousePos, btnAtk1)) {
-                DrawText(atacante->ataque1.descricao, colSpecsX, textoYBase + 40, 20, RAYWHITE);
-                
-                if (atacante->ataque1.tipo == TIPO_CURA_SI) {
-                    DrawText(TextFormat("Cura %d de PV.", atacante->ataque1.dano), colSpecsX, textoYBase + 70, 20, RAYWHITE);
-                } else if (atacante->ataque1.tipo == TIPO_DANO_AREA) {
-                    DrawText(TextFormat("Causa %d de Dano em Área.", atacante->ataque1.dano), colSpecsX, textoYBase + 70, 20, RAYWHITE);
-                } else {
-                    DrawText(TextFormat("Causa %d de Dano.", atacante->ataque1.dano), colSpecsX, textoYBase + 70, 20, RAYWHITE);
-                }
-                
-            } else {
-                // MODIFICADO: Atualiza texto de descrição do Ataque 2
-                if (CheckCollisionPointRec(mousePos, btnAtk2)) {
-                    DrawText(atacante->ataque2.descricao, colSpecsX, textoYBase + 40, 20, RAYWHITE);
-                    
-                    if (atacante->ataque2.tipo == TIPO_CURA_SI) {
-                        DrawText(TextFormat("Cura %d de PV.", atacante->ataque2.dano), colSpecsX, textoYBase + 70, 20, RAYWHITE);
-                    } else if (atacante->ataque2.tipo == TIPO_DANO_AREA) {
-                        DrawText(TextFormat("Causa %d de Dano em Área.", atacante->ataque2.dano), colSpecsX, textoYBase + 70, 20, RAYWHITE);
-                    } else {
-                        DrawText(TextFormat("Causa %d de Dano.", atacante->ataque2.dano), colSpecsX, textoYBase + 70, 20, RAYWHITE);
-                    }
-                }
+            Ataque* attHover = NULL;
+            if (CheckCollisionPointRec(mousePos, btnAtk1)) attHover = &atacante->ataque1;
+            else if (CheckCollisionPointRec(mousePos, btnAtk2)) attHover = &atacante->ataque2;
+
+            if (attHover != NULL) {
+                DrawText(attHover->descricao, colSpecsX, textoYBase + 40, 20, RAYWHITE);
+                const char* tipoTxt = "Causa %d de Dano.";
+                if (attHover->tipo == TIPO_CURA_SI) tipoTxt = "Cura %d de PV.";
+                else if (attHover->tipo == TIPO_DANO_AREA) tipoTxt = "Causa %d de Dano em Área.";
+                DrawText(TextFormat(tipoTxt, attHover->dano), colSpecsX, textoYBase + 70, 20, RAYWHITE);
             }
         }
         
     } else {
-        // Modo "Log" ou Fim de Jogo
         int larguraLog = MeasureText(estado->mensagemBatalha, 20);
         int logX = (SCREEN_WIDTH - larguraLog) / 2;
-        if (logX < 15) { 
-            logX = 15;
-        }
+        if (logX < 15) logX = 15;
         DrawText(estado->mensagemBatalha, logX, textoYBase + 60, 20, WHITE);
     }
 }
