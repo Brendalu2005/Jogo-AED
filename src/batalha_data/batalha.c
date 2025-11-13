@@ -641,7 +641,6 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
     estado->alphaOutrosPersonagens = 1.0f;
 }
 
-// Assinatura modificada para aceitar ModoDeJogo
 void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJogo modo) {
     if (IsKeyPressed(KEY_ESCAPE)) {
 
@@ -719,13 +718,20 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
 
     AtualizarAnimacao(&estado->animacaoEmExecucao);
 
-    // Checagem de Fim de Jogo
-    if (estado->timeJogador.tamanho == 0 && estado->estadoTurno != ESTADO_FIM_DE_JOGO) {
-        estado->estadoTurno = ESTADO_FIM_DE_JOGO;
-        sprintf(estado->mensagemBatalha, "OPONENTE VENCEU! Pressione ESC para sair.");
-    } else if (estado->timeIA.tamanho == 0 && estado->estadoTurno != ESTADO_FIM_DE_JOGO) {
-        estado->estadoTurno = ESTADO_FIM_DE_JOGO;
-        sprintf(estado->mensagemBatalha, "JOGADOR 1 VENCEU! Pressione ESC para sair.");
+    // --- CORREÇÃO AQUI: Só checa Fim de Jogo se NÃO estiver no meio de uma animação de ataque ---
+    // Isso impede que o jogo corte a animação de zoom/ataque e deixe variáveis "sujas"
+    bool emAnimacaoAtaque = (estado->estadoTurno == ESTADO_ZOOM_IN_ATAQUE || 
+                             estado->estadoTurno == ESTADO_ANIMACAO_ATAQUE || 
+                             estado->estadoTurno == ESTADO_ZOOM_OUT_ATAQUE);
+
+    if (!emAnimacaoAtaque) {
+        if (estado->timeJogador.tamanho == 0 && estado->estadoTurno != ESTADO_FIM_DE_JOGO) {
+            estado->estadoTurno = ESTADO_FIM_DE_JOGO;
+            sprintf(estado->mensagemBatalha, "OPONENTE VENCEU! Pressione ESC para sair.");
+        } else if (estado->timeIA.tamanho == 0 && estado->estadoTurno != ESTADO_FIM_DE_JOGO) {
+            estado->estadoTurno = ESTADO_FIM_DE_JOGO;
+            sprintf(estado->mensagemBatalha, "JOGADOR 1 VENCEU! Pressione ESC para sair.");
+        }
     }
 
 
@@ -735,10 +741,8 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
             ProximoTurno(estado);
             break;
 
-        // Este estado agora serve para J1 e J2
         case ESTADO_ESPERANDO_JOGADOR:
             {
-                // Verifica de quem é o turno
                 bool ehJogador1 = (estado->turnoDe == TURNO_JOGADOR);
 
                 int arenaY = 80;
@@ -750,18 +754,15 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
                 Rectangle btnAtk1 = { colAtaquesX, textoYBase + 35, 200, 40 }; 
                 Rectangle btnAtk2 = { colAtaquesX, textoYBase + 90, 200, 40 }; 
                 
-                // Define os alvos baseado em quem está jogando
                 Rectangle alvo_0, alvo_1, alvo_2;
                 ListaTime* listaAlvo;
                 
                 if (ehJogador1) {
-                    // P1 ataca P2/IA
                     alvo_0 = (Rectangle){posIA[0].x - 50, posIA[0].y - 50, 100, 100};
                     alvo_1 = (Rectangle){posIA[1].x - 50, posIA[1].y - 50, 100, 100};
                     alvo_2 = (Rectangle){posIA[2].x - 50, posIA[2].y - 50, 100, 100};
                     listaAlvo = &estado->timeIA;
                 } else {
-                    // P2 ataca P1
                     alvo_0 = (Rectangle){posJogador[0].x - 50, posJogador[0].y - 50, 100, 100};
                     alvo_1 = (Rectangle){posJogador[1].x - 50, posJogador[1].y - 50, 100, 100};
                     alvo_2 = (Rectangle){posJogador[2].x - 50, posJogador[2].y - 50, 100, 100};
@@ -784,31 +785,22 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
                         int alvo = -1;
                         
                         if (CheckCollisionPointRec(mousePos, alvo_0)) {
-                            if (ObterNoNaPosicao(listaAlvo, 0) != NULL) {
-                                alvo = 0;
-                            }
+                            if (ObterNoNaPosicao(listaAlvo, 0) != NULL) alvo = 0;
                         }
                         if (CheckCollisionPointRec(mousePos, alvo_1)) {
-                             if (ObterNoNaPosicao(listaAlvo, 1) != NULL) {
-                                alvo = 1;
-                             }
+                             if (ObterNoNaPosicao(listaAlvo, 1) != NULL) alvo = 1;
                         }
                         if (CheckCollisionPointRec(mousePos, alvo_2)) {
-                            if (ObterNoNaPosicao(listaAlvo, 2) != NULL) {
-                                alvo = 2;
-                            }
+                            if (ObterNoNaPosicao(listaAlvo, 2) != NULL) alvo = 2;
                         }
                         
                         if (alvo != -1) {
                             estado->alvoSelecionado = alvo; 
                             PersonagemData* atacante = estado->ordemDeAtaque[estado->personagemAgindoIdx];
                             Ataque* att;
-                            if (estado->ataqueSelecionado == 0) {
-                                att = &atacante->ataque1;
-                            } else {
-                                att = &atacante->ataque2;
-                            }
-                            // Passa 'ehJogador1' para ExecutarAtaque
+                            if (estado->ataqueSelecionado == 0) att = &atacante->ataque1;
+                            else att = &atacante->ataque2;
+                            
                             ExecutarAtaque(estado, atacante, att, alvo, ehJogador1);
                         }
                     }
@@ -828,54 +820,37 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
                 float duracaoZoom = 0.3f; 
                 estado->timerFoco += GetFrameTime();
                 float progresso = estado->timerFoco / duracaoZoom;
+                if (progresso > 1.0f) progresso = 1.0f;
 
-                if (progresso > 1.0f) {
-                    progresso = 1.0f;
-                }
-
-                bool ehOponenteAtacando = estado->animFlip; // 'flip' é true se o Oponente (J2/IA) ataca
-
+                bool ehOponenteAtacando = estado->animFlip;
                 NoPersonagem* noAtacante = NULL;
-                if (ehOponenteAtacando) {
-                    noAtacante = ObterNoPorPersonagem(&estado->timeIA, estado->atacanteEmFoco);
-                } else {
-                    noAtacante = ObterNoPorPersonagem(&estado->timeJogador, estado->atacanteEmFoco);
-                }
+                if (ehOponenteAtacando) noAtacante = ObterNoPorPersonagem(&estado->timeIA, estado->atacanteEmFoco);
+                else noAtacante = ObterNoPorPersonagem(&estado->timeJogador, estado->atacanteEmFoco);
                 
                 Vector2 posOriginalAtacante;
-                if (noAtacante != NULL) {
-                     posOriginalAtacante = ehOponenteAtacando ? posIA[noAtacante->posicaoNoTime] : posJogador[noAtacante->posicaoNoTime];
-                } else {
-                    posOriginalAtacante = (Vector2){ -200.0f, 350.0f }; 
-                }
+                if (noAtacante != NULL) posOriginalAtacante = ehOponenteAtacando ? posIA[noAtacante->posicaoNoTime] : posJogador[noAtacante->posicaoNoTime];
+                else posOriginalAtacante = (Vector2){ -200.0f, 350.0f }; 
                
                 Vector2 posAlvoAtacante;
                 float zoomOriginalAtacante = estado->atacanteEmFoco->batalhaZoom;
                 float zoomAlvo = 2.5f; 
 
-                // Verifica se há um alvo para o zoom
                 if (estado->alvoEmFoco != NULL || estado->alvoEmFocoIdx != -1) {
-                    // --- Lógica de zoom com alvo (Dano Único ou Área) ---
                     NoPersonagem* noAlvo = NULL;
-                    if (ehOponenteAtacando) {
-                        noAlvo = ObterNoPorPersonagem(&estado->timeJogador, estado->alvoEmFoco);
-                    } else {
-                        noAlvo = ObterNoPorPersonagem(&estado->timeIA, estado->alvoEmFoco);
-                    }
+                    if (ehOponenteAtacando) noAlvo = ObterNoPorPersonagem(&estado->timeJogador, estado->alvoEmFoco);
+                    else noAlvo = ObterNoPorPersonagem(&estado->timeIA, estado->alvoEmFoco);
                     
                     Vector2 posOriginalAlvo;
-                    float zoomOriginalAlvo = 2.0f; // Valor padrão se alvo estiver morto
+                    float zoomOriginalAlvo = 2.0f;
                     
                     if (noAlvo != NULL) {
                          posOriginalAlvo = ehOponenteAtacando ? posJogador[noAlvo->posicaoNoTime] : posIA[noAlvo->posicaoNoTime];
                          zoomOriginalAlvo = estado->alvoEmFoco->batalhaZoom;
                     } else {
-                         // Se o nó do alvo é nulo (morto), usa o índice guardado para a posição
                          posOriginalAlvo = ehOponenteAtacando ? posJogador[estado->alvoEmFocoIdx] : posIA[estado->alvoEmFocoIdx];
                     }
 
                     Vector2 posAlvoAlvo;
-
                     if (ehOponenteAtacando) {
                         posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f + 200.0f, 350.0f };
                         posAlvoAlvo = (Vector2){ (float)SCREEN_WIDTH / 2.0f - 200.0f, 350.0f };
@@ -889,11 +864,9 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
                     estado->zoomFocoAlvo = zoomOriginalAlvo + (zoomAlvo - zoomOriginalAlvo) * progresso;
 
                 } else {
-                    // --- Lógica de zoom sem alvo (Cura) ---
-                    posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f, 350.0f }; // Foca no centro
+                    posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f, 350.0f };
                 }
 
-                // Interpola o atacante (sempre)
                 estado->posFocoAtacante.x = posOriginalAtacante.x + (posAlvoAtacante.x - posOriginalAtacante.x) * progresso;
                 estado->posFocoAtacante.y = posOriginalAtacante.y + (posAlvoAtacante.y - posOriginalAtacante.y) * progresso;
                 estado->zoomFocoAtacante = zoomOriginalAtacante + (zoomAlvo - zoomOriginalAtacante) * progresso;
@@ -916,41 +889,25 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
                 float duracaoZoomOut = 0.3f; 
                 estado->timerFoco += GetFrameTime();
                 float progresso = estado->timerFoco / duracaoZoomOut;
-
-                if (progresso > 1.0f) {
-                    progresso = 1.0f;
-                }
+                if (progresso > 1.0f) progresso = 1.0f;
 
                 bool ehOponenteAtacando = estado->animFlip;
-                
                 NoPersonagem* noAtacante = NULL;
-                if (ehOponenteAtacando) {
-                    noAtacante = ObterNoPorPersonagem(&estado->timeIA, estado->atacanteEmFoco);
-                } else {
-                    noAtacante = ObterNoPorPersonagem(&estado->timeJogador, estado->atacanteEmFoco);
-                }
+                if (ehOponenteAtacando) noAtacante = ObterNoPorPersonagem(&estado->timeIA, estado->atacanteEmFoco);
+                else noAtacante = ObterNoPorPersonagem(&estado->timeJogador, estado->atacanteEmFoco);
                 
                 Vector2 posOriginalAtacante;
-                if (noAtacante != NULL) {
-                     posOriginalAtacante = ehOponenteAtacando ? posIA[noAtacante->posicaoNoTime] : posJogador[noAtacante->posicaoNoTime];
-                } else {
-                    // Se o atacante morreu (ex: recuo) e foi removido, volta da posição de foco
-                    posOriginalAtacante = estado->posFocoAtacante; 
-                }
+                if (noAtacante != NULL) posOriginalAtacante = ehOponenteAtacando ? posIA[noAtacante->posicaoNoTime] : posJogador[noAtacante->posicaoNoTime];
+                else posOriginalAtacante = estado->posFocoAtacante; 
 
                 float zoomOriginalAtacante = estado->atacanteEmFoco->batalhaZoom;
                 Vector2 posAlvoAtacante;
                 float zoomAlvo = 2.5f;
                 
-                // Verifica se há um alvo para o zoom
                 if (estado->alvoEmFoco != NULL || estado->alvoEmFocoIdx != -1) {
-                    // --- Lógica de zoom com alvo (Dano Único ou Área) ---
                     NoPersonagem* noAlvo = NULL;
-                    if (ehOponenteAtacando) {
-                        noAlvo = ObterNoPorPersonagem(&estado->timeJogador, estado->alvoEmFoco);
-                    } else {
-                        noAlvo = ObterNoPorPersonagem(&estado->timeIA, estado->alvoEmFoco);
-                    }
+                    if (ehOponenteAtacando) noAlvo = ObterNoPorPersonagem(&estado->timeJogador, estado->alvoEmFoco);
+                    else noAlvo = ObterNoPorPersonagem(&estado->timeIA, estado->alvoEmFoco);
                     
                     Vector2 posOriginalAlvo;
                     float zoomOriginalAlvo = 2.0f;
@@ -963,7 +920,6 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
                     }
 
                     Vector2 posAlvoAlvo;
-
                     if (ehOponenteAtacando) {
                         posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f + 200.0f, 350.0f };
                         posAlvoAlvo = (Vector2){ (float)SCREEN_WIDTH / 2.0f - 200.0f, 350.0f };
@@ -977,11 +933,9 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
                     estado->zoomFocoAlvo = zoomAlvo + (zoomOriginalAlvo - zoomAlvo) * progresso;
 
                 } else {
-                    // --- Lógica de zoom sem alvo (Cura) ---
-                     posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f, 350.0f }; // Foca no centro
+                     posAlvoAtacante = (Vector2){ (float)SCREEN_WIDTH / 2.0f, 350.0f };
                 }
 
-                // Interpola o atacante (sempre)
                 estado->posFocoAtacante.x = posAlvoAtacante.x + (posOriginalAtacante.x - posAlvoAtacante.x) * progresso;
                 estado->posFocoAtacante.y = posAlvoAtacante.y + (posOriginalAtacante.y - posAlvoAtacante.y) * progresso;
                 estado->zoomFocoAtacante = zoomAlvo + (zoomOriginalAtacante - zoomAlvo) * progresso;
@@ -989,41 +943,37 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
                 estado->alphaOutrosPersonagens = progresso; 
 
                 if (progresso >= 1.0f) {
+                    // Limpa o foco e as variáveis da animação
                     estado->atacanteEmFoco = NULL;
                     estado->alvoEmFoco = NULL;
                     estado->alvoEmFocoIdx = -1; 
                     estado->alphaOutrosPersonagens = 1.0f;
                     
-                    // Reseta o flip do oponente (caso J1 tenha atacado P2)
-                    if (ehOponenteAtacando == false && estado->alvoEmFoco != NULL) {
-                         // estado->alvoEmFoco->animIdle.flip = false; // (O alvo já é NULL aqui, esta lógica precisa ser revista se quiser que o P2 vire de volta)
-                    }
-
-                    
-                    if (estado->timeJogador.tamanho == 0 || estado->timeIA.tamanho == 0) {
-                        // Não faz nada, o loop principal vai pegar o FIM_DE_JOGO
+                    // --- CORREÇÃO AQUI: Verifica se o jogo acabou AGORA, após a animação terminar ---
+                    if (estado->timeJogador.tamanho == 0) {
+                        estado->estadoTurno = ESTADO_FIM_DE_JOGO;
+                        sprintf(estado->mensagemBatalha, "OPONENTE VENCEU! Pressione ESC para sair.");
+                    } else if (estado->timeIA.tamanho == 0) {
+                        estado->estadoTurno = ESTADO_FIM_DE_JOGO;
+                        sprintf(estado->mensagemBatalha, "JOGADOR 1 VENCEU! Pressione ESC para sair.");
                     } else {
+                        // Se ninguém ganhou ainda, segue o jogo
                         ProximoTurno(estado);
                     }
                 }
             }
             break;
 
-        // Renomeado
         case ESTADO_AGUARDANDO_OPONENTE:
             if (modo == MODO_SOLO) {
-                ExecutarTurnoIA(estado); // Chama a IA (Gemini)
+                ExecutarTurnoIA(estado);
             } else {
-                // Modo PVP: É a vez do Jogador 2
-                // Apenas muda o estado para esperar o input do P2
                 estado->estadoTurno = ESTADO_ESPERANDO_JOGADOR;
-                // Atualiza a mensagem para o P2
                 sprintf(estado->mensagemBatalha, "Vez de: %s! (J2) Escolha um ataque.", estado->ordemDeAtaque[estado->personagemAgindoIdx]->nome);
             }
             break;
             
         case ESTADO_FIM_DE_JOGO:
-            // Não faz nada, espera o jogador apertar ESC
             break;
     }
 }
