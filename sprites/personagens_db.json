@@ -10,7 +10,7 @@
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/venom_icon.png",
       "ataque1": { "nome": "Escudo", "descricao": "Um rolo compressor.", "dano": 8,"tipo": "CURA_SI" },
-      "ataque2": { "nome": "Mordida", "descricao": "Um ataque fofo.", "dano": 4 },
+      "ataque2": { "nome": "Mordida", "descricao": "Um ataque fofo.", "dano": 50 },
       "anim": {
         "idle": "sprites/personagens/venom/idle",
         "ataque1": "sprites/personagens/venom/ataque_escudo",
@@ -163,7 +163,7 @@
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/edward_icon.png",
       "ataque1": { "nome": "Explosao Alquimica", "descricao": "Um rolo compressor.", "dano": 8,"tipo": "DANO_AREA" },
-      "ataque2": { "nome": "Invocar", "descricao": "Um ataque fofo.", "dano": 4 },
+      "ataque2": { "nome": "Invocar", "descricao": "Um ataque fofo.", "dano": 50 },
       "anim": {
         "idle": "sprites/personagens/edward/idle",
         "ataque1": "sprites/personagens/edward/explosao",
@@ -281,7 +281,7 @@
       "painelZoom": 2.5,
       "batalhaZoom": 1.5,
       "thumbnailPath": "sprites/telaPersonagem/sailor_icon.png",
-      "ataque1": { "nome": "Soco da lua", "descricao": "Um ataque de gelo poderoso.", "dano": 15 },
+      "ataque1": { "nome": "Soco da lua", "descricao": "Um ataque de gelo poderoso.", "dano": 55 },
       "ataque2": { "nome": "Chute do luar", "descricao": "Causa dano e lentidão.", "dano": 7 },
       "anim": {
         "idle": "sprites/personagens/sailor/idle",
@@ -332,8 +332,8 @@
       "painelZoom": 2.5,
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/naruto_icon.png",
-      "ataque1": { "nome": "Rasengan", "descricao": "Um rolo compressor.", "dano": 8 },
-      "ataque2": { "nome": "Clones", "descricao": "Um ataque fofo.", "dano": 4,"tipo": "DANO_AREA" },
+      "ataque1": { "nome": "Rasengan", "descricao": "Um rolo compressor.", "dano": 100 },
+      "ataque2": { "nome": "Clones", "descricao": "Um ataque fofo.", "dano": 100,"tipo": "DANO_AREA" },
       "anim": {
         "idle": "sprites/personagens/naruto/idle",
         "ataque1": "sprites/personagens/naruto/ataque_solo",

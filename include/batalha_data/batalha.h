@@ -79,6 +79,11 @@ typedef struct {
 
     EstadoAnimacao animLapideJogador[3];
     EstadoAnimacao animLapideIA[3];
+
+    NoPersonagem* noParaRemover[6];
+    int numMortosPendentes;
+
+    bool isZoomAoe;
     
 } EstadoBatalha;
 
