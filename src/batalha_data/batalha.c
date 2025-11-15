@@ -121,6 +121,31 @@ static void ExecutarTurnoIA(EstadoBatalha *estado) {
 
     DecisaoIA decisao = ObterDecisaoIA(estado, MINHA_CHAVE_API);
 
+
+    NoPersonagem* noAtacanteIA = ObterNoPorPersonagem(&estado->timeIA, atacante);
+    int posAtacante = -1;
+    
+    if (noAtacanteIA != NULL) {
+        posAtacante = noAtacanteIA->posicaoNoTime;
+    }
+
+    // 2. Se encontramos o atacante...
+    if (posAtacante != -1) {
+        
+        // Verificamos se ele repetiu o último ataque salvo na "memória"
+        if (decisao.indiceAtaque == estado->ultimoAtaqueIA[posAtacante]) {
+            
+            // REPETIU! Forçamos a troca (sem ternário)
+            if (decisao.indiceAtaque == 0) {
+                decisao.indiceAtaque = 1;
+            } else {
+                decisao.indiceAtaque = 0;
+            }
+        }
+        
+        // 3. Salvamos na "memória" o ataque que ele VAI usar (já corrigido)
+        estado->ultimoAtaqueIA[posAtacante] = decisao.indiceAtaque;
+    }
     Ataque* ataqueEscolhido;
     if (decisao.indiceAtaque == 0) {
         ataqueEscolhido = &atacante->ataque1;
@@ -732,6 +757,7 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
         estado->timerDanoIA[i] = 0.0f;
         PararAnimacao(&estado->animLapideJogador[i]);
         PararAnimacao(&estado->animLapideIA[i]);
+        estado->ultimoAtaqueIA[i] = -1;
     }
 
 

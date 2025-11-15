@@ -81,7 +81,7 @@ static char* ConstruirPrompt(EstadoBatalha *estado) {
     snprintf(promptBuffer, sizeof(promptBuffer),
         // --- CORREÇÃO (Trigraph warning) --- 
         // Escapamos os '?' para evitar o warning "trigraph" (??/ vira \)
-        "Voce eh a IA de um jogo. O personagem %s (HP: ?\?/?\?) esta atacando.\n" 
+        "Voce eh a IA de um jogo, escolha personagens diversificados. Além de usar ataques diferentes, você NÃO pode usar o mesmo ataque 2 turnos seguidos. O personagem %s (HP: ?\?/?\?) esta atacando.\n" 
         "Seus ataques sao:\n"
         "1. %s (%s, Dano: %d)\n"
         "2. %s (%s, Dano: %d)\n\n"

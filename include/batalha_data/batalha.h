@@ -52,7 +52,8 @@ typedef struct {
     
     int hpJogador[3];
     int hpIA[3];
-
+    int ultimoAtaqueIA[3];
+    
     PersonagemData* ordemDeAtaque[6]; 
     int personagemAgindoIdx; 
     TurnoDe turnoDe;
