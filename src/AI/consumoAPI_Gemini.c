@@ -141,7 +141,7 @@ DecisaoIA ObterDecisaoIA(EstadoBatalha *estado, const char* suaChaveAPI) {
         cJSON_AddItemToObject(jsonBody, "contents", contents);
         //config para qnt de token *(guto)
         cJSON *genConfig = cJSON_CreateObject();
-        cJSON_AddItemToObject(genConfig, "maxOutputTokens", cJSON_CreateNumber(150));
+        cJSON_AddItemToObject(genConfig, "maxOutputTokens", cJSON_CreateNumber(1024));
         cJSON_AddItemToObject(jsonBody, "generationConfig", genConfig);
         
         char* corpoRequisicao = cJSON_PrintUnformatted(jsonBody);

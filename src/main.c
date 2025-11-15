@@ -19,6 +19,14 @@ void DesenharTelaPlaceholder(const char *titulo);
 static float escala = 1.0f;
 static Rectangle areaDestinoCanvas = { 0 };
 
+//musicas
+static Music musicaMenu;
+static Music musicaBatalhaSolo;
+static Music musicaBatalhaPVP;
+
+// Esta variável vai nos ajudar a saber qual música está tocando
+static Music *musicaAtiva = NULL;
+
 // Implementação da função declarada em telas.h
 Vector2 GetMouseVirtual(void) {
     Vector2 mouseNativo = GetMousePosition();
@@ -67,6 +75,27 @@ int main(void) {
     backgroundSelecao = LoadTexture("sprites/background/background3.jpg");
     SpriteDatabase database = CarregarDatabase("sprites/personagens_db.json");
 
+
+    InitAudioDevice();
+
+    musicaMenu = LoadMusicStream("musicas/The-Perfect_Pair.mp3");
+    musicaBatalhaSolo = LoadMusicStream("musicas/Freaking_Out_The_Neighborhood.mp3");
+    musicaBatalhaPVP = LoadMusicStream("musicas/I_Really_Want_To_Stay_In_Your_House.mp3");
+
+    // Configura as músicas para repetirem (looping)
+    musicaMenu.looping = true;
+    musicaBatalhaSolo.looping = true;
+    musicaBatalhaPVP.looping = true;
+    
+    // Define um volume (ex: 50%)
+    float volumeGeral = 0.5f;
+    SetMusicVolume(musicaMenu, volumeGeral);
+    SetMusicVolume(musicaBatalhaSolo, volumeGeral);
+    SetMusicVolume(musicaBatalhaPVP, volumeGeral);
+
+    // Define a música inicial e começa a tocar
+    musicaAtiva = &musicaMenu;
+    PlayMusicStream(*musicaAtiva);
     // Inicializa estados
     TimesBatalha timesSelecionados = {0};
     EstadoBatalha estadoBatalha = {0};
@@ -75,7 +104,49 @@ int main(void) {
     ModoDeJogo modoDeJogoAtual = MODO_SOLO; 
 
     while (!WindowShouldClose() && telaAtual != SCREEN_SAIR) {
-        
+        if (musicaAtiva != NULL) {
+            // Verifica se a música está tocando para poder atualizá-la
+            if (IsMusicStreamPlaying(*musicaAtiva)) {
+                UpdateMusicStream(*musicaAtiva);
+            }
+        }
+
+        // 2. Gerenciamento de Transição de Música
+        if (telaAtual == SCREEN_MENU || telaAtual == SCREEN_PERSONAGENS || telaAtual == SCREEN_SOBRE || telaAtual == SCREEN_MODO_JOGO || telaAtual == SCREEN_SELECAO) {
+            
+            // Se a música ativa NÃO for a do menu, troque para ela
+            if (musicaAtiva != &musicaMenu) {
+                if (musicaAtiva != NULL) {
+                    StopMusicStream(*musicaAtiva); // Para a música antiga
+                }
+                musicaAtiva = &musicaMenu; // Define a nova música
+                PlayMusicStream(*musicaAtiva); // Toca a nova música
+            }
+        }
+
+        if (telaAtual == SCREEN_BATALHA) {
+            // Verifica o modo de jogo para decidir a música de batalha
+            
+            if (modoDeJogoAtual == MODO_SOLO) {
+                // Queremos a música SOLO
+                if (musicaAtiva != &musicaBatalhaSolo) {
+                    if (musicaAtiva != NULL) {
+                        StopMusicStream(*musicaAtiva);
+                    }
+                    musicaAtiva = &musicaBatalhaSolo;
+                    PlayMusicStream(*musicaAtiva);
+                }
+            } else {
+                // Queremos a música PVP (MODO_PVP)
+                if (musicaAtiva != &musicaBatalhaPVP) {
+                    if (musicaAtiva != NULL) {
+                        StopMusicStream(*musicaAtiva);
+                    }
+                    musicaAtiva = &musicaBatalhaPVP;
+                    PlayMusicStream(*musicaAtiva);
+                }
+            }
+        }
         // --- Atualização das Telas ---
         switch(telaAtual) {
             case SCREEN_MENU:
@@ -167,10 +238,18 @@ int main(void) {
     }
 
     // --- Limpeza ---
+
+    UnloadMusicStream(musicaMenu);
+    UnloadMusicStream(musicaBatalhaSolo);
+    UnloadMusicStream(musicaBatalhaPVP);
+
+    
     UnloadTexture(backgroundSelecao);
     UnloadRenderTexture(canvas); 
     LiberarDatabase(&database); 
     UnloadMenuResources(menuRes);
+    
+    CloseAudioDevice();
     CloseWindow();
     
     return 0;
