@@ -9,8 +9,8 @@
       "painelZoom": 1.7,
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/venom_icon.png",
-      "ataque1": { "nome": "Escudo", "descricao": "Um rolo compressor.", "dano": 8,"tipo": "CURA_SI" },
-      "ataque2": { "nome": "Mordida", "descricao": "Um ataque fofo.", "dano": 50 },
+      "ataque1": { "nome": "Proteção Metamófica", "descricao": "cria um escudo que absorve um golpe antes de se dissipar.", "dano": 8,"tipo": "CURA_SI" },
+      "ataque2": { "nome": "Mordida Letal", "descricao": "O ataque drena a energia do oponente", "dano": 50 },
       "anim": {
         "idle": "sprites/personagens/venom/idle",
         "ataque1": "sprites/personagens/venom/ataque_escudo",
@@ -26,8 +26,8 @@
       "painelZoom": 2.5,
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/hellokitty_icon.png",
-      "ataque1": { "nome": "Kityy surpresa", "descricao": "Um rolo compressor.", "dano": 8, "tipo": "DANO_AREA" },
-      "ataque2": { "nome": "???", "descricao": "Um ataque fofo.", "dano": 4, "tipo": "DANO_AREA" },
+      "ataque1": { "nome": "Kitty esmaga", "descricao": "um ataque com rolo compressor.", "dano": 8, "tipo": "DANO_AREA" },
+      "ataque2": { "nome": "???", "descricao": "Um ataque fofo <3.", "dano": 4, "tipo": "DANO_AREA" },
       "anim": {
         "idle": "sprites/personagens/hellokitty/idle",
         "ataque1": "sprites/personagens/hellokitty/ataque_kittyesmaga",
@@ -43,7 +43,7 @@
       "painelZoom": 2.5,
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/homer_icon.png",
-      "ataque1": { "nome": "Marretada", "descricao": "Um rolo compressor.", "dano": 8 },
+      "ataque1": { "nome": "Marretada do Thor", "descricao": "um ataque super-ultra-hiper forte.", "dano": 8 },
       "ataque2": { "nome": "Vassourada", "descricao": "Um ataque fofo.", "dano": 4 },
       "anim": {
         "idle": "sprites/personagens/homer/idle",
@@ -60,8 +60,8 @@
       "painelZoom": 1.0,
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/kirby_icon.png",
-      "ataque1": { "nome": "Espada", "descricao": "Um rolo compressor.", "dano": 8 },
-      "ataque2": { "nome": "Plasma", "descricao": "Um ataque fofo.", "dano": 4 , "tipo": "CURA_SI"},
+      "ataque1": { "nome": "Corte Estelar", "descricao": "Um ataque que concentra energia das estrelas e desfere um golpe brilhante", "dano": 8 },
+      "ataque2": { "nome": "Plasma Kirby", "descricao": "um escudo gosmento... e fofo.", "dano": 4 , "tipo": "CURA_SI"},
       "anim": {
         "idle": "sprites/personagens/kirby/idle",
         "ataque1": "sprites/personagens/kirby/ataque_espada",
@@ -70,7 +70,7 @@
     },
     {
       "nome": "Ravena",
-      "descricao": "A dona da rua.",
+      "descricao": "Azarath Metrion Zinthos!",
       "classe": "CLASSE_LINHA_FRENTE",
       "hpMax": 64,
       "velocidade": 5,
