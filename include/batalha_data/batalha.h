@@ -47,7 +47,7 @@ typedef struct {
     bool flip; 
 } EstadoAnimacao;
 
-typedef struct {
+typedef struct EstadoBatalha{
     ListaTime timeJogador;
     ListaTime timeIA;
     
