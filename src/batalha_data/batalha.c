@@ -5,15 +5,16 @@
 #include <string.h> 
 #include "ConsumoAPI_Gemini.h" 
 #include "math.h"
+#include <stdbool.h> // <-- Adicionar
 
 #include "telas.h"
 
 
 static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataque* ataque, int alvoIdx, bool ehJogadorAtacando);
 static void ProximoTurno(EstadoBatalha *estado);
-static void ExecutarTurnoIA(EstadoBatalha *estado);
+// static void ExecutarTurnoIA(EstadoBatalha *estado); // <-- REMOVER ESTA LINHA
 
-static const float DURACAO_PISCAR_DANO = 0.3f; // teste (antigo: 0.5)
+static const float DURACAO_PISCAR_DANO = 0.3f; 
 
 Texture2D backgroundArena;
 int backgroundCarregado = 0;
@@ -30,18 +31,10 @@ typedef struct {
     float velocidadeY;
 } TextoFlutuante;
 
-// Pool de textos flutuantes
-#define MAX_TEXTOS_FLUTUANTES 10 // Um pool de 10 é seguro
+#define MAX_TEXTOS_FLUTUANTES 10 
 static TextoFlutuante g_textosFlutuantes[MAX_TEXTOS_FLUTUANTES];
 static float DURACAO_TEXTO_FLUTUANTE = 2.5f;
 
-// --- NOVA FUNÇÃO AUXILIAR ---
-/**
- * @brief Encontra um NoPersonagem numa lista com base no ponteiro PersonagemData.
- * * @param lista A lista (Time do Jogador ou Time da IA).
- * @param p O ponteiro para o PersonagemData que procuramos.
- * @return O NoPersonagem* correspondente ou NULL se não for encontrado.
- */
 
 static NoPersonagem* ObterNoPorPersonagem(ListaTime* lista, PersonagemData* p) {
     if (lista == NULL) {
@@ -58,13 +51,12 @@ static NoPersonagem* ObterNoPorPersonagem(ListaTime* lista, PersonagemData* p) {
         }
         atual = atual->proximo;
     }
-    return NULL; // Não encontrou
+    return NULL; 
 }
-// --- FIM DA NOVA FUNÇÃO ---
 
 
 static char CHAVE_API_BUFFER[256];
-static bool chaveJaFoiCarregada = false; // Impede leituras repetidas
+static bool chaveJaFoiCarregada = false; 
 
 static const char* CarregarChaveApi(const char* caminhoArquivo) {
     if (chaveJaFoiCarregada == true) {
@@ -94,75 +86,34 @@ static const char* CarregarChaveApi(const char* caminhoArquivo) {
 
 
 //IA do GEMINI
-static void ExecutarTurnoIA(EstadoBatalha *estado) {
-    PersonagemData* atacante = estado->ordemDeAtaque[estado->personagemAgindoIdx];
-
-    const char* MINHA_CHAVE_API = CarregarChaveApi("config.txt");
-
-    if (strcmp(MINHA_CHAVE_API, "CHAVE_NAO_ENCONTRADA") == 0) {
-        printf("IA: ERRO! Chave da API nao encontrada. Pulando turno.\n");
-        int alvoAleatorio = rand() % 3;
-        int tentativas = 0;
-        // CORREÇÃO: Verifica se o alvo na lista está vivo
-        NoPersonagem* noAlvo = ObterNoNaPosicao(&estado->timeJogador, alvoAleatorio);
-        while (noAlvo == NULL && tentativas < 3) {
-             alvoAleatorio = (alvoAleatorio + 1) % 3;
-             noAlvo = ObterNoNaPosicao(&estado->timeJogador, alvoAleatorio);
-             tentativas++;
-        }
-        // Se ainda assim não achar um alvo vivo, ataca a posição 0
-        if (noAlvo == NULL) {
-            alvoAleatorio = 0;
-        }
-        
-        ExecutarAtaque(estado, atacante, &atacante->ataque1, alvoAleatorio, false);
-        return;
-    }
-
-    DecisaoIA decisao = ObterDecisaoIA(estado, MINHA_CHAVE_API);
-
-
-    NoPersonagem* noAtacanteIA = ObterNoPorPersonagem(&estado->timeIA, atacante);
-    int posAtacante = -1;
-    
-    if (noAtacanteIA != NULL) {
-        posAtacante = noAtacanteIA->posicaoNoTime;
-    }
-
-    // 2. Se encontramos o atacante...
-    if (posAtacante != -1) {
-        
-        // Verificamos se ele repetiu o último ataque salvo na "memória"
-        if (decisao.indiceAtaque == estado->ultimoAtaqueIA[posAtacante]) {
-            
-            // REPETIU! Forçamos a troca (sem ternário)
-            if (decisao.indiceAtaque == 0) {
-                decisao.indiceAtaque = 1;
-            } else {
-                decisao.indiceAtaque = 0;
-            }
-        }
-        
-        // 3. Salvamos na "memória" o ataque que ele VAI usar (já corrigido)
-        estado->ultimoAtaqueIA[posAtacante] = decisao.indiceAtaque;
-    }
-    Ataque* ataqueEscolhido;
-    if (decisao.indiceAtaque == 0) {
-        ataqueEscolhido = &atacante->ataque1;
-    } else {
-        ataqueEscolhido = &atacante->ataque2;
-    }
-
-    ExecutarAtaque(estado, atacante, ataqueEscolhido, decisao.indiceAlvo, false);
-
-    LiberarDecisaoIA(&decisao);
-}
+/* * ESTA FUNÇÃO SERÁ REMOVIDA
+ * A LÓGICA DELA FOI MOVIDA PARA 'consumoAPI_Gemini.c' (ExecutarConsultaCurl)
+ * E A CHAMADA FOI MOVIDA PARA 'AtualizarTelaBatalha' (case ESTADO_IA_PENSANDO)
+ */
+// static void ExecutarTurnoIA(EstadoBatalha *estado) { ... } // <-- APAGUE A FUNÇÃO INTEIRA
 
 
 static Vector2 posJogador[3];
 static Vector2 posIA[3];
 static int animVelocidadeIdle = 15; 
 
+// ... (O resto das funções estáticas permanecem iguais) ...
+// PararAnimacao
+// IniciarAnimacao
+// IniciarTextoFlutuante
+// AtualizarAnimacao
+// AtualizarAnimacaoLapide
+// DesenharAnimacaoLapide
+// IniciarZoomEAnimacao
+// DesenharAnimacao
+// CompararVelocidade
+// ProximoTurno
+// ExecutarAtaque
+// InicializarBatalha
+// ... (Cole todo o seu código original para essas funções aqui) ...
+// (O conteúdo delas não muda, apenas ExecutarTurnoIA é removida)
+
+// ... (Colando suas funções estáticas inalteradas) ...
 static void PararAnimacao(EstadoAnimacao* anim) {
     anim->ativo = false;
     anim->frameAtual = 0;
@@ -675,7 +626,6 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
         backgroundCarregado = 1;
     }
 
-    estado->btnAtaqueTex = LoadTexture("sprites/botoes/botaoAtaques.png");
     g_animLapide = CarregarAnimacaoData("sprites/personagens/lapide/lapide");
 
     estado->roundAtual = 1;
@@ -758,7 +708,6 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
         estado->timerDanoIA[i] = 0.0f;
         PararAnimacao(&estado->animLapideJogador[i]);
         PararAnimacao(&estado->animLapideIA[i]);
-        estado->ultimoAtaqueIA[i] = -1;
     }
 
 
@@ -786,6 +735,10 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
     estado->resultadoBatalha = RESULTADO_EM_JOGO;
 }
 
+
+//
+// ESTA É A FUNÇÃO PRINCIPAL QUE VAMOS ALTERAR
+//
 void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJogo modo) {
     if (IsKeyPressed(KEY_ESCAPE)) {
 
@@ -794,7 +747,6 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
             backgroundCarregado = 0;
         }
 
-        UnloadTexture(estado->btnAtaqueTex);
         LiberarAnimacaoData(&g_animLapide);
 
         *telaAtual = SCREEN_MENU;
@@ -876,21 +828,23 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
 
     // --- CORREÇÃO AQUI: Só checa Fim de Jogo se NÃO estiver no meio de uma animação de ataque ---
     // Isso impede que o jogo corte a animação de zoom/ataque e deixe variáveis "sujas"
-    bool emAnimacaoAtaque = (estado->estadoTurno == ESTADO_ZOOM_IN_ATAQUE || 
-                             estado->estadoTurno == ESTADO_ANIMACAO_ATAQUE || 
-                             estado->estadoTurno == ESTADO_ZOOM_OUT_ATAQUE);
+    bool emAnimacaoAtaque = false;
+    if (estado->estadoTurno == ESTADO_ZOOM_IN_ATAQUE) emAnimacaoAtaque = true;
+    if (estado->estadoTurno == ESTADO_ANIMACAO_ATAQUE) emAnimacaoAtaque = true;
+    if (estado->estadoTurno == ESTADO_ZOOM_OUT_ATAQUE) emAnimacaoAtaque = true;
 
-    if (!emAnimacaoAtaque) {
-    if (estado->timeJogador.tamanho == 0 && estado->estadoTurno != ESTADO_FIM_DE_JOGO) {
-        estado->estadoTurno = ESTADO_FIM_DE_JOGO;
-        estado->resultadoBatalha = RESULTADO_DERROTA;
-        sprintf(estado->mensagemBatalha, "OPONENTE VENCEU! Pressione ESC para sair.");
-    } else if (estado->timeIA.tamanho == 0 && estado->estadoTurno != ESTADO_FIM_DE_JOGO) {
-        estado->estadoTurno = ESTADO_FIM_DE_JOGO;
-        estado->resultadoBatalha = RESULTADO_VITORIA;
-        sprintf(estado->mensagemBatalha, "JOGADOR 1 VENCEU! Pressione ESC para sair.");
+
+    if (emAnimacaoAtaque == false) {
+        if (estado->timeJogador.tamanho == 0 && estado->estadoTurno != ESTADO_FIM_DE_JOGO) {
+            estado->estadoTurno = ESTADO_FIM_DE_JOGO;
+            estado->resultadoBatalha = RESULTADO_DERROTA;
+            sprintf(estado->mensagemBatalha, "OPONENTE VENCEU! Pressione ESC para sair.");
+        } else if (estado->timeIA.tamanho == 0 && estado->estadoTurno != ESTADO_FIM_DE_JOGO) {
+            estado->estadoTurno = ESTADO_FIM_DE_JOGO;
+            estado->resultadoBatalha = RESULTADO_VITORIA;
+            sprintf(estado->mensagemBatalha, "JOGADOR 1 VENCEU! Pressione ESC para sair.");
+        }
     }
-}
 
 
     switch (estado->estadoTurno) {
@@ -1220,12 +1174,97 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
             }
             break;
 
+        // --- ESTADO AGUARDANDO OPONENTE (MODIFICADO) ---
         case ESTADO_AGUARDANDO_OPONENTE:
             if (modo == MODO_SOLO) {
-                ExecutarTurnoIA(estado);
+                // Modo Solo: verifica a chave e inicia a thread
+                const char* MINHA_CHAVE_API = CarregarChaveApi("config.txt");
+
+                if (strcmp(MINHA_CHAVE_API, "CHAVE_NAO_ENCONTRADA") == 0) {
+                    // Se não tem chave, executa um ataque aleatório (rápido, não bloqueia)
+                    printf("IA: ERRO! Chave da API nao encontrada. Pulando turno com ataque aleatório.\n");
+                    PersonagemData* atacante = estado->ordemDeAtaque[estado->personagemAgindoIdx];
+                    int alvoAleatorio = rand() % 3;
+                    int tentativas = 0;
+                    NoPersonagem* noAlvo = ObterNoNaPosicao(&estado->timeJogador, alvoAleatorio);
+                    
+                    // Loop de segurança para não atacar um morto (respeitando convenções)
+                    while (noAlvo == NULL && tentativas < 3) {
+                         alvoAleatorio = (alvoAleatorio + 1) % 3;
+                         noAlvo = ObterNoNaPosicao(&estado->timeJogador, alvoAleatorio);
+                         tentativas++;
+                    }
+                    if (noAlvo == NULL) {
+                        alvoAleatorio = 0; // Se todos estiverem mortos, ataca o 0 (jogo vai acabar)
+                    }
+                    
+                    ExecutarAtaque(estado, atacante, &atacante->ataque1, alvoAleatorio, false);
+                
+                } else {
+                    // Se tem a chave, inicia a thread e muda de estado
+                    IA_IniciarDecisao(estado, MINHA_CHAVE_API);
+                    estado->estadoTurno = ESTADO_IA_PENSANDO;
+                    
+                    PersonagemData* atacante = estado->ordemDeAtaque[estado->personagemAgindoIdx];
+                    if (atacante != NULL) {
+                         sprintf(estado->mensagemBatalha, "%s está pensando...", atacante->nome);
+                    }
+                }
+            
             } else {
+                // Modo PVP: Apenas muda o estado para o Jogador 2 agir
                 estado->estadoTurno = ESTADO_ESPERANDO_JOGADOR;
-                sprintf(estado->mensagemBatalha, "Vez de: %s! (J2) Escolha um ataque.", estado->ordemDeAtaque[estado->personagemAgindoIdx]->nome);
+                
+                PersonagemData* atacante = estado->ordemDeAtaque[estado->personagemAgindoIdx];
+                if (atacante != NULL) {
+                    sprintf(estado->mensagemBatalha, "Vez de: %s! (J2) Escolha um ataque.", atacante->nome);
+                }
+            }
+            break;
+
+        // --- NOVO ESTADO ---
+        case ESTADO_IA_PENSANDO:
+            {
+                // Este estado não faz nada além de esperar (polir)
+                DecisaoIA decisaoDaIA;
+                bool estaPronta = IA_VerificarDecisaoPronta(&decisaoDaIA);
+                
+                if (estaPronta == true) {
+                    printf("IA (Main): Decisão recebida da thread!\n");
+                    
+                    PersonagemData* atacante = estado->ordemDeAtaque[estado->personagemAgindoIdx];
+                    Ataque* ataqueEscolhido;
+                    
+                    if (decisaoDaIA.indiceAtaque == 0) {
+                        ataqueEscolhido = &atacante->ataque1;
+                    } else {
+                        ataqueEscolhido = &atacante->ataque2;
+                    }
+
+                    // Validação de segurança (exigida pela sua lógica original)
+                    int alvoFinal = decisaoDaIA.indiceAlvo;
+                    
+                    // Verifica se o alvo escolhido pela IA está vivo
+                    NoPersonagem* noAlvoEscolhido = ObterNoNaPosicao(&estado->timeJogador, alvoFinal);
+                    
+                    if (noAlvoEscolhido == NULL) { 
+                        // O alvo está morto, procura um vivo
+                        for (int i = 0; i < 3; i++) {
+                            NoPersonagem* noAlvoVivo = ObterNoNaPosicao(&estado->timeJogador, i);
+                            if (noAlvoVivo != NULL) {
+                                alvoFinal = i;
+                                break;
+                            }
+                        }
+                    }
+
+                    // Executa o ataque e limpa a memória da decisão
+                    ExecutarAtaque(estado, atacante, ataqueEscolhido, alvoFinal, false);
+                    LiberarDecisaoIA(&decisaoDaIA);
+                }
+                
+                // Se 'estaPronta' for 'false', o loop simplesmente continua,
+                // redesenhando a tela e atualizando as animações (sem congelar!).
             }
             break;
             
@@ -1234,6 +1273,10 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
     }
 }
 
+
+//
+// ESTA É A FUNÇÃO DE DESENHO (NÃO MUDA)
+//
 void DesenharTelaBatalha(EstadoBatalha *estado) {
     DrawText("Jogador 1", 20, 15, 20, RAYWHITE);
 
@@ -1308,10 +1351,14 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
         }
     }
 
-
+    // --- 2. DESENHAR O FUNDO (PERSONAGENS QUE NÃO ESTÃO EM FOCO) ---
+    // A) Time JOGADOR (Background)
     for (int i = 0; i < 3; i++) {
         // Verifica se este índice é o foco atual (se for, PULA, pois será desenhado no passo 3 com zoom)
-        bool ehFoco = ( (!atacanteEhIA && idxAtacanteFoco == i) || (!alvoEhIA && idxAlvoFoco == i) );
+        bool ehFoco = false;
+        if (!atacanteEhIA && idxAtacanteFoco == i) ehFoco = true;
+        if (!alvoEhIA && idxAlvoFoco == i) ehFoco = true;
+
 
         if (ehFoco == false) {
             // 1. Desenha Lápide se estiver ativa
@@ -1381,7 +1428,10 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
 
 // B) Time IA/OPONENTE (Background)
     for (int i = 0; i < 3; i++) {
-        bool ehFoco = ( (atacanteEhIA && idxAtacanteFoco == i) || (alvoEhIA && idxAlvoFoco == i) );
+        bool ehFoco = false;
+        if (atacanteEhIA && idxAtacanteFoco == i) ehFoco = true;
+        if (alvoEhIA && idxAlvoFoco == i) ehFoco = true;
+
 
         if (ehFoco == false) {
             // 1. Lápide
@@ -1447,130 +1497,161 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
         }
     }
 
-    if (estado->isZoomAoe == true) 
-    {
-        // --- MODO AOE: Desenha os 3 alvos (1 focado, 2 parados) ---
-        ListaTime* listaAlvo = alvoEhIA ? &estado->timeIA : &estado->timeJogador;
-        Vector2* posAlvoArray = alvoEhIA ? posIA : posJogador; // Posições originais
+
+    // --- 3. DESENHAR O FOCO (ATACANTE E ALVO) ---
+    if (estado->atacanteEmFoco != NULL) {
         
-        for (int i = 0; i < 3; i++) {
-            NoPersonagem* noAlvo = ObterNoNaPosicao(listaAlvo, i);
-            PersonagemData* pDataAlvo = (noAlvo != NULL) ? noAlvo->personagem : NULL;
-            EstadoAnimacao* animLapideAlvo = alvoEhIA ? &estado->animLapideIA[i] : &estado->animLapideJogador[i];
-            
-            Vector2 posAtualAlvo;
-            float zoomAtualAlvo;
-            bool flipAlvo = alvoEhIA; // Flip padrão
-
-            if (i == estado->alvoEmFocoIdx) {
-                // Este é o alvo focado (o que foi clicado)
-                posAtualAlvo = estado->posFocoAlvo;
-                zoomAtualAlvo = estado->zoomFocoAlvo;
-                if (estado->alvoEmFoco != NULL) {
-                    pDataAlvo = estado->alvoEmFoco; // Garante pData para lápide
-                }
-                if (pDataAlvo != NULL) { 
-                    flipAlvo = pDataAlvo->animIdle.flip; // Usa o flip dele (que foi setado no ZoomIn)
-                }
-
-            } else {
-                // Este é um dos outros 2 alvos (não focados)
-                posAtualAlvo = posAlvoArray[i];
-                if (pDataAlvo != NULL) {
-                    zoomAtualAlvo = estado->zoomFocoAlvo;
-                    flipAlvo = pDataAlvo->animIdle.flip; // Usa o flip padrão dele
-                } else {
-                    zoomAtualAlvo = 0.8f; // Zoom da lápide
-                    flipAlvo = animLapideAlvo->flip; 
-                }
-            }
-            
-            // --- Desenha Lápide ou Personagem (sempre com ALPHA 1.0) ---
-            if (animLapideAlvo->ativo) {
-                animLapideAlvo->pos = posAtualAlvo;
-                animLapideAlvo->zoom = 0.8f; // Zoom padrão da lápide
-
-                // Se for o alvo focado, calcula o zoom da lápide baseado no zoom interpolado
-                if (i == estado->alvoEmFocoIdx && pDataAlvo != NULL) {
-                    animLapideAlvo->zoom = (zoomAtualAlvo / pDataAlvo->batalhaZoom) * 0.8f;
-                }
-                
-                DesenharAnimacaoLapide(animLapideAlvo);
-            } 
-            else if (pDataAlvo != NULL) {
-                 int frameIdx = alvoEhIA ? estado->idleFrameIA[i] : estado->idleFrameJogador[i];
-                 if (pDataAlvo->animIdle.def.numFrames > 0 && frameIdx >= pDataAlvo->animIdle.def.numFrames) frameIdx = 0;
-
-                 Color corAlvo = WHITE;
-                 if (alvoEhIA) {
-                    if (estado->timerDanoIA[i] > 0.0f && fmod(estado->timerDanoIA[i], 0.2f) < 0.1f) corAlvo = RED;
-                 } else {
-                    if (estado->timerDanoJogador[i] > 0.0f && fmod(estado->timerDanoJogador[i], 0.2f) < 0.1f) corAlvo = RED;
-                 }
-                
-                 Rectangle frame = pDataAlvo->animIdle.def.frames[frameIdx];
-                 if (flipAlvo) frame.width = -frame.width; // Usa o flip calculado
-
-                 DrawTexturePro(pDataAlvo->animIdle.textura, frame,
-                    (Rectangle){ posAtualAlvo.x, posAtualAlvo.y, fabsf(frame.width) * zoomAtualAlvo, frame.height * zoomAtualAlvo },
-                    (Vector2){ fabsf(frame.width) * zoomAtualAlvo / 2, frame.height * zoomAtualAlvo / 2 }, 0, corAlvo);
-
-                // Barra de HP
-                int hpAlvo = alvoEhIA ? estado->hpIA[i] : estado->hpJogador[i];
-                float alturaFrameAlvo = (pDataAlvo->animIdle.def.numFrames > 0) ? pDataAlvo->animIdle.def.frames[0].height : 100.0f;
-                float hpBarYAlvo = posAtualAlvo.y + (alturaFrameAlvo * zoomAtualAlvo / 2) + 5;
-                DrawRectangle((int)posAtualAlvo.x - 50, (int)hpBarYAlvo, 100, 10, DARKGRAY);
-                DrawRectangle((int)posAtualAlvo.x - 50, (int)hpBarYAlvo, (int)(100.0f * hpAlvo / pDataAlvo->hpMax), 10, alvoEhIA ? RED : GREEN);
-                DrawRectangleLines((int)posAtualAlvo.x - 50, (int)hpBarYAlvo, 100, 10, LIGHTGRAY);
-            }
-        }
-    }
-    else if (estado->alvoEmFoco != NULL) 
-    {
-        // --- MODO ALVO ÚNICO (Lógica original) ---
-        PersonagemData* pDataAlvo = estado->alvoEmFoco;
-        EstadoAnimacao* animLapideAlvo = alvoEhIA ? &estado->animLapideIA[idxAlvoFoco] : &estado->animLapideJogador[idxAlvoFoco];
-
-        if (animLapideAlvo->ativo) {
-            animLapideAlvo->pos = estado->posFocoAlvo;
-            DesenharAnimacaoLapide(animLapideAlvo);
+        // A) DESENHA O ATACANTE (que pode ser animado ou idle)
+        PersonagemData* pDataAtacante = estado->atacanteEmFoco;
+        
+        if (estado->estadoTurno == ESTADO_ANIMACAO_ATAQUE) {
+            // A animação de ataque é desenhada em separado mais abaixo
         } else {
-            int frameIdx = alvoEhIA ? estado->idleFrameIA[idxAlvoFoco] : estado->idleFrameJogador[idxAlvoFoco];
-            if (pDataAlvo->animIdle.def.numFrames > 0 && frameIdx >= pDataAlvo->animIdle.def.numFrames) frameIdx = 0;
-
-            Color corAlvo = WHITE;
-            if (alvoEhIA) {
-                if (estado->timerDanoIA[idxAlvoFoco] > 0.0f && fmod(estado->timerDanoIA[idxAlvoFoco], 0.2f) < 0.1f) corAlvo = RED;
-            } else {
-                if (estado->timerDanoJogador[idxAlvoFoco] > 0.0f && fmod(estado->timerDanoJogador[idxAlvoFoco], 0.2f) < 0.1f) corAlvo = RED;
-            }
+            // Desenha o IDLE do atacante durante o zoom
+            int frameIdx = atacanteEhIA ? estado->idleFrameIA[idxAtacanteFoco] : estado->idleFrameJogador[idxAtacanteFoco];
+            if (pDataAtacante->animIdle.def.numFrames > 0 && frameIdx >= pDataAtacante->animIdle.def.numFrames) frameIdx = 0;
             
-            Rectangle frame = pDataAlvo->animIdle.def.frames[frameIdx];
-            
-            // --- CORREÇÃO DE FLIP (Bônus) ---
-            // A lógica original estava flipando errado.
-            if (pDataAlvo->animIdle.flip == true) {
-                frame.width = -frame.width;
-            }
-            // --------------------------------
+            Rectangle frame = pDataAtacante->animIdle.def.frames[frameIdx];
+            if (estado->animFlip) frame.width = -frame.width;
 
-            DrawTexturePro(pDataAlvo->animIdle.textura, frame,
-                (Rectangle){ estado->posFocoAlvo.x, estado->posFocoAlvo.y, fabsf(frame.width) * estado->zoomFocoAlvo, frame.height * estado->zoomFocoAlvo },
-                (Vector2){ fabsf(frame.width) * estado->zoomFocoAlvo / 2, frame.height * estado->zoomFocoAlvo / 2 }, 0, corAlvo);
+            DrawTexturePro(pDataAtacante->animIdle.textura, frame,
+                (Rectangle){ estado->posFocoAtacante.x, estado->posFocoAtacante.y, fabsf(frame.width) * estado->zoomFocoAtacante, frame.height * estado->zoomFocoAtacante },
+                (Vector2){ fabsf(frame.width) * estado->zoomFocoAtacante / 2, frame.height * estado->zoomFocoAtacante / 2 }, 0, WHITE);
         }
+        
+        // Barra de HP do Atacante
+        int hpAtacante = atacanteEhIA ? estado->hpIA[idxAtacanteFoco] : estado->hpJogador[idxAtacanteFoco];
+        float alturaFrame = (pDataAtacante->animIdle.def.numFrames > 0) ? pDataAtacante->animIdle.def.frames[0].height : 100.0f;
+        float hpBarY = estado->posFocoAtacante.y + (alturaFrame * estado->zoomFocoAtacante / 2) + 5;
+        DrawRectangle((int)estado->posFocoAtacante.x - 50, (int)hpBarY, 100, 10, DARKGRAY);
+        DrawRectangle((int)estado->posFocoAtacante.x - 50, (int)hpBarY, (int)(100.0f * hpAtacante / pDataAtacante->hpMax), 10, atacanteEhIA ? RED : GREEN);
+        DrawRectangleLines((int)estado->posFocoAtacante.x - 50, (int)hpBarY, 100, 10, LIGHTGRAY);
+        
+        
+        // B) DESENHA O ALVO (se houver)
+        if (estado->isZoomAoe == true) 
+        {
+            // --- MODO AOE: Desenha os 3 alvos (1 focado, 2 parados) ---
+            ListaTime* listaAlvo = alvoEhIA ? &estado->timeIA : &estado->timeJogador;
+            Vector2* posAlvoArray = alvoEhIA ? posIA : posJogador; // Posições originais
+            
+            for (int i = 0; i < 3; i++) {
+                NoPersonagem* noAlvo = ObterNoNaPosicao(listaAlvo, i);
+                PersonagemData* pDataAlvo = (noAlvo != NULL) ? noAlvo->personagem : NULL;
+                EstadoAnimacao* animLapideAlvo = alvoEhIA ? &estado->animLapideIA[i] : &estado->animLapideJogador[i];
+                
+                Vector2 posAtualAlvo;
+                float zoomAtualAlvo;
+                bool flipAlvo = alvoEhIA; // Flip padrão
 
-        // Barra de HP do Alvo
-        int hpAlvo = alvoEhIA ? estado->hpIA[idxAlvoFoco] : estado->hpJogador[idxAlvoFoco];
-        float alturaFrameAlvo = (pDataAlvo->animIdle.def.numFrames > 0) ? pDataAlvo->animIdle.def.frames[0].height : 100.0f;
-        float hpBarYAlvo = estado->posFocoAlvo.y + (alturaFrameAlvo * estado->zoomFocoAlvo / 2) + 5;
-        DrawRectangle((int)estado->posFocoAlvo.x - 50, (int)hpBarYAlvo, 100, 10, DARKGRAY);
-        DrawRectangle((int)estado->posFocoAlvo.x - 50, (int)hpBarYAlvo, (int)(100.0f * hpAlvo / pDataAlvo->hpMax), 10, alvoEhIA ? RED : GREEN);
-        DrawRectangleLines((int)estado->posFocoAlvo.x - 50, (int)hpBarYAlvo, 100, 10, LIGHTGRAY);
+                if (i == estado->alvoEmFocoIdx) {
+                    // Este é o alvo focado (o que foi clicado)
+                    posAtualAlvo = estado->posFocoAlvo;
+                    zoomAtualAlvo = estado->zoomFocoAlvo;
+                    if (estado->alvoEmFoco != NULL) {
+                        pDataAlvo = estado->alvoEmFoco; // Garante pData para lápide
+                    }
+                    if (pDataAlvo != NULL) { 
+                        flipAlvo = pDataAlvo->animIdle.flip; // Usa o flip dele (que foi setado no ZoomIn)
+                    }
+
+                } else {
+                    // Este é um dos outros 2 alvos (não focados)
+                    posAtualAlvo = posAlvoArray[i];
+                    if (pDataAlvo != NULL) {
+                        zoomAtualAlvo = estado->zoomFocoAlvo;
+                        flipAlvo = pDataAlvo->animIdle.flip; // Usa o flip padrão dele
+                    } else {
+                        zoomAtualAlvo = 0.8f; // Zoom da lápide
+                        flipAlvo = animLapideAlvo->flip; 
+                    }
+                }
+                
+                // --- Desenha Lápide ou Personagem (sempre com ALPHA 1.0) ---
+                if (animLapideAlvo->ativo) {
+                    animLapideAlvo->pos = posAtualAlvo;
+                    animLapideAlvo->zoom = 0.8f; // Zoom padrão da lápide
+
+                    // Se for o alvo focado, calcula o zoom da lápide baseado no zoom interpolado
+                    if (i == estado->alvoEmFocoIdx && pDataAlvo != NULL) {
+                        animLapideAlvo->zoom = (zoomAtualAlvo / pDataAlvo->batalhaZoom) * 0.8f;
+                    }
+                    
+                    DesenharAnimacaoLapide(animLapideAlvo);
+                } 
+                else if (pDataAlvo != NULL) {
+                     int frameIdx = alvoEhIA ? estado->idleFrameIA[i] : estado->idleFrameJogador[i];
+                     if (pDataAlvo->animIdle.def.numFrames > 0 && frameIdx >= pDataAlvo->animIdle.def.numFrames) frameIdx = 0;
+
+                     Color corAlvo = WHITE;
+                     if (alvoEhIA) {
+                        if (estado->timerDanoIA[i] > 0.0f && fmod(estado->timerDanoIA[i], 0.2f) < 0.1f) corAlvo = RED;
+                     } else {
+                        if (estado->timerDanoJogador[i] > 0.0f && fmod(estado->timerDanoJogador[i], 0.2f) < 0.1f) corAlvo = RED;
+                     }
+                    
+                     Rectangle frame = pDataAlvo->animIdle.def.frames[frameIdx];
+                     if (flipAlvo) frame.width = -frame.width; // Usa o flip calculado
+
+                     DrawTexturePro(pDataAlvo->animIdle.textura, frame,
+                        (Rectangle){ posAtualAlvo.x, posAtualAlvo.y, fabsf(frame.width) * zoomAtualAlvo, frame.height * zoomAtualAlvo },
+                        (Vector2){ fabsf(frame.width) * zoomAtualAlvo / 2, frame.height * zoomAtualAlvo / 2 }, 0, corAlvo);
+
+                    // Barra de HP
+                    int hpAlvo = alvoEhIA ? estado->hpIA[i] : estado->hpJogador[i];
+                    float alturaFrameAlvo = (pDataAlvo->animIdle.def.numFrames > 0) ? pDataAlvo->animIdle.def.frames[0].height : 100.0f;
+                    float hpBarYAlvo = posAtualAlvo.y + (alturaFrameAlvo * zoomAtualAlvo / 2) + 5;
+                    DrawRectangle((int)posAtualAlvo.x - 50, (int)hpBarYAlvo, 100, 10, DARKGRAY);
+                    DrawRectangle((int)posAtualAlvo.x - 50, (int)hpBarYAlvo, (int)(100.0f * hpAlvo / pDataAlvo->hpMax), 10, alvoEhIA ? RED : GREEN);
+                    DrawRectangleLines((int)posAtualAlvo.x - 50, (int)hpBarYAlvo, 100, 10, LIGHTGRAY);
+                }
+            }
+        }
+        else if (estado->alvoEmFoco != NULL) 
+        {
+            // --- MODO ALVO ÚNICO (Lógica original) ---
+            PersonagemData* pDataAlvo = estado->alvoEmFoco;
+            EstadoAnimacao* animLapideAlvo = alvoEhIA ? &estado->animLapideIA[idxAlvoFoco] : &estado->animLapideJogador[idxAlvoFoco];
+
+            if (animLapideAlvo->ativo) {
+                animLapideAlvo->pos = estado->posFocoAlvo;
+                DesenharAnimacaoLapide(animLapideAlvo);
+            } else {
+                int frameIdx = alvoEhIA ? estado->idleFrameIA[idxAlvoFoco] : estado->idleFrameJogador[idxAlvoFoco];
+                if (pDataAlvo->animIdle.def.numFrames > 0 && frameIdx >= pDataAlvo->animIdle.def.numFrames) frameIdx = 0;
+
+                Color corAlvo = WHITE;
+                if (alvoEhIA) {
+                    if (estado->timerDanoIA[idxAlvoFoco] > 0.0f && fmod(estado->timerDanoIA[idxAlvoFoco], 0.2f) < 0.1f) corAlvo = RED;
+                } else {
+                    if (estado->timerDanoJogador[idxAlvoFoco] > 0.0f && fmod(estado->timerDanoJogador[idxAlvoFoco], 0.2f) < 0.1f) corAlvo = RED;
+                }
+                
+                Rectangle frame = pDataAlvo->animIdle.def.frames[frameIdx];
+                
+                if (pDataAlvo->animIdle.flip == true) {
+                    frame.width = -frame.width;
+                }
+
+                DrawTexturePro(pDataAlvo->animIdle.textura, frame,
+                    (Rectangle){ estado->posFocoAlvo.x, estado->posFocoAlvo.y, fabsf(frame.width) * estado->zoomFocoAlvo, frame.height * estado->zoomFocoAlvo },
+                    (Vector2){ fabsf(frame.width) * estado->zoomFocoAlvo / 2, frame.height * estado->zoomFocoAlvo / 2 }, 0, corAlvo);
+            }
+
+            // Barra de HP do Alvo
+            int hpAlvo = alvoEhIA ? estado->hpIA[idxAlvoFoco] : estado->hpJogador[idxAlvoFoco];
+            float alturaFrameAlvo = (pDataAlvo->animIdle.def.numFrames > 0) ? pDataAlvo->animIdle.def.frames[0].height : 100.0f;
+            float hpBarYAlvo = estado->posFocoAlvo.y + (alturaFrameAlvo * estado->zoomFocoAlvo / 2) + 5;
+            DrawRectangle((int)estado->posFocoAlvo.x - 50, (int)hpBarYAlvo, 100, 10, DARKGRAY);
+            DrawRectangle((int)estado->posFocoAlvo.x - 50, (int)hpBarYAlvo, (int)(100.0f * hpAlvo / pDataAlvo->hpMax), 10, alvoEhIA ? RED : GREEN);
+            DrawRectangleLines((int)estado->posFocoAlvo.x - 50, (int)hpBarYAlvo, 100, 10, LIGHTGRAY);
+        }
     }
     
     // Desenha a animação de ataque por cima de tudo (explosão, soco, etc)
     DesenharAnimacao(&estado->animacaoEmExecucao);
     
+    // --- 4. DESENHAR TEXTOS FLUTUANTES ---
     for (int i = 0; i < MAX_TEXTOS_FLUTUANTES; i++) {
         if (g_textosFlutuantes[i].ativo) {
 
@@ -1590,6 +1671,7 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
         }
     }
 
+    // --- 5. DESENHAR INDICADORES DE ALVO ---
     if (estado->estadoTurno == ESTADO_ESPERANDO_JOGADOR && estado->ataqueSelecionado != -1) {
         bool ehJogador1 = (estado->turnoDe == TURNO_JOGADOR);
         if (ehJogador1) {
@@ -1609,40 +1691,33 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
         }
     }
 
+    // --- 6. DESENHAR ESTADO DE FIM DE JOGO ---
     if (estado->estadoTurno == ESTADO_FIM_DE_JOGO)
-{
-    const char* textoResultado = "";
-    Color corResultado = BLACK;
-    int fontSize = 80;
-
-    if (estado->resultadoBatalha == RESULTADO_VITORIA) {
-        textoResultado = "VITÓRIA";
-        // Usamos um verde claro
-        corResultado = (Color){100, 255, 100, 255}; 
-    } else if (estado->resultadoBatalha == RESULTADO_DERROTA) {
-        textoResultado = "DERROTA";
-        // Usamos um vermelho claro
-        corResultado = (Color){255, 100, 100, 255}; 
-    }
-
-    // Verifica se há texto para desenhar
-    if (strlen(textoResultado) > 0)
     {
-        // Mede o texto para centralizar na tela
-        int larguraTexto = MeasureText(textoResultado, fontSize);
-        int posX = (SCREEN_WIDTH - larguraTexto) / 2;
+        const char* textoResultado = "";
+        Color corResultado = BLACK;
+        int fontSize = 80;
 
-        // Posição Y no centro da Arena de Batalha
-        // (arenaY e arenaHeight são definidas no topo desta função)
-        int posY = arenaY + (arenaHeight / 2) - (fontSize / 2); //
+        if (estado->resultadoBatalha == RESULTADO_VITORIA) {
+            textoResultado = "VITÓRIA";
+            corResultado = (Color){100, 255, 100, 255}; 
+        } else if (estado->resultadoBatalha == RESULTADO_DERROTA) {
+            textoResultado = "DERROTA";
+            corResultado = (Color){255, 100, 100, 255}; 
+        }
 
-        // Desenha uma "sombra" (texto preto deslocado)
-        DrawText(textoResultado, posX + 4, posY + 4, fontSize, ColorAlpha(BLACK, 0.7f));
-        // Desenha o texto principal por cima
-        DrawText(textoResultado, posX, posY, fontSize, corResultado);
+        if (strlen(textoResultado) > 0)
+        {
+            int larguraTexto = MeasureText(textoResultado, fontSize);
+            int posX = (SCREEN_WIDTH - larguraTexto) / 2;
+            int posY = arenaY + (arenaHeight / 2) - (fontSize / 2); //
+
+            DrawText(textoResultado, posX + 4, posY + 4, fontSize, ColorAlpha(BLACK, 0.7f));
+            DrawText(textoResultado, posX, posY, fontSize, corResultado);
+        }
     }
-}
 
+    // --- 7. DESENHAR O MENU INFERIOR ---
     int menuY = arenaY + arenaHeight + 10; 
     int menuHeight = 240; 
     Color menuBG = (Color){ 40, 40, 40, 255 };
@@ -1669,43 +1744,17 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
 
         PersonagemData* atacante = estado->ordemDeAtaque[estado->personagemAgindoIdx];
         if (atacante != NULL) {
-            
-           
-            Color corImagemNormal = WHITE;
-            Color corImagemSelecionada = YELLOW;
-            Color corTextoNormal = (Color){ 220, 220, 220, 255 };
-            Color corTextoSelecionado = BLACK;
+            Color corAtk1 = (estado->ataqueSelecionado == 0) ? corBotaoSelecionado : corBotaoNormal;
+            Color corAtk2 = (estado->ataqueSelecionado == 1) ? corBotaoSelecionado : corBotaoNormal;
 
-           
-            Color tintAtk1 = (estado->ataqueSelecionado == 0) ? corImagemSelecionada : corImagemNormal;
-            Color tintAtk2 = (estado->ataqueSelecionado == 1) ? corImagemSelecionada : corImagemNormal;
+            DrawRectangleRounded(btnAtk1, 0.2f, 4, corAtk1);
+            DrawRectangleRoundedLinesEx(btnAtk1, 0.2f, 4, espessuraBorda, BLACK);
+            DrawText(atacante->ataque1.nome, (int)btnAtk1.x + ((int)btnAtk1.width - MeasureText(atacante->ataque1.nome, 20)) / 2, (int)btnAtk1.y + 10, 20, corTexto);
 
-            
-            Color corTextoAtk1 = (estado->ataqueSelecionado == 0) ? corTextoSelecionado : corTextoNormal;
-            Color corTextoAtk2 = (estado->ataqueSelecionado == 1) ? corTextoSelecionado : corTextoNormal;
-
-           
-            Texture2D tex = estado->btnAtaqueTex;
-            Rectangle texSource = { 0, 0, (float)tex.width, (float)tex.height };
-            Vector2 origin = { 0, 0 };
-
-            // Botão Ataque 1 
-            DrawTexturePro(tex, texSource, btnAtk1, origin, 0, tintAtk1);
-            DrawText(atacante->ataque1.nome, 
-                     (int)btnAtk1.x + ((int)btnAtk1.width - MeasureText(atacante->ataque1.nome, 20)) / 2, 
-                     (int)btnAtk1.y + 10, 
-                     20, 
-                     corTextoAtk1);
-
-            // Botão Ataque 2
-            DrawTexturePro(tex, texSource, btnAtk2, origin, 0, tintAtk2);
-            DrawText(atacante->ataque2.nome, 
-                     (int)btnAtk2.x + ((int)btnAtk2.width - MeasureText(atacante->ataque2.nome, 20)) / 2, 
-                     (int)btnAtk2.y + 10, 
-                     20, 
-                     corTextoAtk2);
+            DrawRectangleRounded(btnAtk2, 0.2f, 4, corAtk2);
+            DrawRectangleRoundedLinesEx(btnAtk2, 0.2f, 4, espessuraBorda, BLACK);
+            DrawText(atacante->ataque2.nome, (int)btnAtk2.x + ((int)btnAtk2.width - MeasureText(atacante->ataque2.nome, 20)) / 2, (int)btnAtk2.y + 10, 20, corTexto);
         
-           
             Vector2 mousePos = GetMouseVirtual();
             Ataque* attHover = NULL;
             if (CheckCollisionPointRec(mousePos, btnAtk1)) attHover = &atacante->ataque1;

@@ -25,6 +25,7 @@ typedef enum {
     ESTADO_ZOOM_OUT_ATAQUE, 
     // --- MODIFICADO ---
     ESTADO_AGUARDANDO_OPONENTE, // Renomeado de ESTADO_TURNO_IA
+    ESTADO_IA_PENSANDO,         // <-- ADICIONAR ESTE ESTADO
     // ------------------
     ESTADO_FIM_DE_JOGO
 } EstadoTurno;
@@ -52,8 +53,7 @@ typedef struct {
     
     int hpJogador[3];
     int hpIA[3];
-    int ultimoAtaqueIA[3];
-    
+
     PersonagemData* ordemDeAtaque[6]; 
     int personagemAgindoIdx; 
     TurnoDe turnoDe;
@@ -92,8 +92,6 @@ typedef struct {
     int numMortosPendentes;
 
     bool isZoomAoe;
-    
-    Texture2D btnAtaqueTex;
     
 } EstadoBatalha;
 

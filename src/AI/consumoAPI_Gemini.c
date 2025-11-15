@@ -4,11 +4,29 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <pthread.h>  
+#include <stdbool.h>  
 
 // --- CORREÇÃO ---
+#include "batalha.h" // <-- Inclui a definição COMPLETA de EstadoBatalha
 // Precisamos das definições da lista e da função ObterNoNaPosicao()
 #include "lista_personagem.h" 
 
+// --- Variáveis Globais (Estáticas) para Gerenciamento da Thread ---
+static pthread_mutex_t g_mutex_ia = PTHREAD_MUTEX_INITIALIZER;
+static pthread_t g_thread_ia_id;
+static volatile bool g_decisao_ia_pronta = false;
+static volatile bool g_thread_ia_executando = false;
+static DecisaoIA g_decisao_compartilhada;
+
+typedef struct {
+    char prompt[2048]; 
+    char chave_api[256]; 
+} DadosParaThreadIA;
+
+static DadosParaThreadIA g_dados_para_thread; 
+
+// --- Funções de Callback (Sem alterações) ---
 typedef struct RespostaWeb {
     char *buffer;
     size_t tamanho;
@@ -32,18 +50,18 @@ static size_t EscreverDadosCallback(void *dados, size_t tamanho, size_t nmemb, v
     return tamanhoReal;
 }
 
-static char* ConstruirPrompt(EstadoBatalha *estado) {
+// --- ConstruirPrompt (COM CORREÇÃO) ---
+static char* ConstruirPrompt(struct EstadoBatalha *estadoIncompleto) { // <-- ALTERAÇÃO AQUI
+    
+    // Converte o ponteiro incompleto para o tipo completo que conhecemos
+    EstadoBatalha* estado = (EstadoBatalha*)estadoIncompleto; // <-- ALTERAÇÃO AQUI
+
     PersonagemData* atacante = estado->ordemDeAtaque[estado->personagemAgindoIdx];
     
-    // --- CORREÇÃO INICIA AQUI ---
-    // 'estado->times' não existe mais. Devemos buscar os alvos da lista 'estado->timeJogador'
-    // usando a função 'ObterNoNaPosicao' e tratar casos de alvos mortos (NULL).
-
     NoPersonagem* noAlvo0 = ObterNoNaPosicao(&estado->timeJogador, 0);
     NoPersonagem* noAlvo1 = ObterNoNaPosicao(&estado->timeJogador, 1);
     NoPersonagem* noAlvo2 = ObterNoNaPosicao(&estado->timeJogador, 2);
 
-    // Prepara nomes e HP Max, seguindo a regra de não usar ternários
     const char* nomeAlvo0;
     int hpMaxAlvo0;
     if (noAlvo0 != NULL) {
@@ -73,21 +91,15 @@ static char* ConstruirPrompt(EstadoBatalha *estado) {
         nomeAlvo2 = "Morto";
         hpMaxAlvo2 = 0;
     }
-    // --- FIM DA PREPARAÇÃO ---
 
     char promptBuffer[2048];
     
-    // prompt *(guto)
     snprintf(promptBuffer, sizeof(promptBuffer),
-        // --- CORREÇÃO (Trigraph warning) --- 
-        // Escapamos os '?' para evitar o warning "trigraph" (??/ vira \)
         "Voce eh a IA de um jogo, escolha personagens diversificados. Além de usar ataques diferentes, você NÃO pode usar o mesmo ataque 2 turnos seguidos. O personagem %s (HP: ?\?/?\?) esta atacando.\n" 
         "Seus ataques sao:\n"
         "1. %s (%s, Dano: %d)\n"
         "2. %s (%s, Dano: %d)\n\n"
         "O time inimigo (Jogador) eh:\n"
-        // --- CORREÇÃO (estado->times) ---
-        // Usamos as variáveis que preparamos acima
         "Alvo 0: %s (HP: %d/%d)\n"
         "Alvo 1: %s (HP: %d/%d)\n"
         "Alvo 2: %s (HP: %d/%d)\n\n"
@@ -98,8 +110,6 @@ static char* ConstruirPrompt(EstadoBatalha *estado) {
         atacante->ataque1.nome, atacante->ataque1.descricao, atacante->ataque1.dano,
         atacante->ataque2.nome, atacante->ataque2.descricao, atacante->ataque2.dano,
         
-        // --- CORREÇÃO (estado->times) ---
-        // Passamos as variáveis preparadas para o snprintf
         nomeAlvo0, estado->hpJogador[0], hpMaxAlvo0,
         nomeAlvo1, estado->hpJogador[1], hpMaxAlvo1,
         nomeAlvo2, estado->hpJogador[2], hpMaxAlvo2
@@ -110,7 +120,8 @@ static char* ConstruirPrompt(EstadoBatalha *estado) {
     return promptFinal;
 }
 
-DecisaoIA ObterDecisaoIA(EstadoBatalha *estado, const char* suaChaveAPI) {
+// --- ExecutarConsultaCurl (Sem alterações) ---
+static DecisaoIA ExecutarConsultaCurl(const char* prompt, const char* suaChaveAPI) {
     CURL *curl;
     CURLcode res;
     DecisaoIA decisao = {0, 0, NULL}; 
@@ -122,11 +133,7 @@ DecisaoIA ObterDecisaoIA(EstadoBatalha *estado, const char* suaChaveAPI) {
         RespostaWeb resposta = {0};
         resposta.buffer = (char*)malloc(1); 
         resposta.tamanho = 0;
-
-        // construir o prompt *(guto)
-        char* prompt = ConstruirPrompt(estado);
         
-
         cJSON *jsonBody = cJSON_CreateObject();
         cJSON *contents = cJSON_CreateArray();
         cJSON *contentPart = cJSON_CreateObject();
@@ -139,13 +146,12 @@ DecisaoIA ObterDecisaoIA(EstadoBatalha *estado, const char* suaChaveAPI) {
         cJSON_AddItemToObject(contentPart, "parts", parts);
         cJSON_AddItemToArray(contents, contentPart);
         cJSON_AddItemToObject(jsonBody, "contents", contents);
-        //config para qnt de token *(guto)
+        
         cJSON *genConfig = cJSON_CreateObject();
         cJSON_AddItemToObject(genConfig, "maxOutputTokens", cJSON_CreateNumber(1024));
         cJSON_AddItemToObject(jsonBody, "generationConfig", genConfig);
         
         char* corpoRequisicao = cJSON_PrintUnformatted(jsonBody);
-        free(prompt); 
         cJSON_Delete(jsonBody); 
 
         struct curl_slist *headers = NULL;
@@ -155,20 +161,18 @@ DecisaoIA ObterDecisaoIA(EstadoBatalha *estado, const char* suaChaveAPI) {
         snprintf(urlComChave, sizeof(urlComChave), 
                  "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=%s", 
                  suaChaveAPI);
+                 
         curl_easy_setopt(curl, CURLOPT_URL, urlComChave); 
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, corpoRequisicao);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, EscreverDadosCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&resposta);
         
-        printf("IA: Consultando API do Gemini...\n"); // Mudei o texto
-        res = curl_easy_perform(curl);
-        printf("IA: Resposta recebida.\n");
-        printf("==========================================\n");
-        printf("IA: RESPOSTA CRUA DA API:\n%s\n", resposta.buffer);
-        printf("==========================================\n");
+        printf("IA (Thread): Consultando API do Gemini...\n"); 
+        res = curl_easy_perform(curl); 
+        printf("IA (Thread): Resposta recebida.\n");
 
-        // processa a resposta *(guto)
+        printf("IA: RESPOSTA DA API: \n%s\n", resposta.buffer);
         if (res != CURLE_OK) {
             fprintf(stderr, "curl_easy_perform() falhou: %s\n", curl_easy_strerror(res));
         } else {
@@ -183,7 +187,6 @@ DecisaoIA ObterDecisaoIA(EstadoBatalha *estado, const char* suaChaveAPI) {
                     cJSON *conteudoJsonStr = cJSON_GetObjectItem(firstPart, "text");
 
                     if (cJSON_IsString(conteudoJsonStr)) {
-                        //Limpa algumas respostas fora do padrão *(guto)
                         char* strInicio = strstr(conteudoJsonStr->valuestring, "{");
                         char* strFim = strrchr(conteudoJsonStr->valuestring, '}');
                         char* strJsonLimpo = conteudoJsonStr->valuestring; 
@@ -222,16 +225,78 @@ DecisaoIA ObterDecisaoIA(EstadoBatalha *estado, const char* suaChaveAPI) {
     
     curl_global_cleanup();
     
-    if (estado->hpJogador[decisao.indiceAlvo] <= 0) {
-        for (int i = 0; i < 3; i++) {
-            if (estado->hpJogador[i] > 0) {
-                decisao.indiceAlvo = i;
-                break;
-            }
-        }
+    return decisao;
+}
+
+// --- ThreadTrabalhadoraIA (Sem alterações) ---
+static void* ThreadTrabalhadoraIA(void* arg) {
+    (void)arg; 
+
+    printf("IA (Thread): Thread iniciada.\n");
+    
+    DecisaoIA decisao = ExecutarConsultaCurl(g_dados_para_thread.prompt, g_dados_para_thread.chave_api);
+
+    pthread_mutex_lock(&g_mutex_ia);
+    
+    printf("IA (Thread): Salvando decisão.\n");
+    g_decisao_compartilhada = decisao;
+    g_decisao_ia_pronta = true;
+    g_thread_ia_executando = false;
+    
+    pthread_mutex_unlock(&g_mutex_ia);
+
+    return NULL;
+}
+
+
+// --- IA_IniciarDecisao (COM CORREÇÃO) ---
+void IA_IniciarDecisao(struct EstadoBatalha *estado, const char* suaChaveAPI) { // <-- Assinatura já estava correta
+    pthread_mutex_lock(&g_mutex_ia);
+
+    if (g_thread_ia_executando == true) {
+        pthread_mutex_unlock(&g_mutex_ia);
+        return;
     }
     
-    return decisao;
+    g_thread_ia_executando = true;
+    g_decisao_ia_pronta = false;
+
+    LiberarDecisaoIA(&g_decisao_compartilhada);
+    
+    // A função ConstruirPrompt agora espera 'struct EstadoBatalha *', que é o que temos
+    char* prompt = ConstruirPrompt(estado); // <-- ALTERAÇÃO AQUI (agora compila)
+    strncpy(g_dados_para_thread.prompt, prompt, 2047);
+    g_dados_para_thread.prompt[2047] = '\0';
+    
+    strncpy(g_dados_para_thread.chave_api, suaChaveAPI, 255);
+    g_dados_para_thread.chave_api[255] = '\0';
+    
+    free(prompt);
+
+    pthread_create(&g_thread_ia_id, NULL, ThreadTrabalhadoraIA, NULL);
+    pthread_detach(g_thread_ia_id); 
+
+    pthread_mutex_unlock(&g_mutex_ia);
+}
+
+// --- Funções Finais (Sem alterações) ---
+bool IA_VerificarDecisaoPronta(DecisaoIA *saida) {
+    bool decisao_esta_pronta = false;
+    
+    pthread_mutex_lock(&g_mutex_ia);
+    
+    if (g_decisao_ia_pronta == true) {
+        *saida = g_decisao_compartilhada; 
+        
+        g_decisao_compartilhada.justificativa = NULL; 
+        
+        g_decisao_ia_pronta = false; 
+        decisao_esta_pronta = true;
+    }
+    
+    pthread_mutex_unlock(&g_mutex_ia);
+    
+    return decisao_esta_pronta;
 }
 
 void LiberarDecisaoIA(DecisaoIA *decisao) {
