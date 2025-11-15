@@ -29,6 +29,12 @@ typedef enum {
     ESTADO_FIM_DE_JOGO
 } EstadoTurno;
 
+typedef enum {
+    RESULTADO_EM_JOGO = 0,
+    RESULTADO_VITORIA,
+    RESULTADO_DERROTA
+} ResultadoBatalha;
+
 typedef struct {
     AnimacaoData* anim;
     int frameAtual;
@@ -56,6 +62,7 @@ typedef struct {
     char mensagemBatalha[256];
     EstadoAnimacao animacaoEmExecucao;
     int roundAtual;
+    ResultadoBatalha resultadoBatalha;
     
     PersonagemData* atacanteEmFoco;
     PersonagemData* alvoEmFoco;

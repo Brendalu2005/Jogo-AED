@@ -20,6 +20,20 @@ int backgroundCarregado = 0;
 
 static AnimacaoData g_animLapide;
 
+typedef struct {
+    bool ativo;
+    char texto[16];
+    Vector2 pos;
+    float timer;
+    float duracao;
+    Color cor;
+    float velocidadeY;
+} TextoFlutuante;
+
+// Pool de textos flutuantes
+#define MAX_TEXTOS_FLUTUANTES 10 // Um pool de 10 é seguro
+static TextoFlutuante g_textosFlutuantes[MAX_TEXTOS_FLUTUANTES];
+static float DURACAO_TEXTO_FLUTUANTE = 2.5f;
 
 // --- NOVA FUNÇÃO AUXILIAR ---
 /**
@@ -141,7 +155,26 @@ static void IniciarAnimacao(EstadoAnimacao* anim, AnimacaoData* data, Vector2 po
     anim->flip = flip;
 }
 
-
+static void IniciarTextoFlutuante(const char* texto, Vector2 pos, Color cor) {
+    for (int i = 0; i < MAX_TEXTOS_FLUTUANTES; i++) {
+        if (g_textosFlutuantes[i].ativo == false) {
+            g_textosFlutuantes[i].ativo = true;
+            strncpy(g_textosFlutuantes[i].texto, texto, 15);
+            g_textosFlutuantes[i].texto[15] = '\0';
+            
+            // Centraliza o texto onde ele aparece
+            g_textosFlutuantes[i].pos = pos;
+            g_textosFlutuantes[i].pos.x -= MeasureText(texto, 20) / 2; 
+            
+            g_textosFlutuantes[i].timer = 0.0f;
+            g_textosFlutuantes[i].duracao = DURACAO_TEXTO_FLUTUANTE;
+            g_textosFlutuantes[i].cor = cor;
+            g_textosFlutuantes[i].velocidadeY = -50.0f; // Sobe (pixels/seg)
+            
+            return;
+        }
+    }
+}
 
 static void AtualizarAnimacao(EstadoAnimacao* anim) {
     if (anim->ativo == false) {
@@ -251,7 +284,7 @@ static void IniciarZoomEAnimacao(EstadoBatalha* estado, PersonagemData* atacante
             }
         }
     }
-    
+
     else if (alvo != NULL && ataque->tipo == TIPO_DANO_AREA)
     {
         ListaTime* listaAlvo;
@@ -333,15 +366,6 @@ void DesenharAnimacao(EstadoAnimacao* anim) {
     if (anim->flip) {
         frameRec.width = -frameRec.width;  // Inverte horizontalmente
     }
-
-    if (anim->flip){
-        // "IA" aqui significa Oponente (Time 2)
-        DrawText("Oponente", anim->pos.x - 40, anim->pos.y - 100, 20, RED);
-    }
-    else{
-        DrawText("Jogador 1", anim->pos.x - 40, anim->pos.y - 100, 20, BLUE);
-    }
-
 
     DrawTexturePro(
         anim->anim->textura,
@@ -490,11 +514,24 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
             
             hpArrayAlvo[alvoIdx] -= dano;
 
+            char textoDano[16];
+            sprintf(textoDano, "-%d", dano);
+            Vector2 posAlvoDano = {0};
+
+            if (ehJogadorAtacando) {
+                posAlvoDano = posIA[alvoIdx];
+            } else {
+                posAlvoDano = posJogador[alvoIdx];
+            }
+
             if (ehJogadorAtacando) {
                 estado->timerDanoIA[alvoIdx] = DURACAO_PISCAR_DANO;
             } else {
                 estado->timerDanoJogador[alvoIdx] = DURACAO_PISCAR_DANO;
             }
+
+            posAlvoDano.y -= 50; // Começa acima da cabeça
+            IniciarTextoFlutuante(textoDano, posAlvoDano, RED);
 
             sprintf(estado->mensagemBatalha, "%s usou %s em %s e causou %d de dano!", atacante->nome, ataque->nome, alvo->nome, dano);
             
@@ -522,16 +559,27 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
                 if (noAlvo != NULL) {
                     hpArrayAlvo[i] -= dano; // Aplica dano
 
+                    char textoDanoArea[16];
+                    sprintf(textoDanoArea, "-%d", dano);
+                    Vector2 posAlvoArea = {0};
+                    
+                    if (ehJogadorAtacando) {
+                        posAlvoArea = posIA[i]; // Jogador ataca IA
+                    } else {
+                        posAlvoArea = posJogador[i]; // IA ataca Jogador
+                    }
+
                     if (ehJogadorAtacando) {
                         estado->timerDanoIA[i] = DURACAO_PISCAR_DANO;
                     } else {
                         estado->timerDanoJogador[i] = DURACAO_PISCAR_DANO;
                     }
                     
+                    posAlvoArea.y -= 50; // Começa acima da cabeça
+                    IniciarTextoFlutuante(textoDanoArea, posAlvoArea, RED);
+
                     if (hpArrayAlvo[i] <= 0) {
                         hpArrayAlvo[i] = 0;
-
-
                         estado->noParaRemover[estado->numMortosPendentes] = noAlvo; 
                         estado->numMortosPendentes++;
                     }
@@ -562,6 +610,19 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
 
                 hpArrayAtacante[posAtacante] += cura;
                 
+                char textoCura[16];
+                sprintf(textoCura, "+%d", cura);
+                Vector2 posAlvoCura;
+
+                if (ehJogadorAtacando) {
+                    posAlvoCura = posJogador[posAtacante]; // Jogador cura Jogador
+                } else {
+                    posAlvoCura = posIA[posAtacante]; // IA cura IA
+                }
+
+                posAlvoCura.y -= 50; // Começa acima da cabeça
+                IniciarTextoFlutuante(textoCura, posAlvoCura, GREEN);
+
                 // Impede sobrecura
                 if (hpArrayAtacante[posAtacante] > hpMax) {
                     hpArrayAtacante[posAtacante] = hpMax;
@@ -687,6 +748,15 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
     for (int i = 0; i < 6; i++) {
         estado->noParaRemover[i] = NULL;
     }
+
+    for (int i = 0; i < 6; i++) {
+        estado->noParaRemover[i] = NULL;
+    }
+
+    for (int i = 0; i < MAX_TEXTOS_FLUTUANTES; i++) {
+        g_textosFlutuantes[i].ativo = false;
+    }
+    estado->resultadoBatalha = RESULTADO_EM_JOGO;
 }
 
 void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJogo modo) {
@@ -754,6 +824,17 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
         AtualizarAnimacaoLapide(&estado->animLapideIA[i]);
     }
 
+    for (int i = 0; i < MAX_TEXTOS_FLUTUANTES; i++) {
+        if (g_textosFlutuantes[i].ativo) {
+            g_textosFlutuantes[i].timer += dt;
+            if (g_textosFlutuantes[i].timer >= g_textosFlutuantes[i].duracao) {
+                g_textosFlutuantes[i].ativo = false; // Desativa
+            } else {
+                g_textosFlutuantes[i].pos.y += g_textosFlutuantes[i].velocidadeY * dt;
+            }
+        }
+    }
+
     if (estado->estadoTurno != ESTADO_INICIANDO) {
         if (estado->personagemAgindoIdx < 0 || estado->personagemAgindoIdx >= 6 || estado->ordemDeAtaque[estado->personagemAgindoIdx] == NULL) {
             if(estado->estadoTurno != ESTADO_FIM_DE_JOGO) {
@@ -762,7 +843,6 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
             return;
         }
     }
-
 
     AtualizarAnimacao(&estado->animacaoEmExecucao);
 
@@ -773,14 +853,16 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
                              estado->estadoTurno == ESTADO_ZOOM_OUT_ATAQUE);
 
     if (!emAnimacaoAtaque) {
-        if (estado->timeJogador.tamanho == 0 && estado->estadoTurno != ESTADO_FIM_DE_JOGO) {
-            estado->estadoTurno = ESTADO_FIM_DE_JOGO;
-            sprintf(estado->mensagemBatalha, "OPONENTE VENCEU! Pressione ESC para sair.");
-        } else if (estado->timeIA.tamanho == 0 && estado->estadoTurno != ESTADO_FIM_DE_JOGO) {
-            estado->estadoTurno = ESTADO_FIM_DE_JOGO;
-            sprintf(estado->mensagemBatalha, "JOGADOR 1 VENCEU! Pressione ESC para sair.");
-        }
+    if (estado->timeJogador.tamanho == 0 && estado->estadoTurno != ESTADO_FIM_DE_JOGO) {
+        estado->estadoTurno = ESTADO_FIM_DE_JOGO;
+        estado->resultadoBatalha = RESULTADO_DERROTA;
+        sprintf(estado->mensagemBatalha, "OPONENTE VENCEU! Pressione ESC para sair.");
+    } else if (estado->timeIA.tamanho == 0 && estado->estadoTurno != ESTADO_FIM_DE_JOGO) {
+        estado->estadoTurno = ESTADO_FIM_DE_JOGO;
+        estado->resultadoBatalha = RESULTADO_VITORIA;
+        sprintf(estado->mensagemBatalha, "JOGADOR 1 VENCEU! Pressione ESC para sair.");
     }
+}
 
 
     switch (estado->estadoTurno) {
@@ -1097,9 +1179,11 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
                     // Verifica se o jogo acabou AGORA
                     if (estado->timeJogador.tamanho == 0) {
                         estado->estadoTurno = ESTADO_FIM_DE_JOGO;
+                        estado->resultadoBatalha = RESULTADO_DERROTA;
                         sprintf(estado->mensagemBatalha, "OPONENTE VENCEU! Pressione ESC para sair.");
                     } else if (estado->timeIA.tamanho == 0) {
                         estado->estadoTurno = ESTADO_FIM_DE_JOGO;
+                        estado->resultadoBatalha = RESULTADO_VITORIA;
                         sprintf(estado->mensagemBatalha, "JOGADOR 1 VENCEU! Pressione ESC para sair.");
                     } else {
                         ProximoTurno(estado);
@@ -1196,10 +1280,6 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
         }
     }
 
-    // --- 2. DESENHAR BACKGROUND (LÁPIDES E PERSONAGENS VIVOS) ---
-    // Nota: Desenhamos APENAS se não for o personagem em foco atual
-
-    // A) Time JOGADOR (Background)
 
     for (int i = 0; i < 3; i++) {
         // Verifica se este índice é o foco atual (se for, PULA, pois será desenhado no passo 3 com zoom)
@@ -1463,7 +1543,25 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
     // Desenha a animação de ataque por cima de tudo (explosão, soco, etc)
     DesenharAnimacao(&estado->animacaoEmExecucao);
     
-    // --- DESENHA CAIXAS DE SELEÇÃO (SE TURNO DO JOGADOR) ---
+    for (int i = 0; i < MAX_TEXTOS_FLUTUANTES; i++) {
+        if (g_textosFlutuantes[i].ativo) {
+
+            float progresso = g_textosFlutuantes[i].timer / g_textosFlutuantes[i].duracao;
+            float alpha = 1.0f;
+            
+            float inicioFade = 0.6f;
+            if (progresso > inicioFade) {
+
+                alpha = (1.0f - progresso) / (1.0f - inicioFade);
+            }
+
+            Color corComAlpha = ColorAlpha(g_textosFlutuantes[i].cor, alpha);
+            
+            DrawText(g_textosFlutuantes[i].texto, (int)g_textosFlutuantes[i].pos.x + 1, (int)g_textosFlutuantes[i].pos.y + 1, 30, ColorAlpha(BLACK, alpha));
+            DrawText(g_textosFlutuantes[i].texto, (int)g_textosFlutuantes[i].pos.x, (int)g_textosFlutuantes[i].pos.y, 30, corComAlpha);
+        }
+    }
+
     if (estado->estadoTurno == ESTADO_ESPERANDO_JOGADOR && estado->ataqueSelecionado != -1) {
         bool ehJogador1 = (estado->turnoDe == TURNO_JOGADOR);
         if (ehJogador1) {
@@ -1483,7 +1581,40 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
         }
     }
 
-    // --- MENU INFERIOR ---
+    if (estado->estadoTurno == ESTADO_FIM_DE_JOGO)
+{
+    const char* textoResultado = "";
+    Color corResultado = BLACK;
+    int fontSize = 80;
+
+    if (estado->resultadoBatalha == RESULTADO_VITORIA) {
+        textoResultado = "VITÓRIA";
+        // Usamos um verde claro
+        corResultado = (Color){100, 255, 100, 255}; 
+    } else if (estado->resultadoBatalha == RESULTADO_DERROTA) {
+        textoResultado = "DERROTA";
+        // Usamos um vermelho claro
+        corResultado = (Color){255, 100, 100, 255}; 
+    }
+
+    // Verifica se há texto para desenhar
+    if (strlen(textoResultado) > 0)
+    {
+        // Mede o texto para centralizar na tela
+        int larguraTexto = MeasureText(textoResultado, fontSize);
+        int posX = (SCREEN_WIDTH - larguraTexto) / 2;
+
+        // Posição Y no centro da Arena de Batalha
+        // (arenaY e arenaHeight são definidas no topo desta função)
+        int posY = arenaY + (arenaHeight / 2) - (fontSize / 2); //
+
+        // Desenha uma "sombra" (texto preto deslocado)
+        DrawText(textoResultado, posX + 4, posY + 4, fontSize, ColorAlpha(BLACK, 0.7f));
+        // Desenha o texto principal por cima
+        DrawText(textoResultado, posX, posY, fontSize, corResultado);
+    }
+}
+
     int menuY = arenaY + arenaHeight + 10; 
     int menuHeight = 240; 
     Color menuBG = (Color){ 40, 40, 40, 255 };
