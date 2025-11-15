@@ -3,32 +3,34 @@
 #include <stdio.h>
 #include "selecao.h" 
 #include "telas.h"
+#include <math.h> 
 
 static Rectangle btnJogar;
 static Rectangle btnPersonagens;
 static Rectangle btnSobre;
-static Color corTexto = { 100, 255, 100, 255 };
-static Color corFundoBtn = { 50, 50, 50, 220 };
-static Color corBordaBtn = { 10, 10, 10, 220 };
-static Color corFundoHover = { 120, 255, 120, 220 }; 
-static Color corTextoHover = BLACK;
 
+static Color corTexto = { 100, 255, 100, 255 };
 
 MenuOpcao LoadMenuResources(void) {
     MenuOpcao res;
     
     const char *imagePath = "sprites/background/menu.png";
-
     Image imagem = LoadImage(imagePath);
-
     ImageResize(&imagem, SCREEN_WIDTH, SCREEN_HEIGHT);
     res.background = LoadTextureFromImage(imagem);
     UnloadImage(imagem);
 
+    res.btnJogarTex = LoadTexture("sprites/botoes/jogar.png");
+    res.btnPersonagensTex = LoadTexture("sprites/botoes/personagens.png");
+    res.btnSobreTex = LoadTexture("sprites/botoes/sobre.png");
+    res.btnVoltarTex = LoadTexture("sprites/botoes/voltar.png");
+    res.btnSoloTex = LoadTexture("sprites/botoes/jogadorxia.png");
+    res.btnPvPTex = LoadTexture("sprites/botoes/jogadorxjogador.png");
+
     int btnWidth = 300;
-    int btnHeight = 70;
+    int btnHeight = 100;
     int spacing = 20;
-    int baseY = 450; 
+    int baseY = 400; 
 
     btnJogar = (Rectangle){ 
         (SCREEN_WIDTH - btnWidth) / 2.0f, baseY, btnWidth, btnHeight 
@@ -45,71 +47,50 @@ MenuOpcao LoadMenuResources(void) {
 
 void UnloadMenuResources(MenuOpcao resources) {
     UnloadTexture(resources.background);
+    
+    UnloadTexture(resources.btnJogarTex);
+    UnloadTexture(resources.btnPersonagensTex);
+    UnloadTexture(resources.btnSobreTex);
+    UnloadTexture(resources.btnVoltarTex);
+    UnloadTexture(resources.btnSoloTex);
+    UnloadTexture(resources.btnPvPTex);
 }
 
 void AtualizarTelaMenu(GameScreen *telaAtual) {
-    //Vector2 mousePos = GetMousePosition();
-    Vector2 mousePos = GetMouseVirtual(); // Usa a nova função
+    Vector2 mousePos = GetMouseVirtual(); 
 
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         if (CheckCollisionPointRec(mousePos, btnJogar)) {
-            // --- ATUALIZADO ---
-            *telaAtual = SCREEN_MODO_JOGO; // vai para a tela de modo de jogo
-            // ------------------
+            *telaAtual = SCREEN_MODO_JOGO; 
         } else if (CheckCollisionPointRec(mousePos, btnPersonagens)) {
             *telaAtual = SCREEN_PERSONAGENS;
-        } else if (CheckCollisionPointRec(mousePos, btnSobre)) {
+        } else if (CheckCollisionPointRec(mousePos, btnSobre)) { // Corrigi o typo 'CheckCollisionDPointRec'
             *telaAtual = SCREEN_SOBRE;
         }
     }
 }
 
 void DesenharTelaMenu(MenuOpcao resources) {
-    //Vector2 mousePos = GetMousePosition();
-    Vector2 mousePos = GetMouseVirtual(); // Usa a nova função
+    
+    Vector2 mousePos = GetMouseVirtual();
     
     DrawTexture(resources.background, 0, 0, WHITE);
-
+    
     const char *titulo = "Ecos da Infância";
     int tamTitulo = 100;
     int posXtitulo = (SCREEN_WIDTH - MeasureText(titulo, tamTitulo)) / 2;
     DrawText(titulo, posXtitulo + 4, 154, tamTitulo, (Color){0, 0, 0, 150});
     DrawText(titulo, posXtitulo, 150, tamTitulo, corTexto); 
 
-    float btnRoundness = 0.5f; 
-    int btnSegments = 10;
-    float lineThick = 4.0f;
+    Rectangle texSource = { 0, 0, resources.btnJogarTex.width, resources.btnJogarTex.height };
+    Vector2 origin = { 0, 0 };
 
-    // botão Jogar 
-    if (CheckCollisionPointRec(mousePos, btnJogar)) {
-        DrawRectangleRounded(btnJogar, btnRoundness, btnSegments, corFundoHover);
-        DrawRectangleRoundedLinesEx(btnJogar, btnRoundness, btnSegments, lineThick, corBordaBtn);
-        DrawText("JOGAR", btnJogar.x + (btnJogar.width - MeasureText("JOGAR", 30)) / 2, btnJogar.y + 20, 30, corTextoHover);
-    } else {
-        DrawRectangleRounded(btnJogar, btnRoundness, btnSegments, corFundoBtn);
-        DrawRectangleRoundedLinesEx(btnJogar, btnRoundness, btnSegments, lineThick, corBordaBtn);
-        DrawText("JOGAR", btnJogar.x + (btnJogar.width - MeasureText("JOGAR", 30)) / 2, btnJogar.y + 20, 30, corTexto);
-    }
+    Color tintJogar = CheckCollisionPointRec(mousePos, btnJogar) ? LIGHTGRAY : WHITE;
+    DrawTexturePro(resources.btnJogarTex, texSource, btnJogar, origin, 0, tintJogar);
 
-    // botão Personagens 
-    if (CheckCollisionPointRec(mousePos, btnPersonagens)) {
-        DrawRectangleRounded(btnPersonagens, btnRoundness, btnSegments, corFundoHover);
-        DrawRectangleRoundedLinesEx(btnPersonagens, btnRoundness, btnSegments, lineThick, corBordaBtn);
-        DrawText("PERSONAGENS", btnPersonagens.x + (btnPersonagens.width - MeasureText("PERSONAGENS", 30)) / 2, btnPersonagens.y + 20, 30, corTextoHover);
-    } else {
-        DrawRectangleRounded(btnPersonagens, btnRoundness, btnSegments, corFundoBtn);
-        DrawRectangleRoundedLinesEx(btnPersonagens, btnRoundness, btnSegments, lineThick, corBordaBtn);
-        DrawText("PERSONAGENS", btnPersonagens.x + (btnPersonagens.width - MeasureText("PERSONAGENS", 30)) / 2, btnPersonagens.y + 20, 30, corTexto);
-    }
+    Color tintPersonagens = CheckCollisionPointRec(mousePos, btnPersonagens) ? LIGHTGRAY : WHITE;
+    DrawTexturePro(resources.btnPersonagensTex, texSource, btnPersonagens, origin, 0, tintPersonagens);
 
-    // botão Sobre 
-    if (CheckCollisionPointRec(mousePos, btnSobre)) {
-        DrawRectangleRounded(btnSobre, btnRoundness, btnSegments, corFundoHover);
-        DrawRectangleRoundedLinesEx(btnSobre, btnRoundness, btnSegments, lineThick, corBordaBtn);
-        DrawText("SOBRE", btnSobre.x + (btnSobre.width - MeasureText("SOBRE", 30)) / 2, btnSobre.y + 20, 30, corTextoHover);
-    } else {
-        DrawRectangleRounded(btnSobre, btnRoundness, btnSegments, corFundoBtn);
-        DrawRectangleRoundedLinesEx(btnSobre, btnRoundness, btnSegments, lineThick, corBordaBtn);
-        DrawText("SOBRE", btnSobre.x + (btnSobre.width - MeasureText("SOBRE", 30)) / 2, btnSobre.y + 20, 30, corTexto);
-    }
+    Color tintSobre = CheckCollisionPointRec(mousePos, btnSobre) ? LIGHTGRAY : WHITE;
+    DrawTexturePro(resources.btnSobreTex, texSource, btnSobre, origin, 0, tintSobre);
 }

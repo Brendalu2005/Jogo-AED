@@ -19,12 +19,11 @@ void AtualizarTelaSobre(GameScreen *telaAtual){
 }
 
 
-// --- FUNÇÃO MODIFICADA ---
-// Substitua a sua função 'DesenharTelaSobre' por esta:
+
 void DesenharTelaSobre(MenuOpcao resoucers) {
     DrawTexture(resoucers.background, 0, 0, WHITE);
 
-    // Título principal da tela
+    
     char titulo[] = "Sobre o Jogo";
     int fontSizeTitulo = 60;
     int posXtitulo = (SCREEN_WIDTH - MeasureText(titulo, fontSizeTitulo)) / 2;
@@ -32,25 +31,23 @@ void DesenharTelaSobre(MenuOpcao resoucers) {
     DrawText(titulo, posXtitulo, 120, fontSizeTitulo, RAYWHITE);
 
 
-    // --- Bloco de Texto Central ---
     
-    // Posições e tamanhos (AJUSTADOS)
     int posXtexto = 250;
-    int posYtexto = 210; // Começa um pouco mais cedo
-    int lineSpacing = 24; // Espaço entre linhas REDUZIDO
-    int sectionSpacing = 8; // Espaço entre seções REDUZIDO
+    int posYtexto = 210; 
+    int lineSpacing = 24; 
+    int sectionSpacing = 8; 
     int indent = 20; 
     
-    int fontSizeTexto = 18; // Fonte do texto REDUZIDA
-    int fontSizeTituloSecao = 20; // Fonte do título de seção REDUZIDA
+    int fontSizeTexto = 18; 
+    int fontSizeTituloSecao = 20; 
     Color corTituloSecao = (Color){100, 255, 100, 255}; 
     Color corTextoComum = LIGHTGRAY;
 
-    // Caixa de fundo (Altura AJUSTADA para 680.0f)
+    
     Rectangle fundoPreto = { (float)posXtexto - 30, (float)posYtexto - 20, (float)SCREEN_WIDTH - (posXtexto * 2) + 60, 680.0f };
-    DrawRectangleRounded(fundoPreto, 0.1f, 8, (Color){ 0, 0, 0, 180 }); // Fundo preto transparente
+    DrawRectangleRounded(fundoPreto, 0.1f, 8, (Color){ 0, 0, 0, 180 }); 
 
-    // --- Desenhar o texto linha por linha (com os novos espaçamentos) ---
+    
 
     DrawText("Ecos da Infância", posXtexto, posYtexto, fontSizeTituloSecao, corTituloSecao);
     posYtexto += lineSpacing + sectionSpacing;
@@ -114,20 +111,19 @@ void DesenharTelaSobre(MenuOpcao resoucers) {
     DrawText("Música da parte PvP: I really want to stay at your house - Rosa Walton", posXtexto + indent, posYtexto, fontSizeTexto, corTextoComum);
 
 
-    // --- Fim do Bloco de Texto ---
 
 
-    // Botão Voltar (código original)
-    Rectangle btnVoltar = { 50, 50, 150, 50 };
-    DrawRectangleRounded(btnVoltar, 0.3f, 10, (Color){80, 80, 80, 255});
-    DrawRectangleRoundedLinesEx(btnVoltar, 0.3f, 10, 2, WHITE);
+   Rectangle btnVoltar = { 50, 50, 150, 50 };
+    Vector2 mouse = GetMouseVirtual();
+    Color tintVoltar = CheckCollisionPointRec(mouse, btnVoltar) ? LIGHTGRAY : WHITE;
 
-    char textoBotao[] = "VOLTAR";
-    DrawText(
-        textoBotao,
-        (int)(btnVoltar.x + (btnVoltar.width - MeasureText(textoBotao, 25)) / 2.0f),
-        (int)(btnVoltar.y + 12),
-        25,
-        RAYWHITE
+    DrawTexturePro(
+        resoucers.btnVoltarTex,
+        (Rectangle){ 0, 0, resoucers.btnVoltarTex.width, resoucers.btnVoltarTex.height },
+        btnVoltar,
+        (Vector2){ 0, 0 },
+        0,
+        tintVoltar
     );
+
 }

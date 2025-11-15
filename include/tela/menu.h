@@ -4,6 +4,13 @@
 #include "telas.h" 
 typedef struct MenuOpcao {
     Texture2D background;
+    // textura dos botões
+    Texture2D btnJogarTex;
+    Texture2D btnPersonagensTex;
+    Texture2D btnSobreTex;
+    Texture2D btnVoltarTex;
+    Texture2D btnSoloTex;
+    Texture2D btnPvPTex;
 } MenuOpcao;
 
 

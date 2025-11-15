@@ -675,6 +675,7 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
         backgroundCarregado = 1;
     }
 
+    estado->btnAtaqueTex = LoadTexture("sprites/botoes/botaoAtaques.png");
     g_animLapide = CarregarAnimacaoData("sprites/personagens/lapide/lapide");
 
     estado->roundAtual = 1;
@@ -793,6 +794,7 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
             backgroundCarregado = 0;
         }
 
+        UnloadTexture(estado->btnAtaqueTex);
         LiberarAnimacaoData(&g_animLapide);
 
         *telaAtual = SCREEN_MENU;
@@ -1667,17 +1669,43 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
 
         PersonagemData* atacante = estado->ordemDeAtaque[estado->personagemAgindoIdx];
         if (atacante != NULL) {
-            Color corAtk1 = (estado->ataqueSelecionado == 0) ? corBotaoSelecionado : corBotaoNormal;
-            Color corAtk2 = (estado->ataqueSelecionado == 1) ? corBotaoSelecionado : corBotaoNormal;
+            
+           
+            Color corImagemNormal = WHITE;
+            Color corImagemSelecionada = YELLOW;
+            Color corTextoNormal = (Color){ 220, 220, 220, 255 };
+            Color corTextoSelecionado = BLACK;
 
-            DrawRectangleRounded(btnAtk1, 0.2f, 4, corAtk1);
-            DrawRectangleRoundedLinesEx(btnAtk1, 0.2f, 4, espessuraBorda, BLACK);
-            DrawText(atacante->ataque1.nome, (int)btnAtk1.x + ((int)btnAtk1.width - MeasureText(atacante->ataque1.nome, 20)) / 2, (int)btnAtk1.y + 10, 20, corTexto);
+           
+            Color tintAtk1 = (estado->ataqueSelecionado == 0) ? corImagemSelecionada : corImagemNormal;
+            Color tintAtk2 = (estado->ataqueSelecionado == 1) ? corImagemSelecionada : corImagemNormal;
 
-            DrawRectangleRounded(btnAtk2, 0.2f, 4, corAtk2);
-            DrawRectangleRoundedLinesEx(btnAtk2, 0.2f, 4, espessuraBorda, BLACK);
-            DrawText(atacante->ataque2.nome, (int)btnAtk2.x + ((int)btnAtk2.width - MeasureText(atacante->ataque2.nome, 20)) / 2, (int)btnAtk2.y + 10, 20, corTexto);
+            
+            Color corTextoAtk1 = (estado->ataqueSelecionado == 0) ? corTextoSelecionado : corTextoNormal;
+            Color corTextoAtk2 = (estado->ataqueSelecionado == 1) ? corTextoSelecionado : corTextoNormal;
+
+           
+            Texture2D tex = estado->btnAtaqueTex;
+            Rectangle texSource = { 0, 0, (float)tex.width, (float)tex.height };
+            Vector2 origin = { 0, 0 };
+
+            // Botão Ataque 1 
+            DrawTexturePro(tex, texSource, btnAtk1, origin, 0, tintAtk1);
+            DrawText(atacante->ataque1.nome, 
+                     (int)btnAtk1.x + ((int)btnAtk1.width - MeasureText(atacante->ataque1.nome, 20)) / 2, 
+                     (int)btnAtk1.y + 10, 
+                     20, 
+                     corTextoAtk1);
+
+            // Botão Ataque 2
+            DrawTexturePro(tex, texSource, btnAtk2, origin, 0, tintAtk2);
+            DrawText(atacante->ataque2.nome, 
+                     (int)btnAtk2.x + ((int)btnAtk2.width - MeasureText(atacante->ataque2.nome, 20)) / 2, 
+                     (int)btnAtk2.y + 10, 
+                     20, 
+                     corTextoAtk2);
         
+           
             Vector2 mousePos = GetMouseVirtual();
             Ataque* attHover = NULL;
             if (CheckCollisionPointRec(mousePos, btnAtk1)) attHover = &atacante->ataque1;

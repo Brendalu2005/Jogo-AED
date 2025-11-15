@@ -93,6 +93,8 @@ typedef struct {
 
     bool isZoomAoe;
     
+    Texture2D btnAtaqueTex;
+    
 } EstadoBatalha;
 
 

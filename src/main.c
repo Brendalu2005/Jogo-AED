@@ -42,7 +42,7 @@ Vector2 GetMouseVirtual(void) {
 
 int main(void) {
     
-    // --- LÓGICA DE JANELA MODIFICADA (PARA FULLSCREEN CORRETO) ---
+    
 
     // Pega as dimensões do monitor principal ANTES de criar a janela
     int monitorAtual = GetCurrentMonitor();
@@ -56,11 +56,10 @@ int main(void) {
     InitWindow(larguraNativa, alturaNativa, "Ecos da Infância");
     
     srand(time(NULL));
-    // Garante a posição no canto superior esquerdo
+    
     SetWindowPosition(0, 0);
     SetTargetFPS(60);
     
-    // --- FIM DA MODIFICAÇÃO ---
 
     // Carrega o canvas na resolução-alvo (1600x900)
     RenderTexture2D canvas = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -177,7 +176,7 @@ int main(void) {
                 break;
         }
         
-        // --- Desenho no Canvas (1600x900) ---
+        // Desenho no Canvas (1600x900) ---
         BeginTextureMode(canvas); 
             ClearBackground(DARKGRAY);
 
