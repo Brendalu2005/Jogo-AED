@@ -153,7 +153,7 @@ DecisaoIA ObterDecisaoIA(EstadoBatalha *estado, const char* suaChaveAPI) {
         char urlComChave[512];
 
         snprintf(urlComChave, sizeof(urlComChave), 
-                 "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=%s", 
+                 "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=%s", 
                  suaChaveAPI);
         curl_easy_setopt(curl, CURLOPT_URL, urlComChave); 
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
@@ -164,6 +164,9 @@ DecisaoIA ObterDecisaoIA(EstadoBatalha *estado, const char* suaChaveAPI) {
         printf("IA: Consultando API do Gemini...\n"); // Mudei o texto
         res = curl_easy_perform(curl);
         printf("IA: Resposta recebida.\n");
+        printf("==========================================\n");
+        printf("IA: RESPOSTA CRUA DA API:\n%s\n", resposta.buffer);
+        printf("==========================================\n");
 
         // processa a resposta *(guto)
         if (res != CURLE_OK) {
