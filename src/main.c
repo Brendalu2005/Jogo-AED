@@ -7,6 +7,8 @@
 #include "selecao.h" 
 #include "sobre.h"
 #include "modo_jogo.h"
+#include <stdlib.h> 
+#include <time.h> 
 
 Texture2D backgroundSelecao;
 
@@ -45,6 +47,7 @@ int main(void) {
     // Inicializa a janela JÁ com o tamanho total do ecrã
     InitWindow(larguraNativa, alturaNativa, "Ecos da Infância");
     
+    srand(time(NULL));
     // Garante a posição no canto superior esquerdo
     SetWindowPosition(0, 0);
     SetTargetFPS(60);

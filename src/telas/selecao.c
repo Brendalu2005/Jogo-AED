@@ -2,7 +2,7 @@
 #include "database.h"
 #include "telas.h"
 #include <stdlib.h> 
-#include <time.h>  
+//#include <time.h>  
 #include <stdio.h> 
 #include <math.h>
 #include <stdbool.h> 
@@ -120,7 +120,7 @@ void InicializarSelecao(TimesBatalha* times) {
         animFrame[i] = 0;
     }
     
-    srand(time(NULL)); 
+    //srand(time(NULL)); 
 
     Image bgImg = LoadImage("sprites/background/background3.jpg");
     ImageResize(&bgImg, SCREEN_WIDTH, SCREEN_HEIGHT);
