@@ -16,24 +16,19 @@ Texture2D backgroundSelecao;
 void AtualizarTelaPlaceholder(GameScreen *telaAtual);
 void DesenharTelaPlaceholder(const char *titulo);
 
-// Estas variáveis globais estáticas são necessárias para GetMouseVirtual
 static float escala = 1.0f;
 static Rectangle areaDestinoCanvas = { 0 };
 
-//musicas
 static Music musicaMenu;
 static Music musicaBatalhaSolo;
 static Music musicaBatalhaPVP;
 
-// Esta variável vai nos ajudar a saber qual música está tocando
 static Music *musicaAtiva = NULL;
 
-// Implementação da função declarada em telas.h
 Vector2 GetMouseVirtual(void) {
     Vector2 mouseNativo = GetMousePosition();
     Vector2 mouseVirtual = { 0 };
     
-    // Traduz as coordenadas da tela nativa para as coordenadas do canvas
     mouseVirtual.x = (mouseNativo.x - areaDestinoCanvas.x) / escala;
     mouseVirtual.y = (mouseNativo.y - areaDestinoCanvas.y) / escala;
     
@@ -45,15 +40,12 @@ int main(void) {
     
     
 
-    // Pega as dimensões do monitor principal ANTES de criar a janela
     int monitorAtual = GetCurrentMonitor();
     int larguraNativa = GetMonitorWidth(monitorAtual);
     int alturaNativa = GetMonitorHeight(monitorAtual);
 
-    // Configura a janela para NÃO ter borda (borderless)
     SetConfigFlags(FLAG_WINDOW_UNDECORATED); 
     
-    // Inicializa a janela JÁ com o tamanho total do ecrã
     InitWindow(larguraNativa, alturaNativa, "Ecos da Infância");
     
     srand(time(NULL));
@@ -62,10 +54,8 @@ int main(void) {
     SetTargetFPS(60);
     
 
-    // Carrega o canvas na resolução-alvo (1600x900)
     RenderTexture2D canvas = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
     
-    // Define a origem e a fonte do canvas (não muda)
     Vector2 origemCanvas = { 0.0f, 0.0f };
     Rectangle retanguloFonteCanvas = { 0.0f, 0.0f, (float)canvas.texture.width, (float)-canvas.texture.height };
 
@@ -82,21 +72,18 @@ int main(void) {
     musicaBatalhaSolo = LoadMusicStream("musicas/Freaking_Out_The_Neighborhood.mp3");
     musicaBatalhaPVP = LoadMusicStream("musicas/I_Really_Want_To_Stay_In_Your_House.mp3");
 
-    // Configura as músicas para repetirem (looping)
     musicaMenu.looping = true;
     musicaBatalhaSolo.looping = true;
     musicaBatalhaPVP.looping = true;
-    
-    // Define um volume (ex: 50%)
+
     float volumeGeral = 0.5f;
     SetMusicVolume(musicaMenu, volumeGeral);
     SetMusicVolume(musicaBatalhaSolo, volumeGeral);
     SetMusicVolume(musicaBatalhaPVP, volumeGeral);
 
-    // Define a música inicial e começa a tocar
     musicaAtiva = &musicaMenu;
     PlayMusicStream(*musicaAtiva);
-    // Inicializa estados
+
     TimesBatalha timesSelecionados = {0};
     EstadoBatalha estadoBatalha = {0};
     GameScreen telaAtual = SCREEN_MENU;
@@ -105,30 +92,25 @@ int main(void) {
 
     while (!WindowShouldClose() && telaAtual != SCREEN_SAIR) {
         if (musicaAtiva != NULL) {
-            // Verifica se a música está tocando para poder atualizá-la
             if (IsMusicStreamPlaying(*musicaAtiva)) {
                 UpdateMusicStream(*musicaAtiva);
             }
         }
 
-        // 2. Gerenciamento de Transição de Música
         if (telaAtual == SCREEN_MENU || telaAtual == SCREEN_PERSONAGENS || telaAtual == SCREEN_SOBRE || telaAtual == SCREEN_MODO_JOGO || telaAtual == SCREEN_SELECAO) {
             
-            // Se a música ativa NÃO for a do menu, troque para ela
             if (musicaAtiva != &musicaMenu) {
                 if (musicaAtiva != NULL) {
-                    StopMusicStream(*musicaAtiva); // Para a música antiga
+                    StopMusicStream(*musicaAtiva); 
                 }
-                musicaAtiva = &musicaMenu; // Define a nova música
-                PlayMusicStream(*musicaAtiva); // Toca a nova música
+                musicaAtiva = &musicaMenu; 
+                PlayMusicStream(*musicaAtiva); 
             }
         }
 
         if (telaAtual == SCREEN_BATALHA) {
-            // Verifica o modo de jogo para decidir a música de batalha
             
             if (modoDeJogoAtual == MODO_SOLO) {
-                // Queremos a música SOLO
                 if (musicaAtiva != &musicaBatalhaSolo) {
                     if (musicaAtiva != NULL) {
                         StopMusicStream(*musicaAtiva);
@@ -137,7 +119,6 @@ int main(void) {
                     PlayMusicStream(*musicaAtiva);
                 }
             } else {
-                // Queremos a música PVP (MODO_PVP)
                 if (musicaAtiva != &musicaBatalhaPVP) {
                     if (musicaAtiva != NULL) {
                         StopMusicStream(*musicaAtiva);
@@ -147,7 +128,6 @@ int main(void) {
                 }
             }
         }
-        // --- Atualização das Telas ---
         switch(telaAtual) {
             case SCREEN_MENU:
                 AtualizarTelaMenu(&telaAtual);
@@ -177,7 +157,6 @@ int main(void) {
                 break;
         }
         
-        // Desenho no Canvas (1600x900) ---
         BeginTextureMode(canvas); 
             ClearBackground(DARKGRAY);
 
@@ -207,7 +186,6 @@ int main(void) {
 
         EndTextureMode(); 
 
-        // --- CÁLCULO DE ESCALA (JÁ ESTÁ CORRETO) ---
         larguraNativa = GetScreenWidth();
         alturaNativa = GetScreenHeight();
         
@@ -221,7 +199,6 @@ int main(void) {
         areaDestinoCanvas.x = (larguraNativa - areaDestinoCanvas.width) * 0.5f;
         areaDestinoCanvas.y = (alturaNativa - areaDestinoCanvas.height) * 0.5f;
 
-        // --- Desenho na Tela (Ecrã) ---
         BeginDrawing();
             ClearBackground(BLACK);
             
@@ -236,8 +213,6 @@ int main(void) {
             
         EndDrawing();   
     }
-
-    // --- Limpeza ---
 
     UnloadMusicStream(musicaMenu);
     UnloadMusicStream(musicaBatalhaSolo);

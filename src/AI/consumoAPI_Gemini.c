@@ -10,7 +10,6 @@
 #include "batalha.h" 
 #include "lista_personagem.h" 
 
-// --- Variáveis Globais (Estáticas) para Gerenciamento da Thread ---
 static pthread_mutex_t g_mutex_ia = PTHREAD_MUTEX_INITIALIZER;
 static pthread_t g_thread_ia_id;
 static volatile bool g_decisao_ia_pronta = false;
@@ -25,7 +24,6 @@ typedef struct {
 static DadosParaThreadIA g_dados_para_thread; 
 
 
-// --- FUNÇÃO MOVIDA DE 'batalha.c' ---
 static char CHAVE_API_BUFFER[256];
 static bool chaveJaFoiCarregada = false; 
 
@@ -54,7 +52,6 @@ static const char* CarregarChaveApi(const char* caminhoArquivo) {
     fclose(arquivo);
     return CHAVE_API_BUFFER;
 }
-// ----------------------------------------
 
 
 typedef struct RespostaWeb {
@@ -260,20 +257,14 @@ static void* ThreadTrabalhadoraIA(void* arg) {
 
     printf("IA (Thread): Thread iniciada.\n");
     
-    // --- LÓGICA ATUALIZADA ---
-    // Se a chave for inválida, a 'decisao' permanecerá {0, 0, NULL}
-    // ou podemos retornar uma decisão especial.
     DecisaoIA decisao = {0, 0, NULL}; 
     
     if (strcmp(g_dados_para_thread.chave_api, "CHAVE_NAO_ENCONTRADA") != 0) {
         decisao = ExecutarConsultaCurl(g_dados_para_thread.prompt, g_dados_para_thread.chave_api);
     } else {
-        // Se a chave não foi encontrada, preenchemos uma "decisão de erro"
-        // para o 'batalha.c' saber que deve usar um ataque aleatório.
         decisao.justificativa = (char*)malloc(strlen("CHAVE_NAO_ENCONTRADA") + 1);
         strcpy(decisao.justificativa, "CHAVE_NAO_ENCONTRADA");
     }
-    // -------------------------
 
     pthread_mutex_lock(&g_mutex_ia);
     
@@ -287,9 +278,6 @@ static void* ThreadTrabalhadoraIA(void* arg) {
     return NULL;
 }
 
-
-// --- ATUALIZADO ---
-// Agora 'suaChaveAPI' é o *caminho* para o config.txt
 void IA_IniciarDecisao(struct EstadoBatalha *estado, const char* caminhoChaveAPI) {
     pthread_mutex_lock(&g_mutex_ia);
 
@@ -307,7 +295,6 @@ void IA_IniciarDecisao(struct EstadoBatalha *estado, const char* caminhoChaveAPI
     strncpy(g_dados_para_thread.prompt, prompt, 2047);
     g_dados_para_thread.prompt[2047] = '\0';
     
-    // Carrega a chave AQUI, dentro da função de iniciar
     const char* chaveApiReal = CarregarChaveApi(caminhoChaveAPI);
     strncpy(g_dados_para_thread.chave_api, chaveApiReal, 255);
     g_dados_para_thread.chave_api[255] = '\0';

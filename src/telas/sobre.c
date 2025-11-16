@@ -3,7 +3,6 @@
 #include "menu.h"
 #include "telas.h"
 
-// A função AtualizarTelaSobre não precisa mudar
 void AtualizarTelaSobre(GameScreen *telaAtual){
     if(IsKeyPressed(KEY_ESCAPE)){
         *telaAtual = SCREEN_MENU;

@@ -1,13 +1,8 @@
 #include "batalha_desenho.h"
-#include "lista_personagem.h" // Precisa de ObterNoNaPosicao
-#include <math.h>             // Precisa de fmod
-#include <stdio.h>            // Precisa de TextFormat
-#include <string.h>           // Precisa de strlen
-
-// -------------------------------------------------------------------
-// FUNÇÕES AUXILIARES DE DESENHO (MOVIDAS DE 'batalha.c')
-// Elas agora são 'static' pois só este arquivo precisa delas.
-// -------------------------------------------------------------------
+#include "lista_personagem.h" 
+#include <math.h>            
+#include <stdio.h>         
+#include <string.h>          
 
 static void DesenharAnimacaoLapide(EstadoAnimacao* anim) {
     if (anim->ativo == false){ 
@@ -21,7 +16,7 @@ static void DesenharAnimacaoLapide(EstadoAnimacao* anim) {
     }
 
     if (anim->frameAtual >= anim->anim->def.numFrames) {
-        anim->frameAtual = anim->anim->def.numFrames - 1; // Garante que é o último
+        anim->frameAtual = anim->anim->def.numFrames - 1; 
     }
 
     Rectangle frameRec = anim->anim->def.frames[anim->frameAtual];
@@ -36,7 +31,6 @@ static void DesenharAnimacaoLapide(EstadoAnimacao* anim) {
     origem.x = destRec.width / 2;
     origem.y = destRec.height / 2;
 
-    // Lápide flip
     if (anim->flip) { 
         frameRec.width = -frameRec.width; 
     }
@@ -71,35 +65,27 @@ static void DesenharAnimacao(EstadoAnimacao* anim) {
     Rectangle destRec;
     Vector2 origem;
 
-    // Área destino onde o sprite será desenhado
     destRec.x = anim->pos.x;
     destRec.y = anim->pos.y;
     destRec.width  = frameRec.width * anim->zoom;
     destRec.height = frameRec.height * anim->zoom;
 
-    // Origem: centro do sprite
     origem.x = destRec.width / 2;
     origem.y = destRec.height / 2;
 
-    // --- Corrigido: flip real ---
     if (anim->flip) {
-        frameRec.width = -frameRec.width;  // Inverte horizontalmente
+        frameRec.width = -frameRec.width; 
     }
 
     DrawTexturePro(
         anim->anim->textura,
-        frameRec,     // parte da textura
-        destRec,      // onde desenhar
-        origem,       // ponto de origem
-        0.0f,         // rotação
+        frameRec,    
+        destRec,      
+        origem,      
+        0.0f,        
         WHITE
     );
 }
-
-
-// -------------------------------------------------------------------
-// FUNÇÃO PÚBLICA DE DESENHO (MOVIDA DE 'batalha.c')
-// -------------------------------------------------------------------
 
 void DesenharTelaBatalha(EstadoBatalha *estado) {
     DrawText("Jogador 1", 20, 15, 20, RAYWHITE);
@@ -108,15 +94,12 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
     int larguraTextoRound = MeasureText(textoRound, 20);
     DrawText(textoRound, (SCREEN_WIDTH - larguraTextoRound) / 2, 15, 20, RAYWHITE);
 
-    // Texto do Oponente (IA ou J2)
     DrawText("Oponente", SCREEN_WIDTH - MeasureText("Oponente", 20) - 20, 15, 20, RAYWHITE);
 
     int arenaY = 80;
     int arenaHeight = 550; 
     DrawRectangleLines(10, arenaY, SCREEN_WIDTH - 20, arenaHeight, LIGHTGRAY);
 
-    // Agora isso funciona, pois 'backgroundArena' e 'backgroundCarregado'
-    // são declaradas como 'extern' em 'batalha.h'
     if (backgroundCarregado == 1) {
         DrawTexturePro(
             backgroundArena,
@@ -130,20 +113,17 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
 
     const float hpBarYFixo = 530.0f;
     
-    // Cores para o fade
     Color corFade = ColorAlpha(WHITE, estado->alphaOutrosPersonagens);
     Color corBgFade = ColorAlpha(DARKGRAY, estado->alphaOutrosPersonagens);
     Color corHpFadeJ = ColorAlpha(GREEN, estado->alphaOutrosPersonagens);
     Color corHpFadeIA = ColorAlpha(RED, estado->alphaOutrosPersonagens);
     Color corBordaFade = ColorAlpha(LIGHTGRAY, estado->alphaOutrosPersonagens);
 
-    // --- 1. IDENTIFICAR QUEM ESTÁ EM FOCO (PARA NÃO DESENHAR NO FUNDO) ---
     int idxAtacanteFoco = -1;
     bool atacanteEhIA = false;
     int idxAlvoFoco = -1;
     bool alvoEhIA = false;
 
-    // Posições de desenho (precisamos delas aqui para desenhar)
     Vector2 posJogador[3];
     Vector2 posIA[3];
     float posY = 450.0f;
@@ -192,7 +172,7 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
     }
 
     // --- 2. DESENHAR O FUNDO (PERSONAGENS QUE NÃO ESTÃO EM FOCO) ---
-    // A) Time JOGADOR (Background)
+    // A) Time JOGADOR
     for (int i = 0; i < 3; i++) {
         bool ehFoco = false;
         if (!atacanteEhIA && idxAtacanteFoco == i) ehFoco = true;
@@ -259,13 +239,16 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
                         DrawRectangle(posXBarra, posYBarra, 100, 10, corBgFade);
                         DrawRectangle(posXBarra, posYBarra, larguraPreenchimento, 10, corHpFadeJ);
                         DrawRectangleLines(posXBarra, posYBarra, 100, 10, corBordaFade);
+                        const char* textoHP = TextFormat("%d/%d", estado->hpJogador[i], pData->hpMax);
+                        int larguraTexto = MeasureText(textoHP, 10);
+                        DrawText(textoHP, (posXBarra + 50) - (larguraTexto / 2), posYBarra + 12, 10, corFade);
                     }
                  }
             }
         }
     }
 
-    // B) Time IA/OPONENTE (Background)
+    // B) Time IA/OPONENTE
     for (int i = 0; i < 3; i++) {
         bool ehFoco = false;
         if (atacanteEhIA && idxAtacanteFoco == i) ehFoco = true;
@@ -287,8 +270,8 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
                      Rectangle dest = { 
                          posIA[i].x, 
                          posIA[i].y, 
-                         fabsf(frame.width) * estado->animLapideIA[i].zoom, // Zoom da struct (1.0f)
-                         frame.height * estado->animLapideIA[i].zoom       // Zoom da struct (1.0f)
+                         fabsf(frame.width) * estado->animLapideIA[i].zoom, 
+                         frame.height * estado->animLapideIA[i].zoom      
                      };
                      Vector2 orig = { dest.width/2, dest.height/2 };
                      DrawTexturePro(estado->animLapideIA[i].anim->textura, frame, dest, orig, 0.0f, corFade);
@@ -322,7 +305,6 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
                         DrawTexturePro(anim->textura, frame,
                         (Rectangle){posIA[i].x, posIA[i].y, fabsf(frame.width) * zoom, frame.height * zoom},
                         (Vector2){fabsf(frame.width) * zoom / 2, frame.height * zoom / 2}, 0, corPersonagem);
-                        // Barra HP
                         int posXBarra = (int)posIA[i].x - 50; 
                         int posYBarra = (int)hpBarYFixo; 
                         int larguraPreenchimento = (int)(100.0f * (float)estado->hpIA[i] / (float)pData->hpMax);
@@ -330,6 +312,9 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
                         DrawRectangle(posXBarra, posYBarra, 100, 10, corBgFade);
                         DrawRectangle(posXBarra, posYBarra, larguraPreenchimento, 10, corHpFadeIA);
                         DrawRectangleLines(posXBarra, posYBarra, 100, 10, corBordaFade);
+                        const char* textoHP = TextFormat("%d/%d", estado->hpIA[i], pData->hpMax);
+                        int larguraTexto = MeasureText(textoHP, 10);
+                        DrawText(textoHP, (posXBarra + 50) - (larguraTexto / 2), posYBarra + 12, 10, corFade);
                     }
                  }
             }
@@ -340,13 +325,11 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
     // --- 3. DESENHAR O FOCO (ATACANTE E ALVO) ---
     if (estado->atacanteEmFoco != NULL) {
         
-        // A) DESENHA O ATACANTE (que pode ser animado ou idle)
+        // A) DESENHA O ATACANTE
         PersonagemData* pDataAtacante = estado->atacanteEmFoco;
         
         if (estado->estadoTurno == ESTADO_ANIMACAO_ATAQUE) {
-            // A animação de ataque é desenhada em separado mais abaixo
         } else {
-            // Desenha o IDLE do atacante durante o zoom
             int frameIdx = atacanteEhIA ? estado->idleFrameIA[idxAtacanteFoco] : estado->idleFrameJogador[idxAtacanteFoco];
             if (pDataAtacante->animIdle.def.numFrames > 0 && frameIdx >= pDataAtacante->animIdle.def.numFrames) frameIdx = 0;
             
@@ -358,7 +341,6 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
                 (Vector2){ fabsf(frame.width) * estado->zoomFocoAtacante / 2, frame.height * estado->zoomFocoAtacante / 2 }, 0, WHITE);
         }
         
-        // Barra de HP do Atacante
         int hpAtacante = atacanteEhIA ? estado->hpIA[idxAtacanteFoco] : estado->hpJogador[idxAtacanteFoco];
         float alturaFrame = (pDataAtacante->animIdle.def.numFrames > 0) ? pDataAtacante->animIdle.def.frames[0].height : 100.0f;
         float hpBarY = estado->posFocoAtacante.y + (alturaFrame * estado->zoomFocoAtacante / 2) + 5;
@@ -367,12 +349,11 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
         DrawRectangleLines((int)estado->posFocoAtacante.x - 50, (int)hpBarY, 100, 10, LIGHTGRAY);
         
         
-        // B) DESENHA O ALVO (se houver)
         if (estado->isZoomAoe == true) 
         {
-            // --- MODO AOE: Desenha os 3 alvos (1 focado, 2 parados) ---
+           // MODO AOE: Desenha os 3 alvos (1 focado, 2 parados)
             ListaTime* listaAlvo = alvoEhIA ? &estado->timeIA : &estado->timeJogador;
-            Vector2* posAlvoArray = alvoEhIA ? posIA : posJogador; // Posições originais
+            Vector2* posAlvoArray = alvoEhIA ? posIA : posJogador;
             
             for (int i = 0; i < 3; i++) {
                 NoPersonagem* noAlvo = ObterNoNaPosicao(listaAlvo, i);
@@ -381,37 +362,34 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
                 
                 Vector2 posAtualAlvo;
                 float zoomAtualAlvo;
-                bool flipAlvo = alvoEhIA; // Flip padrão
+                bool flipAlvo = alvoEhIA;
 
                 if (i == estado->alvoEmFocoIdx) {
-                    // Este é o alvo focado (o que foi clicado)
+                    // Este é o alvo focado 
                     posAtualAlvo = estado->posFocoAlvo;
                     zoomAtualAlvo = estado->zoomFocoAlvo;
                     if (estado->alvoEmFoco != NULL) {
-                        pDataAlvo = estado->alvoEmFoco; // Garante pData para lápide
+                        pDataAlvo = estado->alvoEmFoco; 
                     }
                     if (pDataAlvo != NULL) { 
-                        flipAlvo = pDataAlvo->animIdle.flip; // Usa o flip dele (que foi setado no ZoomIn)
+                        flipAlvo = pDataAlvo->animIdle.flip;
                     }
 
                 } else {
-                    // Este é um dos outros 2 alvos (não focados)
                     posAtualAlvo = posAlvoArray[i];
                     if (pDataAlvo != NULL) {
                         zoomAtualAlvo = estado->zoomFocoAlvo;
-                        flipAlvo = pDataAlvo->animIdle.flip; // Usa o flip padrão dele
+                        flipAlvo = pDataAlvo->animIdle.flip; 
                     } else {
-                        zoomAtualAlvo = 0.8f; // Zoom da lápide
+                        zoomAtualAlvo = 0.8f; 
                         flipAlvo = animLapideAlvo->flip; 
                     }
                 }
                 
-                // --- Desenha Lápide ou Personagem (sempre com ALPHA 1.0) ---
                 if (animLapideAlvo->ativo) {
                     animLapideAlvo->pos = posAtualAlvo;
-                    animLapideAlvo->zoom = 0.8f; // Zoom padrão da lápide
+                    animLapideAlvo->zoom = 0.8f;
 
-                    // Se for o alvo focado, calcula o zoom da lápide baseado no zoom interpolado
                     if (i == estado->alvoEmFocoIdx && pDataAlvo != NULL) {
                         animLapideAlvo->zoom = (zoomAtualAlvo / pDataAlvo->batalhaZoom) * 0.8f;
                     }
@@ -430,7 +408,7 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
                      }
                     
                      Rectangle frame = pDataAlvo->animIdle.def.frames[frameIdx];
-                     if (flipAlvo) frame.width = -frame.width; // Usa o flip calculado
+                     if (flipAlvo) frame.width = -frame.width;
 
                      DrawTexturePro(pDataAlvo->animIdle.textura, frame,
                         (Rectangle){ posAtualAlvo.x, posAtualAlvo.y, fabsf(frame.width) * zoomAtualAlvo, frame.height * zoomAtualAlvo },
@@ -448,7 +426,7 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
         }
         else if (estado->alvoEmFoco != NULL) 
         {
-            // --- MODO ALVO ÚNICO (Lógica original) ---
+            // MODO ALVO ÚNICO (Lógica original)
             PersonagemData* pDataAlvo = estado->alvoEmFoco;
             EstadoAnimacao* animLapideAlvo = alvoEhIA ? &estado->animLapideIA[idxAlvoFoco] : &estado->animLapideJogador[idxAlvoFoco];
 
@@ -477,7 +455,6 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
                     (Vector2){ fabsf(frame.width) * estado->zoomFocoAlvo / 2, frame.height * estado->zoomFocoAlvo / 2 }, 0, corAlvo);
             }
 
-            // Barra de HP do Alvo
             int hpAlvo = alvoEhIA ? estado->hpIA[idxAlvoFoco] : estado->hpJogador[idxAlvoFoco];
             float alturaFrameAlvo = (pDataAlvo->animIdle.def.numFrames > 0) ? pDataAlvo->animIdle.def.frames[0].height : 100.0f;
             float hpBarYAlvo = estado->posFocoAlvo.y + (alturaFrameAlvo * estado->zoomFocoAlvo / 2) + 5;
@@ -486,69 +463,21 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
             DrawRectangleLines((int)estado->posFocoAlvo.x - 50, (int)hpBarYAlvo, 100, 10, LIGHTGRAY);
         }
     }
-    
-    // Desenha a animação de ataque por cima de tudo (explosão, soco, etc)
+
     DesenharAnimacao(&estado->animacaoEmExecucao);
     
-    // --- 4. DESENHAR TEXTOS FLUTUANTES ---
-    // (A variável g_textosFlutuantes é static de 'batalha.c', então 
-    // precisamos movê-la para cá ou expô-la também)
-    // *** CORREÇÃO: Vamos mover g_textosFlutuantes para cá ***
-    // (Vou assumir que você moveu as definições de 
-    // TextoFlutuante, MAX_TEXTOS_FLUTUANTES, g_textosFlutuantes, 
-    // e DURACAO_TEXTO_FLUTUANTE para este arquivo 'batalha_desenho.c' 
-    // e as removeu de 'batalha.c')
-    
-    /* NOTA: Na verdade, é melhor manter g_textosFlutuantes em 'batalha.c'
-    junto com a lógica 'IniciarTextoFlutuante' e 'AtualizarTelaBatalha'.
-    Para desenhá-los aqui, teríamos que:
-    1. Mover a definição de g_textosFlutuantes para 'batalha_desenho.c'
-    2. Expor 'IniciarTextoFlutuante' em 'batalha_desenho.h' para 'batalha.c' usar.
-    3. Mover a lógica de update dos timers de g_textosFlutuantes para 'AtualizarTelaBatalha'.
-
-    É mais simples deixar como estava. Vou assumir que você **NÃO** moveu
-    as variáveis 'g_textosFlutuantes' e elas continuam 'static' em 'batalha.c'.
-    Isso significa que a lógica de desenho delas TAMBÉM deve ficar em 'batalha.c'.
-
-    VOU REVERTER A DECISÃO: O Desenho do texto flutuante DEVE ficar aqui.
-    Vamos expor a 'g_textosFlutuantes' da mesma forma que 'backgroundArena'.
-    */
-
-    /*
-    RE-REVERSÃO: É muito complexo expor um array de structs.
-    A forma mais simples é criar uma função `DesenharTextosFlutuantes()`
-    em `batalha.c`, e chamá-la a partir de `DesenharTelaBatalha`.
-    
-    ...mas isso quebra a separação.
-    
-    SOLUÇÃO FINAL (A melhor):
-    1. Mova a definição do array g_textosFlutuantes para `batalha.c` (onde já está).
-    2. Mova a lógica de ATUALIZAÇÃO do timer (o loop `for (int i = 0; i < MAX_TEXTOS_FLUTUANTES...` 
-       de `AtualizarTelaBatalha`) para `batalha_desenho.c`.
-    3. Mova a lógica de DESENHO (o loop `for (int i = 0;... DrawText(...)`) 
-       para `batalha_desenho.c`.
-    4. Exponha `g_textosFlutuantes` com `extern` em `batalha.h`.
-    */
-
-    // --- (ASSUMINDO QUE 'batalha.h' AGORA TEM: extern TextoFlutuante g_textosFlutuantes[MAX_TEXTOS_FLUTUANTES];) ---
-    // --- (E 'batalha.c' tem: TextoFlutuante g_textosFlutuantes[MAX_TEXTOS_FLUTUANTES];) ---
-    // --- (E 'batalha.c' em 'AtualizarTelaBatalha' removeu o loop de update dos timers de texto) ---
-
-    // 4. ATUALIZAR E DESENHAR TEXTOS FLUTUANTES
     float dt = GetFrameTime();
     for (int i = 0; i < MAX_TEXTOS_FLUTUANTES; i++) {
         if (g_textosFlutuantes[i].ativo) {
             
-            // Lógica de Update (movida de AtualizarTelaBatalha)
             g_textosFlutuantes[i].timer += dt;
             if (g_textosFlutuantes[i].timer >= g_textosFlutuantes[i].duracao) {
-                g_textosFlutuantes[i].ativo = false; // Desativa
+                g_textosFlutuantes[i].ativo = false;
             } else {
                 g_textosFlutuantes[i].pos.y += g_textosFlutuantes[i].velocidadeY * dt;
             }
 
-            // Lógica de Desenho
-            if (g_textosFlutuantes[i].ativo) { // Verifica de novo caso tenha acabado de ser desativado
+            if (g_textosFlutuantes[i].ativo) {
                 float progresso = g_textosFlutuantes[i].timer / g_textosFlutuantes[i].duracao;
                 float alpha = 1.0f;
                 
@@ -566,7 +495,6 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
     }
 
 
-    // --- 5. DESENHAR INDICADORES DE ALVO ---
     if (estado->estadoTurno == ESTADO_ESPERANDO_JOGADOR && estado->ataqueSelecionado != -1) {
         bool ehJogador1 = (estado->turnoDe == TURNO_JOGADOR);
         if (ehJogador1) {
@@ -612,7 +540,6 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
         }
     }
 
-    // --- 7. DESENHAR O MENU INFERIOR ---
     int menuY = arenaY + arenaHeight + 10; 
     int menuHeight = 240; 
     Color menuBG = (Color){ 40, 40, 40, 255 };

@@ -149,7 +149,7 @@ static ClassePersonagem GetClasseSafe(cJSON* obj, const char* key) {
     return CLASSE_LINHA_MEIO; 
 }
 
-// NOVO: Função helper para converter string do JSON para o enum TipoAtaque
+// Função helper para converter string do JSON para o enum TipoAtaque
 static TipoAtaque GetTipoAtaqueSafe(cJSON* obj, const char* key) {
     const char* tipoStr = GetStringSafe(obj, key);
     
@@ -165,7 +165,7 @@ static TipoAtaque GetTipoAtaqueSafe(cJSON* obj, const char* key) {
     return TIPO_DANO_UNICO;
 }
 
-// MODIFICADO: Esta função SUBSTITUI a original
+// Esta função SUBSTITUI a original
 static Ataque GetAtaqueSafe(cJSON* obj, const char* key) {
     Ataque att = {0};
     cJSON* attObj = cJSON_GetObjectItem(obj, key);

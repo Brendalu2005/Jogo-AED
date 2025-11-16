@@ -8,12 +8,8 @@
 #include <stdbool.h> 
 #include "telas.h"
 
-
-// --- Variáveis Globais (Definição) ---
-// Elas "moram" aqui. 'batalha_desenho.c' irá acessá-las via 'extern'.
 Texture2D backgroundArena;
 int backgroundCarregado = 0;
-// ------------------------------------
 
 
 static const float DURACAO_PISCAR_DANO = 0.3f; 
@@ -28,9 +24,6 @@ static float DURACAO_TEXTO_FLUTUANTE = 2.5f;
 static Vector2 posJogador[3];
 static Vector2 posIA[3];
 static int animVelocidadeIdle = 15; 
-
-
-// --- Funções static de Lógica ---
 
 NoPersonagem* ObterNoPorPersonagem(ListaTime* lista, PersonagemData* p) {
     if (lista == NULL) {
@@ -74,14 +67,13 @@ static void IniciarTextoFlutuante(const char* texto, Vector2 pos, Color cor) {
             strncpy(g_textosFlutuantes[i].texto, texto, 15);
             g_textosFlutuantes[i].texto[15] = '\0';
             
-            // Centraliza o texto onde ele aparece
             g_textosFlutuantes[i].pos = pos;
             g_textosFlutuantes[i].pos.x -= MeasureText(texto, 20) / 2; 
             
             g_textosFlutuantes[i].timer = 0.0f;
             g_textosFlutuantes[i].duracao = DURACAO_TEXTO_FLUTUANTE;
             g_textosFlutuantes[i].cor = cor;
-            g_textosFlutuantes[i].velocidadeY = -50.0f; // Sobe (pixels/seg)
+            g_textosFlutuantes[i].velocidadeY = -50.0f; 
             
             return;
         }
@@ -110,10 +102,9 @@ static void AtualizarAnimacaoLapide(EstadoAnimacao* anim) {
     
     int ultimoFrame = anim->anim->def.numFrames - 1;
 
-    // Se já chegou no último frame, não faz nada (fica parado)
     if (anim->frameAtual >= ultimoFrame) {
         anim->frameAtual = ultimoFrame; 
-        return; // Para a animação no último frame
+        return; 
     }
     
     anim->timer++;
@@ -132,16 +123,14 @@ static void IniciarZoomEAnimacao(EstadoBatalha* estado, PersonagemData* atacante
         deveFlipar = true;
     }
 
-    // Prepara para o Zoom In
     estado->atacanteEmFoco = atacante;
-    estado->alvoEmFoco = alvo; // Pode ser NULL (no caso de cura)
-    estado->alvoEmFocoIdx = alvoIdx; // Pode ser -1 (no caso de cura)
+    estado->alvoEmFoco = alvo; 
+    estado->alvoEmFocoIdx = alvoIdx;
     estado->timerFoco = 0.0f;
     estado->alphaOutrosPersonagens = 1.0f;
     estado->animFlip = deveFlipar;
 
     if (alvo != NULL) {
-        // Se for um ataque em área, o flip será tratado mais abaixo
         if (ataque->tipo != TIPO_DANO_AREA)
         {
             if (ehJogadorAtacando == false) {
@@ -161,18 +150,15 @@ static void IniciarZoomEAnimacao(EstadoBatalha* estado, PersonagemData* atacante
 
         if (ehJogadorAtacando == false)
         {
-            // Oponente ataca -> alvos (Time Jogador) viram para a DIREITA
             listaAlvo = &estado->timeJogador;
             flipAlvoFinal = false;
         }
         else
         {
-            // Jogador ataca -> alvos (Time Oponente) viram para a ESQUERDA
             listaAlvo = &estado->timeIA;
             flipAlvoFinal = true;
         }
 
-        // Percorre todos os nós da lista alvo e aplica o flip
         NoPersonagem* noAlvo = listaAlvo->inicio;
         while (noAlvo != NULL)
         {
@@ -197,7 +183,6 @@ static void IniciarZoomEAnimacao(EstadoBatalha* estado, PersonagemData* atacante
         estado->isZoomAoe = false;
     }
 
-    // Define o próximo estado como o Zoom In
     estado->estadoTurno = ESTADO_ZOOM_IN_ATAQUE;
 }
 
@@ -206,10 +191,10 @@ static int CompararVelocidade(const void* a, const void* b) {
     PersonagemData* pB = *(PersonagemData**)b;
     
     if (pA == NULL) {
-        return 1; // Coloca nulos no fim
+        return 1; 
     }
     if (pB == NULL) {
-        return -1; // Coloca nulos no fim
+        return -1; 
     }
     
     if (pA->velocidade > pB->velocidade) {
@@ -232,14 +217,12 @@ static void ProximoTurno(EstadoBatalha *estado) {
     
     if (estado->ordemDeAtaque[estado->personagemAgindoIdx] == NULL) {
         printf("ERRO: Personagem na ordem de ataque e nulo! Pulando turno.\n");
-        // Chama o próximo turno recursivamente para pular este
         ProximoTurno(estado);
         return;
     }
     
     PersonagemData* personagemAtual = estado->ordemDeAtaque[estado->personagemAgindoIdx];
     
-    // --- LÓGICA MODIFICADA (Usa Listas) ---
     bool estaVivo = false;
     bool ehJogador = false;
 
@@ -255,19 +238,16 @@ static void ProximoTurno(EstadoBatalha *estado) {
         noAtual = noAtual->proximo;
     }
 
-    // Se não encontrou, procura na lista da IA/Oponente
     if (ehJogador == false) {
         noAtual = estado->timeIA.inicio;
         while (noAtual != NULL) {
             if (noAtual->personagem == personagemAtual) {
-                 // Se o nó existe, o personagem está "vivo" na lista
                 estaVivo = true;
                 break;
             }
             noAtual = noAtual->proximo;
         }
     }
-    // --- FIM DA LÓGICA MODIFICADA ---
     
     if (estaVivo == false) {
         // Personagem está morto (já foi removido da lista), pula o turno
@@ -283,8 +263,8 @@ static void ProximoTurno(EstadoBatalha *estado) {
         estado->alvoSelecionado = -1;
         sprintf(estado->mensagemBatalha, "Vez de: %s! (J1) Escolha um ataque.", personagemAtual->nome);
     } else {
-        estado->turnoDe = TURNO_IA; // Enum "IA" significa Time 2 / Oponente
-        estado->estadoTurno = ESTADO_AGUARDANDO_OPONENTE; // Novo estado
+        estado->turnoDe = TURNO_IA; 
+        estado->estadoTurno = ESTADO_AGUARDANDO_OPONENTE; 
         sprintf(estado->mensagemBatalha, "Vez de: %s! (Oponente)", personagemAtual->nome);
     }
 }
@@ -318,10 +298,9 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
         hpArrayAtacante = estado->hpIA;
     }
 
-    // --- LÓGICA PRINCIPAL DOS TIPOS DE ATAQUE ---
     switch (ataque->tipo) {
         
-        // --- CASO 1: DANO EM ALVO ÚNICO (Lógica antiga) ---
+        //  CASO 1: DANO EM ALVO ÚNICO 
         case TIPO_DANO_UNICO:
         {
             noAlvo = ObterNoNaPosicao(listaAlvo, alvoIdx);
@@ -331,7 +310,7 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
                  } else {
                     printf("ATAQUE: Oponente tentou atacar posicao %d vazia.\n", alvoIdx);
                  }
-                 ProximoTurno(estado); // Pula o turno se o alvo não existe
+                 ProximoTurno(estado); 
                  return; 
             }
             alvo = noAlvo->personagem; 
@@ -354,7 +333,7 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
                 estado->timerDanoJogador[alvoIdx] = DURACAO_PISCAR_DANO;
             }
 
-            posAlvoDano.y -= 50; // Começa acima da cabeça
+            posAlvoDano.y -= 50;
             IniciarTextoFlutuante(textoDano, posAlvoDano, RED);
 
             sprintf(estado->mensagemBatalha, "%s usou %s em %s e causou %d de dano!", atacante->nome, ataque->nome, alvo->nome, dano);
@@ -365,12 +344,11 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
                 estado->noParaRemover[estado->numMortosPendentes] = noAlvo;
                 estado->numMortosPendentes++;
             }
-            // Inicia o zoom e a animação
             IniciarZoomEAnimacao(estado, atacante, alvo, alvoIdx, ehJogadorAtacando, ataque);
             break;
         }
 
-        // --- CASO 2: DANO EM ÁREA ---
+        // CASO 2: DANO EM ÁREA
         case TIPO_DANO_AREA:
         {
             sprintf(estado->mensagemBatalha, "%s usou %s e atingiu TODOS por %d de dano!", atacante->nome, ataque->nome, dano);
@@ -379,7 +357,7 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
             for (int i = 0; i < 3; i++) {
                 noAlvo = ObterNoNaPosicao(listaAlvo, i);
                 
-                // Se o alvo existe (está vivo)
+                // Se o alvo existe 
                 if (noAlvo != NULL) {
                     hpArrayAlvo[i] -= dano; // Aplica dano
 
@@ -399,7 +377,7 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
                         estado->timerDanoJogador[i] = DURACAO_PISCAR_DANO;
                     }
                     
-                    posAlvoArea.y -= 50; // Começa acima da cabeça
+                    posAlvoArea.y -= 50;
                     IniciarTextoFlutuante(textoDanoArea, posAlvoArea, RED);
 
                     if (hpArrayAlvo[i] <= 0) {
@@ -409,23 +387,21 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
                     }
                 }
             }
-            // Para o zoom, vamos focar na POSIÇÃO 1 (meio) do time inimigo
             alvoIdx = 1; 
             noAlvo = ObterNoNaPosicao(listaAlvo, alvoIdx);
             if (noAlvo != NULL) {
                 alvo = noAlvo->personagem;
             } else {
-                alvo = NULL; // Posição 1 pode estar morta, o zoom foca no vazio
+                alvo = NULL; 
             }
 
             IniciarZoomEAnimacao(estado, atacante, alvo, alvoIdx, ehJogadorAtacando, ataque);
             break;
         }
 
-        // --- CASO 3: CURA EM SI MESMO ---
         case TIPO_CURA_SI:
         {
-            int cura = ataque->dano; // Reinterpretamos 'dano' como 'cura'
+            int cura = ataque->dano;
             NoPersonagem* noAtacante = ObterNoPorPersonagem(listaAtacante, atacante);
 
             if (noAtacante != NULL) {
@@ -439,15 +415,14 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
                 Vector2 posAlvoCura;
 
                 if (ehJogadorAtacando) {
-                    posAlvoCura = posJogador[posAtacante]; // Jogador cura Jogador
+                    posAlvoCura = posJogador[posAtacante]; 
                 } else {
-                    posAlvoCura = posIA[posAtacante]; // IA cura IA
+                    posAlvoCura = posIA[posAtacante];
                 }
 
-                posAlvoCura.y -= 50; // Começa acima da cabeça
+                posAlvoCura.y -= 50; 
                 IniciarTextoFlutuante(textoCura, posAlvoCura, GREEN);
 
-                // Impede sobrecura
                 if (hpArrayAtacante[posAtacante] > hpMax) {
                     hpArrayAtacante[posAtacante] = hpMax;
                 }
@@ -455,7 +430,6 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
                 sprintf(estado->mensagemBatalha, "%s usou %s e curou %d de vida!", atacante->nome, ataque->nome, cura);
 
             } else {
-                // Isso não deve acontecer se a lógica estiver correta
                 sprintf(estado->mensagemBatalha, "%s tentou se curar, mas falhou.", atacante->nome);
             }
 
@@ -465,8 +439,6 @@ static void ExecutarAtaque(EstadoBatalha* estado, PersonagemData* atacante, Ataq
     }
 }
 
-
-// --- Funções da Máquina de Estados (Refatoradas) ---
 
 static void AtualizarEstadoEsperandoJogador(EstadoBatalha* estado) {
     bool ehJogador1 = (estado->turnoDe == TURNO_JOGADOR);
@@ -546,9 +518,9 @@ static void AtualizarEstadoZoomIn(EstadoBatalha* estado) {
     
     Vector2 posOriginalAtacante;
     if (noAtacante != NULL) posOriginalAtacante = ehOponenteAtacando ? posIA[noAtacante->posicaoNoTime] : posJogador[noAtacante->posicaoNoTime];
-    else posOriginalAtacante = (Vector2){ -200.0f, 450.0f }; // Fallback (usando 450)
+    else posOriginalAtacante = (Vector2){ -200.0f, 450.0f }; 
     
-    Vector2 posAlvoAtacante; // Declarada aqui
+    Vector2 posAlvoAtacante; 
     float zoomOriginalAtacante = estado->atacanteEmFoco->batalhaZoom;
     float zoomAlvo = 2.5f; 
 
@@ -567,7 +539,7 @@ static void AtualizarEstadoZoomIn(EstadoBatalha* estado) {
                 posOriginalAlvo = ehOponenteAtacando ? posJogador[estado->alvoEmFocoIdx] : posIA[estado->alvoEmFocoIdx];
         }
 
-        Vector2 posAlvoAlvo; // Declarada aqui
+        Vector2 posAlvoAlvo; 
         
         if (ehOponenteAtacando) {
             posAlvoAtacante = (Vector2){ .x = (float)SCREEN_WIDTH / 2.0f + 200.0f, .y = posOriginalAtacante.y };
@@ -629,7 +601,7 @@ static void AtualizarEstadoZoomOut(EstadoBatalha* estado) {
     }
 
     float zoomOriginalAtacante = estado->atacanteEmFoco->batalhaZoom;
-    Vector2 posAlvoAtacante; // Declarada aqui
+    Vector2 posAlvoAtacante;
     float zoomAlvo = 2.5f;
     
     if (estado->alvoEmFoco != NULL || estado->alvoEmFocoIdx != -1) {
@@ -650,7 +622,7 @@ static void AtualizarEstadoZoomOut(EstadoBatalha* estado) {
                 posOriginalAlvo = ehOponenteAtacando ? posJogador[estado->alvoEmFocoIdx] : posIA[estado->alvoEmFocoIdx];
         }
 
-        Vector2 posAlvoAlvo; // Declarada aqui
+        Vector2 posAlvoAlvo;
 
         if (ehOponenteAtacando) {
             posAlvoAtacante = (Vector2){ .x = (float)SCREEN_WIDTH / 2.0f + 200.0f, .y = posOriginalAtacante.y };
@@ -680,10 +652,8 @@ static void AtualizarEstadoZoomOut(EstadoBatalha* estado) {
     
     if (progresso >= 1.0f) {
         
-        // --- CORREÇÃO: Reverte o flip do alvo ---
-        if (estado->animFlip == true) // Oponente (IA/J2) atacou
+        if (estado->animFlip == true)
         {
-            // Reseta o flip do Time do Jogador (alvo) de volta para 'false'
             if (estado->isZoomAoe == true) 
             {
                 NoPersonagem* noAlvo = estado->timeJogador.inicio;
@@ -700,9 +670,8 @@ static void AtualizarEstadoZoomOut(EstadoBatalha* estado) {
                 estado->alvoEmFoco->animIdle.flip = false;
             }
         }
-        else // Jogador 1 atacou
+        else 
         {
-            // Reseta o flip do Time do Oponente (alvo) de volta para 'true'
                 if (estado->isZoomAoe == true) 
             {
                 NoPersonagem* noAlvo = estado->timeIA.inicio;
@@ -728,13 +697,11 @@ static void AtualizarEstadoZoomOut(EstadoBatalha* estado) {
                 if (noMorreu != NULL) {
                     int pos = noMorreu->posicaoNoTime;
                     
-                    // Tenta remover da lista do Jogador
                     if (ObterNoPorPersonagem(&estado->timeJogador, noMorreu->personagem) != NULL) {
                         
                         IniciarAnimacao(&estado->animLapideJogador[pos], &g_animLapide, posJogador[pos], 0.8f, false);
                         RemoverPersonagem(&estado->timeJogador, noMorreu);
                     } 
-                    // Tenta remover da lista da IA
                     else if (ObterNoPorPersonagem(&estado->timeIA, noMorreu->personagem) != NULL) {
                         
                         IniciarAnimacao(&estado->animLapideIA[pos], &g_animLapide, posIA[pos], 0.8f, true);
@@ -770,19 +737,12 @@ static void AtualizarEstadoZoomOut(EstadoBatalha* estado) {
 }
 
 static void AtualizarEstadoIAPensando(EstadoBatalha* estado, ModoDeJogo modo) {
-    // Este case agora lida com os dois estados de "turno do oponente"
     
     if (estado->estadoTurno == ESTADO_AGUARDANDO_OPONENTE) {
         if (modo == MODO_SOLO) {
             // Modo Solo: Inicia a thread da IA (ou usa ataque aleatório)
             
-            // A função de carregar a chave foi movida para 'consumoAPI_Gemini.c'
-            // mas a lógica de ataque aleatório depende dela, então
-            // temos que chamá-la de lá.
-            // Para simplificar, vamos assumir que 'IA_IniciarDecisao' 
-            // lida com a falha da chave.
-            
-            IA_IniciarDecisao(estado, "config.txt"); // Passa o *caminho* do arquivo
+            IA_IniciarDecisao(estado, "config.txt"); 
             estado->estadoTurno = ESTADO_IA_PENSANDO;
             
             PersonagemData* atacante = estado->ordemDeAtaque[estado->personagemAgindoIdx];
@@ -799,12 +759,11 @@ static void AtualizarEstadoIAPensando(EstadoBatalha* estado, ModoDeJogo modo) {
                 sprintf(estado->mensagemBatalha, "Vez de: %s! (J2) Escolha um ataque.", atacante->nome);
             }
         }
-        return; // Sai da função neste frame
+        return; 
     }
     
     
     if (estado->estadoTurno == ESTADO_IA_PENSANDO) {
-        // Este estado não faz nada além de esperar (polir)
         DecisaoIA decisaoDaIA;
         bool estaPronta = IA_VerificarDecisaoPronta(&decisaoDaIA);
         
@@ -863,13 +822,10 @@ static void AtualizarEstadoIAPensando(EstadoBatalha* estado, ModoDeJogo modo) {
             
             LiberarDecisaoIA(&decisaoDaIA);
         }
-        
-        // Se 'estaPronta' for 'false', o loop simplesmente continua.
     }
 }
 
 
-// --- Funções Públicas (Interface) ---
 
 void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) {
     printf("INICIALIZANDO BATALHA!\n");
@@ -883,7 +839,6 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
 
     estado->roundAtual = 1;
 
-    // --- LÓGICA MODIFICADA (Usa Listas) ---
     estado->timeJogador = CriarLista();
     estado->timeIA = CriarLista();
 
@@ -910,13 +865,11 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
     {
         if (noAtualIA->personagem != NULL)
         {
-            // Define o flip da animação IDLE para true
             noAtualIA->personagem->animIdle.flip = true; 
         }
         noAtualIA = noAtualIA->proximo;
     }
 
-    // Posições de desenho
     float posY = 450.0f;
     float espacamentoX = 200.0f;
     float offsetInicialJogador = 100.0f;
@@ -931,7 +884,6 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
     posIA[2] = (Vector2){offsetInicialIA, posY};
 
     
-   // 4. Cria e ordena a fila de ataque
     printf("Populando ordem de ataque...\n");
     for (int i = 0; i < 3; i++) {
         estado->ordemDeAtaque[i] = timesSelecionados->timeJogador[i];
@@ -944,7 +896,7 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
         if (estado->ordemDeAtaque[i] != NULL) { 
             printf("  %d. %s (Vel: %d)\n", i+1, estado->ordemDeAtaque[i]->nome, estado->ordemDeAtaque[i]->velocidade);
         } else {
-            printf("  %d. (NULL)\n", i+1); // Debug
+            printf("  %d. (NULL)\n", i+1);
         }
     }
     
@@ -964,7 +916,6 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados) 
     }
 
 
-    // Inicializa as novas variáveis de foco
     estado->atacanteEmFoco = NULL;
     estado->alvoEmFoco = NULL;
     estado->alvoEmFocoIdx = -1; 
@@ -1015,7 +966,6 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
         }
     }
     
-    // Atualiza animação idle de todos os personagens VIVOS na lista do Jogador
     NoPersonagem* noAtualJogador = estado->timeJogador.inicio;
     while (noAtualJogador != NULL) {
         int i = noAtualJogador->posicaoNoTime;
@@ -1032,7 +982,6 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
         noAtualJogador = noAtualJogador->proximo;
     }
     
-    // Atualiza animação idle de todos os personagens VIVOS na lista da IA
     NoPersonagem* noAtualIA = estado->timeIA.inicio;
     while (noAtualIA != NULL) {
         int i = noAtualIA->posicaoNoTime;
@@ -1058,7 +1007,7 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
         if (g_textosFlutuantes[i].ativo) {
             g_textosFlutuantes[i].timer += dt;
             if (g_textosFlutuantes[i].timer >= g_textosFlutuantes[i].duracao) {
-                g_textosFlutuantes[i].ativo = false; // Desativa
+                g_textosFlutuantes[i].ativo = false;
             } else {
                 g_textosFlutuantes[i].pos.y += g_textosFlutuantes[i].velocidadeY * dt;
             }
@@ -1076,7 +1025,6 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
 
     AtualizarAnimacao(&estado->animacaoEmExecucao);
 
-    // --- CORREÇÃO AQUI: Só checa Fim de Jogo se NÃO estiver no meio de uma animação de ataque ---
     bool emAnimacaoAtaque = false;
     if (estado->estadoTurno == ESTADO_ZOOM_IN_ATAQUE) emAnimacaoAtaque = true;
     if (estado->estadoTurno == ESTADO_ANIMACAO_ATAQUE) emAnimacaoAtaque = true;
@@ -1096,7 +1044,6 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
     }
 
 
-    // --- MÁQUINA DE ESTADOS (Refatorada) ---
     switch (estado->estadoTurno) {
         
         case ESTADO_INICIANDO:

@@ -193,11 +193,9 @@ static void DesenharPainelDetalhes(int idPersonagem, SpriteDatabase* db) {
         DrawText("Velocidade:", posX, posYBlocoStats + 25, tamFonteTitulo, corTituloLinha);
         DrawText(TextFormat("%d", pData->velocidade), posX + 220, posYBlocoStats + 25, tamFonteTexto, LIGHTGRAY);
 
-        // --- ESTA É A PARTE QUE MODIFICAMOS NA ETAPA ANTERIOR ---
         int posYBlocoAtaques = posYBase + 140;
         DrawText("Ataques:", posX, posYBlocoAtaques, tamFonteTitulo, corTituloLinha);
         
-        // Ataque 1
         DrawText(pData->ataque1.nome, posX, posYBlocoAtaques + 25, tamFonteTexto, LIGHTGRAY);
         
         if (pData->ataque1.tipo == TIPO_CURA_SI) {
@@ -258,11 +256,9 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
                 
                 Rectangle hitbox = { (float)xPos, (float)yPos, (float)hitboxWidth, (float)hitboxHeight }; 
 
-
-                // 1. Define o tamanho fixo para a foto
                 float frameWidth = 120.0f;
                 float frameHeight = 110.0f;
-                float borderSize = 6.0f; // Tamanho da borda
+                float borderSize = 6.0f; 
                 
 
                 float frameX = hitbox.x + (hitbox.width - frameWidth) / 2.0f;
@@ -270,7 +266,6 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
                 
                 Rectangle borderRect = { frameX, frameY, frameWidth, frameHeight };
                 
-                // 3. Define a área interna da foto (dentro da moldura)
                 Rectangle photoRect = { 
                     frameX + borderSize, 
                     frameY + borderSize, 
@@ -278,24 +273,21 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
                     frameHeight - (borderSize * 2) 
                 };
 
-                // 4. Define a cor da borda
                 Color borderColor;
                 if (personagemSelecionado == i) {
                     borderColor = corNomeSelecionado;
-                } else if (personagemHover == i) { // Adiciona a verificação de hover
+                } else if (personagemHover == i) { 
                     borderColor = LIGHTGRAY;
                 } else {
                     borderColor = (Color){30, 30, 30, 255};
                 }
 
-                // 5. Desenha a borda
                 DrawRectangleRec(borderRect, borderColor); 
 
                 Texture2D thumb = db->personagens[i].thumbnail;
                 if (thumb.id <= 0) {
                     DrawRectangleRec(photoRect, BLACK);
                 } else {
-                    // 6. Calcula o zoom para a foto caber na área interna (photoRect)
                     Rectangle thumbSource = { 0, 0, (float)thumb.width, (float)thumb.height };
                     
                     float zoom = photoRect.height / thumbSource.height;
@@ -308,7 +300,6 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
                     float photoWidth = thumbSource.width * zoom;
                     float photoHeight = thumbSource.height * zoom;
 
-                    // 7. Define o destino da textura, centralizada dentro de photoRect
                     Rectangle photoDest = {
                         photoRect.x + (photoRect.width - photoWidth) / 2.0f,
                         photoRect.y + (photoRect.height - photoHeight) / 2.0f,
@@ -316,7 +307,6 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
                         photoHeight
                     };
 
-                    // 8. Desenha a foto
                     DrawTexturePro(thumb, thumbSource, photoDest, (Vector2){0, 0}, 0.0f, WHITE);
                 }
                 
@@ -339,8 +329,6 @@ void DesenharTelaPersonagens(int personagemSelecionado, SpriteDatabase* db) {
                     tamFonteNome, 
                     cor
                 );
-
-
                 col++; 
             }
         }

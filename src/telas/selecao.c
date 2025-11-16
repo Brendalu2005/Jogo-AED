@@ -23,14 +23,12 @@ static int animFrameIA[3] = {0, 0, 0};
 static int animTimerIA[3] = {0, 0, 0};
 
 static int etapaSelecao = 0; 
-static bool ehTurnoJogador1 = true; // Renomeado de ehTurnoJogador
+static bool ehTurnoJogador1 = true; 
 static int personagemHover = -1; 
-static double tempoEsperaIA = 0; // Timer para o delay da IA
+static double tempoEsperaIA = 0; 
 
-// Recursos gráficos
 static Texture2D background;
 
-// Textos das etapas (JOGADOR 1)
 static const char* titulosEtapaJ1[] = {
     "JOGADOR 1: Escolha sua LINHA DE FRENTE",
     "JOGADOR 1: Escolha sua LINHA DO MEIO",
@@ -38,7 +36,6 @@ static const char* titulosEtapaJ1[] = {
     "CARREGANDO BATALHA..." 
 };
 
-// Textos das etapas (JOGADOR 2)
 static const char* titulosEtapaJ2[] = {
     "JOGADOR 2: Escolha sua LINHA DE FRENTE",
     "JOGADOR 2: Escolha sua LINHA DO MEIO",
@@ -103,7 +100,7 @@ void InicializarSelecao(TimesBatalha* times) {
     etapaSelecao = 0;
     personagemHover = -1;
     tempoEsperaIA = 0;
-    ehTurnoJogador1 = true; // Modificado
+    ehTurnoJogador1 = true;
 
     for (int i = 0; i < 3; i++) {
         times->timeJogador[i] = NULL;
@@ -119,8 +116,6 @@ void InicializarSelecao(TimesBatalha* times) {
         animTimer[i] = 0;
         animFrame[i] = 0;
     }
-    
-    //srand(time(NULL)); 
 
     Image bgImg = LoadImage("sprites/background/background3.jpg");
     ImageResize(&bgImg, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -128,7 +123,6 @@ void InicializarSelecao(TimesBatalha* times) {
     UnloadImage(bgImg);
 }
 
-// Assinatura modificada para aceitar ModoDeJogo
 void AtualizarTelaSelecao(GameScreen *telaAtual, SpriteDatabase* db, TimesBatalha* times, ModoDeJogo modo) {
     if (IsKeyPressed(KEY_ESCAPE)) {
         *telaAtual = SCREEN_MENU;
@@ -136,7 +130,6 @@ void AtualizarTelaSelecao(GameScreen *telaAtual, SpriteDatabase* db, TimesBatalh
         return;
     }
 
-    // Atualiza todas as animações
     for (int i = 0; i < db->numPersonagens; i++) {
         if (i < MAX_PERSONAGENS) { 
             AtualizarLogicaAnimacao(&animFrame[i], &animTimer[i], &db->personagens[i].animIdle);
@@ -154,12 +147,11 @@ void AtualizarTelaSelecao(GameScreen *telaAtual, SpriteDatabase* db, TimesBatalh
         return;
     }
 
-    // Lógica de seleção principal
     ClassePersonagem classeAtiva = (ClassePersonagem)etapaSelecao;
     Vector2 mousePos = GetMouseVirtual();
-    personagemHover = -1; // Reseta o hover a cada frame
+    personagemHover = -1;
 
-    // 1. Lógica de Hover (sempre ativa para a linha atual)
+
     int yPosBase = 500;
     int iconSize = 64;
     int padding = 10;
@@ -177,7 +169,7 @@ void AtualizarTelaSelecao(GameScreen *telaAtual, SpriteDatabase* db, TimesBatalh
                 Rectangle hitbox = { (float)xPos, (float)yPos, (float)iconSize, (float)iconSize };
 
                 if (CheckCollisionPointRec(mousePos, hitbox)) {
-                    if (classeLinha == classeAtiva) { // Só permite hover na linha ativa
+                    if (classeLinha == classeAtiva) {
                         personagemHover = i;
                     }
                 }
@@ -186,47 +178,42 @@ void AtualizarTelaSelecao(GameScreen *telaAtual, SpriteDatabase* db, TimesBatalh
         }
     }
 
-    // 2. Lógica de Clique (dividida por turno)
     if (ehTurnoJogador1) {
-        // --- Vez do Jogador 1 ---
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            if (personagemHover != -1) { // Se o hover é válido
+            if (personagemHover != -1) {
                 times->timeJogador[etapaSelecao] = &db->personagens[personagemHover];
                 printf("Jogador 1 escolheu (%d): %s\n", etapaSelecao, times->timeJogador[etapaSelecao]->nome);
                 
-                ehTurnoJogador1 = false; // Passa o turno para o oponente
+                ehTurnoJogador1 = false; 
                 
                 if (modo == MODO_SOLO) {
-                    tempoEsperaIA = GetTime(); // Inicia o delay da IA (apenas modo solo)
+                    tempoEsperaIA = GetTime();
                 }
                 
-                personagemHover = -1; // Reseta o hover
+                personagemHover = -1;
             }
         }
     } else {
-        // --- Vez do Oponente (IA ou Jogador 2) ---
         if (modo == MODO_SOLO) {
             // Lógica da IA (existente)
             if (GetTime() - tempoEsperaIA > TEMPO_DELAY_IA) {
                 SelecionarIA(db, times, etapaSelecao);
                 
                 etapaSelecao++;
-                ehTurnoJogador1 = true; // Devolve o turno para o J1
+                ehTurnoJogador1 = true;
             }
         } else {
-            // Lógica do Jogador 2 (PvP)
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                if (personagemHover != -1) { // Se o hover é válido
+                if (personagemHover != -1) { 
                     PersonagemData* pSelecionado = &db->personagens[personagemHover];
                     
-                    // Impede que J2 pegue o mesmo personagem que J1 na mesma rodada
                     if (pSelecionado != times->timeJogador[etapaSelecao]) {
-                        times->timeIA[etapaSelecao] = pSelecionado; // Salva no slot da "IA"
+                        times->timeIA[etapaSelecao] = pSelecionado; 
                         printf("Jogador 2 escolheu (%d): %s\n", etapaSelecao, times->timeIA[etapaSelecao]->nome);
 
-                        etapaSelecao++; // Avança para a próxima classe
-                        ehTurnoJogador1 = true; // Devolve o turno para o Jogador 1
-                        personagemHover = -1; // Reseta o hover
+                        etapaSelecao++; 
+                        ehTurnoJogador1 = true;
+                        personagemHover = -1; 
                     }
                 }
             }
@@ -234,7 +221,6 @@ void AtualizarTelaSelecao(GameScreen *telaAtual, SpriteDatabase* db, TimesBatalh
     }
 }
 
-// Assinatura modificada para aceitar ModoDeJogo
 void DesenharTelaSelecao(SpriteDatabase* db, TimesBatalha* times, ModoDeJogo modo) {
     ClearBackground(DARKGRAY);
     DrawTexture(background, 0, 0, WHITE);
@@ -259,7 +245,6 @@ void DesenharTelaSelecao(SpriteDatabase* db, TimesBatalha* times, ModoDeJogo mod
         int tamInstrucao = 30;
         DrawText(tituloInstrucao, (SCREEN_WIDTH - MeasureText(tituloInstrucao, tamInstrucao)) / 2, 100, tamInstrucao, GREEN);
     } else {
-        // Mostra "CARREGANDO BATALHA..."
         int tamInstrucao = 30;
         DrawText(titulosEtapaJ1[3], (SCREEN_WIDTH - MeasureText(titulosEtapaJ1[3], tamInstrucao)) / 2, 100, tamInstrucao, GREEN);
     }
