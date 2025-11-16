@@ -11,6 +11,8 @@ typedef struct MenuOpcao {
     Texture2D btnVoltarTex;
     Texture2D btnSoloTex;
     Texture2D btnPvPTex;
+
+    Font fontPressStart;
 } MenuOpcao;
 
 

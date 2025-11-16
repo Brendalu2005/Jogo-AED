@@ -19,98 +19,126 @@ void AtualizarTelaSobre(GameScreen *telaAtual){
 }
 
 
-
 void DesenharTelaSobre(MenuOpcao resoucers) {
     DrawTexture(resoucers.background, 0, 0, WHITE);
 
     
     char titulo[] = "Sobre o Jogo";
     int fontSizeTitulo = 60;
-    int posXtitulo = (SCREEN_WIDTH - MeasureText(titulo, fontSizeTitulo)) / 2;
-    DrawText(titulo, posXtitulo + 3, 123, fontSizeTitulo, (Color){0,0,0,150}); // Sombra
-    DrawText(titulo, posXtitulo, 120, fontSizeTitulo, RAYWHITE);
+    float spacingTitulo = 2.0f; 
+    float spacingTexto = 1.0f;
+    float spacingSecao = 2.0f;
+
+    
+    Vector2 tituloSize = MeasureTextEx(resoucers.fontPressStart, titulo, (float)fontSizeTitulo, spacingTitulo);
+    int posXtitulo = (SCREEN_WIDTH - tituloSize.x) / 2;
+
+    
+    DrawTextEx(resoucers.fontPressStart, titulo, (Vector2){ (float)posXtitulo + 3, 123.0f }, (float)fontSizeTitulo, spacingTitulo, (Color){0,0,0,150}); // Sombra
+    DrawTextEx(resoucers.fontPressStart, titulo, (Vector2){ (float)posXtitulo, 120.0f }, (float)fontSizeTitulo, spacingTitulo, RAYWHITE);
 
 
     
     int posXtexto = 250;
     int posYtexto = 210; 
-    int lineSpacing = 24; 
-    int sectionSpacing = 8; 
+
+
+    int lineSpacing = 18;       
+    int sectionSpacing = 4;      
     int indent = 20; 
     
-    int fontSizeTexto = 18; 
-    int fontSizeTituloSecao = 20; 
+    int fontSizeTexto = 16;       
+    int fontSizeTituloSecao = 18;      
+   
+
     Color corTituloSecao = (Color){100, 255, 100, 255}; 
     Color corTextoComum = LIGHTGRAY;
 
+    
     
     Rectangle fundoPreto = { (float)posXtexto - 30, (float)posYtexto - 20, (float)SCREEN_WIDTH - (posXtexto * 2) + 60, 680.0f };
     DrawRectangleRounded(fundoPreto, 0.1f, 8, (Color){ 0, 0, 0, 180 }); 
 
     
 
-    DrawText("Ecos da Infância", posXtexto, posYtexto, fontSizeTituloSecao, corTituloSecao);
+    DrawTextEx(resoucers.fontPressStart, "Ecos da Infancia", (Vector2){ (float)posXtexto, (float)posYtexto }, (float)fontSizeTituloSecao, spacingSecao, corTituloSecao);
     posYtexto += lineSpacing + sectionSpacing;
 
-    DrawText("Este jogo nasceu da ideia de misturar personagens clássicos da nossa infância", posXtexto, posYtexto, fontSizeTexto, corTextoComum);
+    
+    DrawTextEx(resoucers.fontPressStart, "Este jogo nasceu da ideia de misturar personagens", (Vector2){ (float)posXtexto, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
     posYtexto += lineSpacing;
-    DrawText("com a mecânica de jogos de turno, como Darkest Dungeon.", posXtexto, posYtexto, fontSizeTexto, corTextoComum);
+    DrawTextEx(resoucers.fontPressStart, "classicos da nossa infancia com a mecanica de jogos", (Vector2){ (float)posXtexto, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
+    posYtexto += lineSpacing;
+    DrawTextEx(resoucers.fontPressStart, "de turno, como Darkest Dungeon.", (Vector2){ (float)posXtexto, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
     posYtexto += lineSpacing + sectionSpacing;
 
-    DrawText("História:", posXtexto, posYtexto, fontSizeTituloSecao, corTituloSecao);
+    DrawTextEx(resoucers.fontPressStart, "Historia:", (Vector2){ (float)posXtexto, (float)posYtexto }, (float)fontSizeTituloSecao, spacingSecao, corTituloSecao);
     posYtexto += lineSpacing;
-    DrawText("A história se passa dentro da mente de Lucy, uma mulher de 25 anos que sempre", posXtexto, posYtexto, fontSizeTexto, corTextoComum);
+    DrawTextEx(resoucers.fontPressStart, "A historia se passa dentro da mente de Lucy, uma", (Vector2){ (float)posXtexto, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
     posYtexto += lineSpacing;
-    DrawText("tinha nostalgia, relembrando como sua infância era boa e repleta de personagens", posXtexto, posYtexto, fontSizeTexto, corTextoComum);
+    DrawTextEx(resoucers.fontPressStart, "mulher de 25 anos que sempre tinha nostalgia,", (Vector2){ (float)posXtexto, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
     posYtexto += lineSpacing;
-    DrawText("que ela amava.", posXtexto, posYtexto, fontSizeTexto, corTextoComum);
+    DrawTextEx(resoucers.fontPressStart, "relembrando como sua infancia era boa e repleta", (Vector2){ (float)posXtexto, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
+    posYtexto += lineSpacing;
+    DrawTextEx(resoucers.fontPressStart, "de personagens que ela amava.", (Vector2){ (float)posXtexto, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
     posYtexto += lineSpacing; 
 
-    DrawText("Certa noite, ela sonha com uma brincadeira que fazia com o irmão: a briga de bonecos.", posXtexto, posYtexto, fontSizeTexto, corTextoComum);
+    DrawTextEx(resoucers.fontPressStart, "Certa noite, ela sonha com uma brincadeira que", (Vector2){ (float)posXtexto, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
     posYtexto += lineSpacing;
-    DrawText("No sonho, ela escolhe 3 personagens para lutar contra 3 personagens que o irmão", posXtexto, posYtexto, fontSizeTexto, corTextoComum);
+    DrawTextEx(resoucers.fontPressStart, "fazia com o irmao: a briga de bonecos.", (Vector2){ (float)posXtexto, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
     posYtexto += lineSpacing;
-    DrawText("dela escolheu (controlados pela IA). Quem conseguir derrotar os 3 personagens", posXtexto, posYtexto, fontSizeTexto, corTextoComum);
+    DrawTextEx(resoucers.fontPressStart, "No sonho, ela escolhe 3 personagens para lutar", (Vector2){ (float)posXtexto, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
     posYtexto += lineSpacing;
-    DrawText("do outro primeiro, ganha.", posXtexto, posYtexto, fontSizeTexto, corTextoComum);
+    DrawTextEx(resoucers.fontPressStart, "contra 3 que o irmao dela escolheu (controlados", (Vector2){ (float)posXtexto, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
+    posYtexto += lineSpacing;
+    DrawTextEx(resoucers.fontPressStart, "pela IA). Quem conseguir derrotar os 3 personagens", (Vector2){ (float)posXtexto, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
+    posYtexto += lineSpacing;
+    DrawTextEx(resoucers.fontPressStart, "do outro primeiro, ganha.", (Vector2){ (float)posXtexto, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
     posYtexto += lineSpacing; 
 
-    DrawText("Nós, da equipe de desenvolvimento, esperamos que você se divirta jogando o nosso", posXtexto, posYtexto, fontSizeTexto, corTextoComum);
+    DrawTextEx(resoucers.fontPressStart, "Nos, da equipe de desenvolvimento, esperamos que", (Vector2){ (float)posXtexto, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
     posYtexto += lineSpacing;
-    DrawText("jogo de turno, que foi pensado em cada detalhe para trazer memórias da sua infância.", posXtexto, posYtexto, fontSizeTexto, corTextoComum);
+    DrawTextEx(resoucers.fontPressStart, "voce se divirta jogando o nosso jogo de turno,", (Vector2){ (float)posXtexto, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
+    posYtexto += lineSpacing;
+    DrawTextEx(resoucers.fontPressStart, "pensado para trazer memorias da sua infancia.", (Vector2){ (float)posXtexto, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
     posYtexto += lineSpacing + sectionSpacing;
 
-    DrawText("Créditos:", posXtexto, posYtexto, fontSizeTituloSecao, corTituloSecao);
+    DrawTextEx(resoucers.fontPressStart, "Creditos:", (Vector2){ (float)posXtexto, (float)posYtexto }, (float)fontSizeTituloSecao, spacingSecao, corTituloSecao);
     posYtexto += lineSpacing;
 
-    DrawText("Desenvolvimento:", posXtexto + indent, posYtexto, fontSizeTexto, corTextoComum);
+    DrawTextEx(resoucers.fontPressStart, "Desenvolvimento:", (Vector2){ (float)posXtexto + indent, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
     posYtexto += lineSpacing;
-    DrawText("Augusto Malheiros, Brenda Luana e Eduardo Albuquerque", posXtexto + indent * 2, posYtexto, fontSizeTexto, corTextoComum);
+    DrawTextEx(resoucers.fontPressStart, "Augusto Malheiros, Brenda Luana e", (Vector2){ (float)posXtexto + indent * 2, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
+    posYtexto += lineSpacing;
+    DrawTextEx(resoucers.fontPressStart, "Eduardo Albuquerque", (Vector2){ (float)posXtexto + indent * 2, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
     posYtexto += lineSpacing + sectionSpacing;
 
-    DrawText("Projeto Acadêmico:", posXtexto + indent, posYtexto, fontSizeTexto, corTextoComum);
+    DrawTextEx(resoucers.fontPressStart, "Projeto Academico:", (Vector2){ (float)posXtexto + indent, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
     posYtexto += lineSpacing;
-    DrawText("Este jogo foi criado para a disciplina de Algoritmos e Estruturas de Dados (AED),", posXtexto + indent * 2, posYtexto, fontSizeTexto, corTextoComum);
+    DrawTextEx(resoucers.fontPressStart, "Este jogo foi criado para a disciplina de", (Vector2){ (float)posXtexto + indent * 2, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
     posYtexto += lineSpacing;
-    DrawText("da professora Natacha Targino.", posXtexto + indent * 2, posYtexto, fontSizeTexto, corTextoComum);
+    DrawTextEx(resoucers.fontPressStart, "Algoritmos e Estruturas de Dados (AED),", (Vector2){ (float)posXtexto + indent * 2, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
+    posYtexto += lineSpacing;
+    DrawTextEx(resoucers.fontPressStart, "da professora Natacha Targino.", (Vector2){ (float)posXtexto + indent * 2, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
     posYtexto += lineSpacing; 
 
-    DrawText("O objetivo era criar um jogo em C que utilizasse estruturas de dados (como Listas", posXtexto + indent * 2, posYtexto, fontSizeTexto, corTextoComum);
+    DrawTextEx(resoucers.fontPressStart, "O objetivo era criar um jogo em C que utilizasse", (Vector2){ (float)posXtexto + indent * 2, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
     posYtexto += lineSpacing;
-    DrawText("Duplamente Encadeadas) e algoritmos de ordenação, além de uma API de IA (Gemini)", posXtexto + indent * 2, posYtexto, fontSizeTexto, corTextoComum);
+    DrawTextEx(resoucers.fontPressStart, "estruturas de dados (Listas Duplamente Encadeadas)", (Vector2){ (float)posXtexto + indent * 2, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
     posYtexto += lineSpacing;
-    DrawText("para a lógica do oponente.", posXtexto + indent * 2, posYtexto, fontSizeTexto, corTextoComum);
+    DrawTextEx(resoucers.fontPressStart, "e algoritmos de ordenacao, alem de uma API de", (Vector2){ (float)posXtexto + indent * 2, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
+    posYtexto += lineSpacing;
+    DrawTextEx(resoucers.fontPressStart, "IA (Gemini) para a logica do oponente.", (Vector2){ (float)posXtexto + indent * 2, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
     posYtexto += lineSpacing + sectionSpacing;
 
-    DrawText("Músicas:", posXtexto, posYtexto, fontSizeTituloSecao, corTituloSecao);
+    DrawTextEx(resoucers.fontPressStart, "Musicas:", (Vector2){ (float)posXtexto, (float)posYtexto }, (float)fontSizeTituloSecao, spacingSecao, corTituloSecao);
     posYtexto += lineSpacing;
-    DrawText("Música do Menu: The perfect pair - beabadoobee", posXtexto + indent, posYtexto, fontSizeTexto, corTextoComum);
+    DrawTextEx(resoucers.fontPressStart, "Menu: The perfect pair - beabadoobee", (Vector2){ (float)posXtexto + indent, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
     posYtexto += lineSpacing;
-    DrawText("Música da parte Solo: Freaking out the neighborhood - Mac DeMarco", posXtexto + indent, posYtexto, fontSizeTexto, corTextoComum);
+    DrawTextEx(resoucers.fontPressStart, "Solo: Freaking out the neighborhood - Mac DeMarco", (Vector2){ (float)posXtexto + indent, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
     posYtexto += lineSpacing;
-    DrawText("Música da parte PvP: I really want to stay at your house - Rosa Walton", posXtexto + indent, posYtexto, fontSizeTexto, corTextoComum);
-
-
+    DrawTextEx(resoucers.fontPressStart, "PvP: I really want to stay at your house - Rosa Walton", (Vector2){ (float)posXtexto + indent, (float)posYtexto }, (float)fontSizeTexto, spacingTexto, corTextoComum);
+    
 
 
    Rectangle btnVoltar = { 50, 50, 150, 50 };

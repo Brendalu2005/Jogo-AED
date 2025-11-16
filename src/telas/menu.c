@@ -14,7 +14,7 @@ static Color corTexto = { 100, 255, 100, 255 };
 MenuOpcao LoadMenuResources(void) {
     MenuOpcao res;
     
-    const char *imagePath = "sprites/background/menu.png";
+    const char *imagePath = "sprites/background/background6.png";
     Image imagem = LoadImage(imagePath);
     ImageResize(&imagem, SCREEN_WIDTH, SCREEN_HEIGHT);
     res.background = LoadTextureFromImage(imagem);
@@ -26,6 +26,8 @@ MenuOpcao LoadMenuResources(void) {
     res.btnVoltarTex = LoadTexture("sprites/botoes/voltar.png");
     res.btnSoloTex = LoadTexture("sprites/botoes/jogadorxia.png");
     res.btnPvPTex = LoadTexture("sprites/botoes/jogadorxjogador.png");
+
+    res.fontPressStart = LoadFont("resources/fonts/PressStart2P.ttf");
 
     int btnWidth = 300;
     int btnHeight = 100;
@@ -54,6 +56,8 @@ void UnloadMenuResources(MenuOpcao resources) {
     UnloadTexture(resources.btnVoltarTex);
     UnloadTexture(resources.btnSoloTex);
     UnloadTexture(resources.btnPvPTex);
+
+    UnloadFont(resources.fontPressStart);
 }
 
 void AtualizarTelaMenu(GameScreen *telaAtual) {
