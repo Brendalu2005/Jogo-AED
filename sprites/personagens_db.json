@@ -52,7 +52,7 @@
       }
     },
     {
-      "nome": "Kirby",
+      "nome": "Kirby", 
       "descricao": "Poyo!",
       "classe": "CLASSE_LINHA_FRENTE",
       "hpMax": 70,
@@ -128,7 +128,7 @@
       "painelZoom": 2.5,
       "batalhaZoom": 1.5,
       "thumbnailPath": "sprites/telaPersonagem/ben10_icon.png",
-      "ataque1": { "nome": "Barragem Quatro Braços", "descricao": "Uma sequência rápida de socos super-fortes.", "dano": 10 },
+      "ataque1": { "nome": "Ataque Quádruplo", "descricao": "Uma sequência rápida de socos super-fortes.", "dano": 10 },
       "ataque2": { "nome": "Chama Frenética", "descricao": "Uma ataque de rajadas de fogo intensas", "dano": 6, "tipo": "DANO_AREA" },
       "anim": {
         "idle": "sprites/personagens/ben10/idle",
