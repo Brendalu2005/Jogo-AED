@@ -94,7 +94,7 @@
       "painelZoom": 2.5,
       "batalhaZoom": 1.0,
       "thUmbnailPath": "sprites/telaPersonagem/hulk_icon.png",
-      "ataque1": { "nome": "Soco Raiva Imparável", "descricao": "Um ataque alimentado pelo estado emocional do Hulk: quanto mais bravo, mais forte.", "dano": 7 },
+      "ataque1": { "nome": "Raiva Imparável", "descricao": "Um ataque alimentado pelo estado emocional do Hulk: quanto mais bravo, mais forte.", "dano": 7 },
       "ataque2": { "nome": "Onda de Choque", "descricao": "Um ataque que libera uma onda de energia que empurra e atordoa todos os inimigos ao redor.", "dano": 5, "tipo": "DANO_AREA" },
       "anim": {
         "idle": "sprites/personagens/hulk/idle",
