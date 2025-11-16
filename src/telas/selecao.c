@@ -241,7 +241,7 @@ void DesenharTelaSelecao(SpriteDatabase* db, TimesBatalha* times, ModoDeJogo mod
 
     const char* tituloTela = "ESCOLHA SEU TIME";
     int tamTituloTela = 60;
-    DrawText(tituloTela, (SCREEN_WIDTH - MeasureText(tituloTela, tamTituloTela)) / 2, 30, tamTituloTela, WHITE);
+    DrawText(tituloTela, (SCREEN_WIDTH - MeasureText(tituloTela, tamTituloTela)) / 2, 30, tamTituloTela, BLACK);
 
     // Lógica do título da instrução
     const char* tituloInstrucao;
@@ -257,11 +257,11 @@ void DesenharTelaSelecao(SpriteDatabase* db, TimesBatalha* times, ModoDeJogo mod
             }
         }
         int tamInstrucao = 30;
-        DrawText(tituloInstrucao, (SCREEN_WIDTH - MeasureText(tituloInstrucao, tamInstrucao)) / 2, 100, tamInstrucao, YELLOW);
+        DrawText(tituloInstrucao, (SCREEN_WIDTH - MeasureText(tituloInstrucao, tamInstrucao)) / 2, 100, tamInstrucao, GREEN);
     } else {
         // Mostra "CARREGANDO BATALHA..."
         int tamInstrucao = 30;
-        DrawText(titulosEtapaJ1[3], (SCREEN_WIDTH - MeasureText(titulosEtapaJ1[3], tamInstrucao)) / 2, 100, tamInstrucao, YELLOW);
+        DrawText(titulosEtapaJ1[3], (SCREEN_WIDTH - MeasureText(titulosEtapaJ1[3], tamInstrucao)) / 2, 100, tamInstrucao, GREEN);
     }
     
     // Slots do Jogador 1
@@ -416,7 +416,6 @@ void DesenharTelaSelecao(SpriteDatabase* db, TimesBatalha* times, ModoDeJogo mod
         }
     }
 
-    // Preview Grande 
     // Mostra o preview se o mouse estiver sobre um personagem da linha ativa
     if (personagemHover != -1) {
         PersonagemData* pData = &db->personagens[personagemHover];

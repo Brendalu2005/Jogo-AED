@@ -9,7 +9,7 @@ static Rectangle btnJogar;
 static Rectangle btnPersonagens;
 static Rectangle btnSobre;
 
-static Color corTexto = { 100, 255, 100, 255 };
+static Color corTexto = WHITE;
 
 MenuOpcao LoadMenuResources(void) {
     MenuOpcao res;
@@ -68,7 +68,7 @@ void AtualizarTelaMenu(GameScreen *telaAtual) {
             *telaAtual = SCREEN_MODO_JOGO; 
         } else if (CheckCollisionPointRec(mousePos, btnPersonagens)) {
             *telaAtual = SCREEN_PERSONAGENS;
-        } else if (CheckCollisionPointRec(mousePos, btnSobre)) { // Corrigi o typo 'CheckCollisionDPointRec'
+        } else if (CheckCollisionPointRec(mousePos, btnSobre)) {
             *telaAtual = SCREEN_SOBRE;
         }
     }
