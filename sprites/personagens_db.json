@@ -9,7 +9,7 @@
       "painelZoom": 1.7,
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/venom_icon.png",
-      "ataque1": { "nome": "Proteção Metamófica", "descricao": "cria um escudo que absorve um golpe antes de se dissipar.", "dano": 10,"tipo": "CURA_SI" },
+      "ataque1": { "nome": "Proteção Metamófica", "descricao": "Cria m escudo que absorve um golpe antes de se dissipar.", "dano": 10,"tipo": "CURA_SI" },
       "ataque2": { "nome": "Mordida Letal", "descricao": "O ataque drena a energia do oponente", "dano": 8 },
       "anim": {
         "idle": "sprites/personagens/venom/idle",
@@ -26,7 +26,7 @@
       "painelZoom": 2.5,
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/hellokitty_icon.png",
-      "ataque1": { "nome": "Kitty esmaga", "descricao": "um ataque com rolo compressor.", "dano": 5, "tipo": "DANO_AREA" },
+      "ataque1": { "nome": "Kitty esmaga", "descricao": "Um ataque com rolo compressor.", "dano": 5, "tipo": "DANO_AREA" },
       "ataque2": { "nome": "???", "descricao": "Um ataque fofo <3.", "dano": 4, "tipo": "DANO_AREA" },
       "anim": {
         "idle": "sprites/personagens/hellokitty/idle",
@@ -43,8 +43,8 @@
       "painelZoom": 2.5,
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/homer_icon.png",
-      "ataque1": { "nome": "Marretada do Thor", "descricao": "um ataque super-ultra-hiper forte.", "dano": 7 },
-      "ataque2": { "nome": "Vassourada Mortal de Springfield", "descricao": "Um ataque desequilibrado, mas surpreendentemente poderoso.", "dano": 7 },
+      "ataque1": { "nome": "Marretada do Thor", "descricao": "Um ataque super-ultra-hiper forte.", "dano": 7 },
+      "ataque2": { "nome": "Vassourada Mortal", "descricao": "Um ataque desequilibrado, mas surpreendentemente poderoso.", "dano": 7 },
       "anim": {
         "idle": "sprites/personagens/homer/idle",
         "ataque1": "sprites/personagens/homer/marretadaDoThor",
@@ -61,7 +61,7 @@
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/kirby_icon.png",
       "ataque1": { "nome": "Corte Estelar", "descricao": "Um ataque que concentra energia das estrelas e desfere um golpe brilhante", "dano": 7 },
-      "ataque2": { "nome": "Plasma Kirby", "descricao": "um escudo gosmento... e fofo.", "dano": 10 , "tipo": "CURA_SI"},
+      "ataque2": { "nome": "Plasma Kirby", "descricao": "Um escudo gosmento... e fofo.", "dano": 10 , "tipo": "CURA_SI"},
       "anim": {
         "idle": "sprites/personagens/kirby/idle",
         "ataque1": "sprites/personagens/kirby/ataque_espada",
@@ -76,9 +76,9 @@
       "velocidade": 5,
       "painelZoom": 2.5,
       "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/ravena_icon.png",
-      "ataque1": { "nome": "Coelhada", "descricao": "Uma coelhada do Sansão.", "dano": 7 },
-      "ataque2": { "nome": "Soco Super-mônico", "descricao": "Um soco com força total.", "dano": 10, "tipo": "CURA_SI"},
+      "thUmbnailPath": "sprites/telaPersonagem/ravena_icon.png",
+      "ataque1": { "nome": "Punho das Sombras", "descricao": "Um ataque sombrio e mortal", "dano": 7 },
+      "ataque2": { "nome": "Barreira de Metrion", "descricao": "Um escudo protetor, impossível de se atravessar.", "dano": 10, "tipo": "CURA_SI"},
       "anim": {
         "idle": "sprites/personagens/ravena/idle",
         "ataque1": "sprites/personagens/ravena/soco",
@@ -93,7 +93,7 @@
       "velocidade": 4,
       "painelZoom": 2.5,
       "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/hulk_icon.png",
+      "thUmbnailPath": "sprites/telaPersonagem/hulk_icon.png",
       "ataque1": { "nome": "Soco Raiva Imparável", "descricao": "Um ataque alimentado pelo estado emocional do Hulk: quanto mais bravo, mais forte.", "dano": 7 },
       "ataque2": { "nome": "Onda de Choque", "descricao": "Um ataque que libera uma onda de energia que empurra e atordoa todos os inimigos ao redor.", "dano": 5, "tipo": "DANO_AREA" },
       "anim": {
@@ -162,8 +162,8 @@
       "painelZoom": 2.5,
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/edward_icon.png",
-      "ataque1": { "nome": "Explosao Alquimica", "descricao": "uma explosão concentrada que imobiliza seus inimigos.", "dano": 6,"tipo": "DANO_AREA" },
-      "ataque2": { "nome": "Invocar", "descricao": "uma explosão súbita de energia alquímica que lança o inimigo para longe.", "dano": 11 },
+      "ataque1": { "nome": "Explosao Alquimica", "descricao": "Uma explosão concentrada que imobiliza seus inimigos.", "dano": 6,"tipo": "DANO_AREA" },
+      "ataque2": { "nome": "Invocar", "descricao": "Uma explosão súbita de energia alquímica que lança o inimigo para longe.", "dano": 11 },
       "anim": {
         "idle": "sprites/personagens/edward/idle",
         "ataque1": "sprites/personagens/edward/explosao",
@@ -179,8 +179,8 @@
       "painelZoom": 2.0,
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/docinho_icon.png",
-      "ataque1": { "nome": "Socada Doce", "descricao": "um soco veloz e carregado de força bruta, jogando o inimigo para trás.", "dano": 12 },
-      "ataque2": { "nome": "Laser Carinhoso", "descricao": "um feixe de energia brilhante que perfura o ar e atinge o alvo com precisão heroica", "dano": 6,"tipo": "DANO_AREA" },
+      "ataque1": { "nome": "Socada Doce", "descricao": "Um soco veloz e carregado de força bruta, jogando o inimigo para trás.", "dano": 12 },
+      "ataque2": { "nome": "Laser Carinhoso", "descricao": "Um feixe de energia brilhante que perfura o ar e atinge o alvo com precisão heroica", "dano": 6,"tipo": "DANO_AREA" },
       "anim": {
         "idle": "sprites/personagens/docinho/idle",
         "ataque1": "sprites/personagens/docinho/ataque_soco",
@@ -195,8 +195,8 @@
       "velocidade": 6,
       "painelZoom": 2.5,
       "batalhaZoom": 1.0,
-      "thumbnailPath": "sprites/telaPersonagem/mario_icon.png",
-      "ataque1": { "nome": "Chute Herói do Reino", "descricao": "um chute firme, digno do protetor do Reino Cogumelo.", "dano": 10 },
+      "thUmbnailPath": "sprites/telaPersonagem/mario_icon.png",
+      "ataque1": { "nome": "Chute Herói do Reino", "descricao": "Um chute firme, digno do protetor do Reino Cogumelo.", "dano": 10 },
       "ataque2": { "nome": "Soco Power-up", "descricao": "um soco energizado que dezestabiliza seus inimigos.", "dano": 9 },
       "anim": {
         "idle": "sprites/personagens/mario/idle",
@@ -350,7 +350,7 @@
       "batalhaZoom": 1.5,
       "thumbnailPath": "sprites/telaPersonagem/goku_icon.png",
       "ataque1": { "nome": "Kamehameha", "descricao": "Um poderoso raio de energia resplandescente.", "dano": 9,"tipo": "DANO_AREA" },
-      "ataque2": { "nome": "Super Saiyajin", "descricao": "um ataque transformador e intimidador.", "dano": 8, "tipo": "DANO_AREA" },
+      "ataque2": { "nome": "Super Saiyajin", "descricao": "Um ataque transformador e intimidador.", "dano": 8, "tipo": "DANO_AREA" },
       "anim": {
         "idle": "sprites/personagens/goku/idle",
         "ataque1": "sprites/personagens/goku/ataque_superior",
