@@ -4,11 +4,29 @@
 #include "telas.h"
 #include "database.h"
 #include "selecao.h" 
-
-// --- MUDANÇA IMPORTANTE ---
-// Inclui a definição de 'ListaTime' do arquivo raiz 'include/'
 #include "lista_personagem.h" 
-// --------------------------
+#include <stdbool.h> // <--- Adicione, pois TextoFlutuante usa 'bool'
+
+// --- 1. EXPOR VARIÁVEIS GLOBAIS ---
+// (Adicione 'extern' para dizer que elas existem em outro .c)
+extern Texture2D backgroundArena;
+extern int backgroundCarregado;
+
+// --- 2. MOVER DEFINIÇÕES DE TEXTO FLUTUANTE DE .c PARA .h ---
+// (Mova o #define e a struct de 'batalha.c' para cá)
+#define MAX_TEXTOS_FLUTUANTES 10 
+
+typedef struct {
+    bool ativo;
+    char texto[16];
+    Vector2 pos;
+    float timer;
+    float duracao;
+    Color cor;
+    float velocidadeY;
+} TextoFlutuante;
+
+extern TextoFlutuante g_textosFlutuantes[MAX_TEXTOS_FLUTUANTES];
 
 typedef enum {
     TURNO_JOGADOR,
@@ -101,8 +119,6 @@ void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados);
 // --- MODIFICADO ---
 // AtualizarTelaBatalha agora recebe o modo de jogo
 void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJogo modo);
-// ------------------
-
-void DesenharTelaBatalha(EstadoBatalha *estado);
-
+// ------------------ 
+NoPersonagem* ObterNoPorPersonagem(ListaTime* lista, PersonagemData* p);
 #endif

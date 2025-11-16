@@ -9,6 +9,7 @@
 #include "modo_jogo.h"
 #include <stdlib.h> 
 #include <time.h> 
+#include "batalha_desenho.h"
 
 Texture2D backgroundSelecao;
 

@@ -7,9 +7,7 @@
 #include <pthread.h>  
 #include <stdbool.h>  
 
-// --- CORREÇÃO ---
-#include "batalha.h" // <-- Inclui a definição COMPLETA de EstadoBatalha
-// Precisamos das definições da lista e da função ObterNoNaPosicao()
+#include "batalha.h" 
 #include "lista_personagem.h" 
 
 // --- Variáveis Globais (Estáticas) para Gerenciamento da Thread ---
@@ -26,7 +24,39 @@ typedef struct {
 
 static DadosParaThreadIA g_dados_para_thread; 
 
-// --- Funções de Callback (Sem alterações) ---
+
+// --- FUNÇÃO MOVIDA DE 'batalha.c' ---
+static char CHAVE_API_BUFFER[256];
+static bool chaveJaFoiCarregada = false; 
+
+static const char* CarregarChaveApi(const char* caminhoArquivo) {
+    if (chaveJaFoiCarregada == true) {
+        return CHAVE_API_BUFFER;
+    }
+
+    FILE *arquivo = fopen(caminhoArquivo, "r");
+    if (arquivo == NULL) {
+        printf("ERRO FATAL: Nao foi possivel abrir: %s\n", caminhoArquivo);
+        printf("Criar um arquivo 'config.txt' na raiz do projeto com a chave.\n");
+        strcpy(CHAVE_API_BUFFER, "CHAVE_NAO_ENCONTRADA");
+        chaveJaFoiCarregada = true;
+        return CHAVE_API_BUFFER;
+    }
+
+    if (fgets(CHAVE_API_BUFFER, sizeof(CHAVE_API_BUFFER), arquivo) != NULL) {
+        CHAVE_API_BUFFER[strcspn(CHAVE_API_BUFFER, "\r\n")] = 0;
+        chaveJaFoiCarregada = true;
+    } else {
+         printf("ERRO: Nao foi possivel ler a chave do arquivo 'config.txt'.\n");
+         strcpy(CHAVE_API_BUFFER, "CHAVE_NAO_ENCONTRADA");
+    }
+
+    fclose(arquivo);
+    return CHAVE_API_BUFFER;
+}
+// ----------------------------------------
+
+
 typedef struct RespostaWeb {
     char *buffer;
     size_t tamanho;
@@ -50,11 +80,9 @@ static size_t EscreverDadosCallback(void *dados, size_t tamanho, size_t nmemb, v
     return tamanhoReal;
 }
 
-// --- ConstruirPrompt (COM CORREÇÃO) ---
-static char* ConstruirPrompt(struct EstadoBatalha *estadoIncompleto) { // <-- ALTERAÇÃO AQUI
+static char* ConstruirPrompt(struct EstadoBatalha *estadoIncompleto) { 
     
-    // Converte o ponteiro incompleto para o tipo completo que conhecemos
-    EstadoBatalha* estado = (EstadoBatalha*)estadoIncompleto; // <-- ALTERAÇÃO AQUI
+    EstadoBatalha* estado = (EstadoBatalha*)estadoIncompleto; 
 
     PersonagemData* atacante = estado->ordemDeAtaque[estado->personagemAgindoIdx];
     
@@ -120,7 +148,6 @@ static char* ConstruirPrompt(struct EstadoBatalha *estadoIncompleto) { // <-- AL
     return promptFinal;
 }
 
-// --- ExecutarConsultaCurl (Sem alterações) ---
 static DecisaoIA ExecutarConsultaCurl(const char* prompt, const char* suaChaveAPI) {
     CURL *curl;
     CURLcode res;
@@ -228,13 +255,25 @@ static DecisaoIA ExecutarConsultaCurl(const char* prompt, const char* suaChaveAP
     return decisao;
 }
 
-// --- ThreadTrabalhadoraIA (Sem alterações) ---
 static void* ThreadTrabalhadoraIA(void* arg) {
     (void)arg; 
 
     printf("IA (Thread): Thread iniciada.\n");
     
-    DecisaoIA decisao = ExecutarConsultaCurl(g_dados_para_thread.prompt, g_dados_para_thread.chave_api);
+    // --- LÓGICA ATUALIZADA ---
+    // Se a chave for inválida, a 'decisao' permanecerá {0, 0, NULL}
+    // ou podemos retornar uma decisão especial.
+    DecisaoIA decisao = {0, 0, NULL}; 
+    
+    if (strcmp(g_dados_para_thread.chave_api, "CHAVE_NAO_ENCONTRADA") != 0) {
+        decisao = ExecutarConsultaCurl(g_dados_para_thread.prompt, g_dados_para_thread.chave_api);
+    } else {
+        // Se a chave não foi encontrada, preenchemos uma "decisão de erro"
+        // para o 'batalha.c' saber que deve usar um ataque aleatório.
+        decisao.justificativa = (char*)malloc(strlen("CHAVE_NAO_ENCONTRADA") + 1);
+        strcpy(decisao.justificativa, "CHAVE_NAO_ENCONTRADA");
+    }
+    // -------------------------
 
     pthread_mutex_lock(&g_mutex_ia);
     
@@ -249,8 +288,9 @@ static void* ThreadTrabalhadoraIA(void* arg) {
 }
 
 
-// --- IA_IniciarDecisao (COM CORREÇÃO) ---
-void IA_IniciarDecisao(struct EstadoBatalha *estado, const char* suaChaveAPI) { // <-- Assinatura já estava correta
+// --- ATUALIZADO ---
+// Agora 'suaChaveAPI' é o *caminho* para o config.txt
+void IA_IniciarDecisao(struct EstadoBatalha *estado, const char* caminhoChaveAPI) {
     pthread_mutex_lock(&g_mutex_ia);
 
     if (g_thread_ia_executando == true) {
@@ -263,12 +303,13 @@ void IA_IniciarDecisao(struct EstadoBatalha *estado, const char* suaChaveAPI) { 
 
     LiberarDecisaoIA(&g_decisao_compartilhada);
     
-    // A função ConstruirPrompt agora espera 'struct EstadoBatalha *', que é o que temos
-    char* prompt = ConstruirPrompt(estado); // <-- ALTERAÇÃO AQUI (agora compila)
+    char* prompt = ConstruirPrompt(estado); 
     strncpy(g_dados_para_thread.prompt, prompt, 2047);
     g_dados_para_thread.prompt[2047] = '\0';
     
-    strncpy(g_dados_para_thread.chave_api, suaChaveAPI, 255);
+    // Carrega a chave AQUI, dentro da função de iniciar
+    const char* chaveApiReal = CarregarChaveApi(caminhoChaveAPI);
+    strncpy(g_dados_para_thread.chave_api, chaveApiReal, 255);
     g_dados_para_thread.chave_api[255] = '\0';
     
     free(prompt);
@@ -279,7 +320,6 @@ void IA_IniciarDecisao(struct EstadoBatalha *estado, const char* suaChaveAPI) { 
     pthread_mutex_unlock(&g_mutex_ia);
 }
 
-// --- Funções Finais (Sem alterações) ---
 bool IA_VerificarDecisaoPronta(DecisaoIA *saida) {
     bool decisao_esta_pronta = false;
     
