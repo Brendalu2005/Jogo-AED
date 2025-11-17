@@ -27,7 +27,7 @@
       "batalhaZoom": 0.9,
       "thumbnailPath": "sprites/telaPersonagem/hellokitty_icon.png",
       "ataque1": { "nome": "Kitty esmaga", "descricao": "Um ataque com rolo compressor.", "dano": 5, "tipo": "DANO_AREA" },
-      "ataque2": { "nome": "???", "descricao": "Um ataque fofo <3.", "dano": 4, "tipo": "DANO_AREA" },
+      "ataque2": { "nome": "???", "descricao": "Um ataque fofo <3.", "dano": 20, "tipo": "DANO_AREA" },
       "anim": {
         "idle": "sprites/personagens/hellokitty/idle",
         "ataque1": "sprites/personagens/hellokitty/ataque_kittyesmaga",
