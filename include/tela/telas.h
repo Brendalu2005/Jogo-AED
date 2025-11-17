@@ -22,6 +22,5 @@ typedef enum {
 } ModoDeJogo;
 
 Vector2 GetMouseVirtual(void);
-// ------------------
 
 #endif

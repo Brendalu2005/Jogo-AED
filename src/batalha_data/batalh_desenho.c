@@ -171,7 +171,6 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
         }
     }
 
-    // --- 2. DESENHAR O FUNDO (PERSONAGENS QUE NÃO ESTÃO EM FOCO) ---
     // A) Time JOGADOR
     for (int i = 0; i < 3; i++) {
         bool ehFoco = false;
@@ -231,7 +230,6 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
                         (Rectangle){posJogador[i].x, posJogador[i].y, fabsf(frame.width) * zoom, frame.height * zoom},
                         (Vector2){fabsf(frame.width) * zoom / 2, frame.height * zoom / 2}, 0, corPersonagem);
 
-                        // Barra HP
                         int posXBarra = (int)posJogador[i].x - 50; 
                         int posYBarra = (int)hpBarYFixo; 
                         int larguraPreenchimento = (int)(100.0f * (float)estado->hpJogador[i] / (float)pData->hpMax);
@@ -321,8 +319,6 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
         }
     }
 
-
-    // --- 3. DESENHAR O FOCO (ATACANTE E ALVO) ---
     if (estado->atacanteEmFoco != NULL) {
         
         // A) DESENHA O ATACANTE
@@ -351,7 +347,6 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
         
         if (estado->isZoomAoe == true) 
         {
-           // MODO AOE: Desenha os 3 alvos (1 focado, 2 parados)
             ListaTime* listaAlvo = alvoEhIA ? &estado->timeIA : &estado->timeJogador;
             Vector2* posAlvoArray = alvoEhIA ? posIA : posJogador;
             
@@ -365,7 +360,7 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
                 bool flipAlvo = alvoEhIA;
 
                 if (i == estado->alvoEmFocoIdx) {
-                    // Este é o alvo focado 
+
                     posAtualAlvo = estado->posFocoAlvo;
                     zoomAtualAlvo = estado->zoomFocoAlvo;
                     if (estado->alvoEmFoco != NULL) {
@@ -414,7 +409,6 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
                         (Rectangle){ posAtualAlvo.x, posAtualAlvo.y, fabsf(frame.width) * zoomAtualAlvo, frame.height * zoomAtualAlvo },
                         (Vector2){ fabsf(frame.width) * zoomAtualAlvo / 2, frame.height * zoomAtualAlvo / 2 }, 0, corAlvo);
 
-                    // Barra de HP
                     int hpAlvo = alvoEhIA ? estado->hpIA[i] : estado->hpJogador[i];
                     float alturaFrameAlvo = (pDataAlvo->animIdle.def.numFrames > 0) ? pDataAlvo->animIdle.def.frames[0].height : 100.0f;
                     float hpBarYAlvo = posAtualAlvo.y + (alturaFrameAlvo * zoomAtualAlvo / 2) + 5;
@@ -426,7 +420,6 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
         }
         else if (estado->alvoEmFoco != NULL) 
         {
-            // MODO ALVO ÚNICO (Lógica original)
             PersonagemData* pDataAlvo = estado->alvoEmFoco;
             EstadoAnimacao* animLapideAlvo = alvoEhIA ? &estado->animLapideIA[idxAlvoFoco] : &estado->animLapideJogador[idxAlvoFoco];
 
@@ -514,7 +507,6 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
         }
     }
 
-    // --- 6. DESENHAR ESTADO DE FIM DE JOGO ---
     if (estado->estadoTurno == ESTADO_FIM_DE_JOGO)
     {
         const char* textoResultado = "";

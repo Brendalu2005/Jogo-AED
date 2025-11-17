@@ -2,21 +2,18 @@
 #include "database.h"
 #include "telas.h"
 #include <stdlib.h> 
-//#include <time.h>  
 #include <stdio.h> 
 #include <math.h>
 #include <stdbool.h> 
 
 #define MAX_PERSONAGENS 50
-#define TEMPO_DELAY_IA 1.0 // 1 segundo de espera para a IA
+#define TEMPO_DELAY_IA 2.0 
 
 
-// Animação dos ícones na grid
 static int animFrame[MAX_PERSONAGENS] = {0};
 static int animTimer[MAX_PERSONAGENS] = {0};
 static int animVelocidade = 15; 
 
-// Animação dos slots selecionados
 static int animFrameJogador[3] = {0, 0, 0};
 static int animTimerJogador[3] = {0, 0, 0};
 static int animFrameIA[3] = {0, 0, 0};
@@ -249,7 +246,6 @@ void DesenharTelaSelecao(SpriteDatabase* db, TimesBatalha* times, ModoDeJogo mod
         DrawText(titulosEtapaJ1[3], (SCREEN_WIDTH - MeasureText(titulosEtapaJ1[3], tamInstrucao)) / 2, 100, tamInstrucao, GREEN);
     }
     
-    // Slots do Jogador 1
     Rectangle slotP1[3] = {
         { 50, 180, 150, 150 }, 
         { 50, 340, 150, 150 }, 
@@ -271,7 +267,7 @@ void DesenharTelaSelecao(SpriteDatabase* db, TimesBatalha* times, ModoDeJogo mod
 
             if (anim->def.numFrames > 0) {
                 int frameIdx = animFrameJogador[i];
-                if (frameIdx >= anim->def.numFrames) { frameIdx = 0; } // Garante segurança
+                if (frameIdx >= anim->def.numFrames) { frameIdx = 0; } 
                 Rectangle frame = anim->def.frames[frameIdx];
                 
                 float zoom = slotP1[i].height / frame.height;
@@ -288,12 +284,10 @@ void DesenharTelaSelecao(SpriteDatabase* db, TimesBatalha* times, ModoDeJogo mod
                                0, WHITE);
             }
         } else {
-            // Ajusta o texto para "J1"
             const char* slotTexto = TextFormat("J1 P%d", i + 1);
             DrawText(slotTexto, slotP1[i].x + (slotP1[i].width - MeasureText(slotTexto, 40)) / 2, slotP1[i].y + 55, 40, DARKGRAY);
         }
         
-        // Destaque do slot ativo do J1
         if (i == etapaSelecao && ehTurnoJogador1) {
             DrawRectangleLinesEx(slotP1[i], 4, YELLOW);
         } else {
@@ -301,7 +295,6 @@ void DesenharTelaSelecao(SpriteDatabase* db, TimesBatalha* times, ModoDeJogo mod
         }
     }
 
-    // Slots do Oponente (IA ou Jogador 2)
     Rectangle slotIA[3] = {
         { SCREEN_WIDTH - 200, 180, 150, 150 }, 
         { SCREEN_WIDTH - 200, 340, 150, 150 }, 
@@ -317,23 +310,22 @@ void DesenharTelaSelecao(SpriteDatabase* db, TimesBatalha* times, ModoDeJogo mod
             Texture2D thumb = pData->thumbnail;
 
             DrawTexturePro(thumb, 
-                           (Rectangle){ 0, 0, (float)thumb.width, (float)thumb.height }, 
+                           (Rectangle){ 0, 0, -(float)thumb.width, (float)thumb.height }, 
                            slotIA[i], 
                            (Vector2){ 0, 0 }, 0, (Color){ 255, 255, 255, 80 });
 
             if (anim->def.numFrames > 0) {
                 int frameIdx = animFrameIA[i];
-                if (frameIdx >= anim->def.numFrames) { frameIdx = 0; } // Garante segurança
-                Rectangle frame = anim->def.frames[frameIdx];
-                
+                if (frameIdx >= anim->def.numFrames) { frameIdx = 0; }
+
+                 Rectangle frame = anim->def.frames[frameIdx];
                 float zoom = slotIA[i].height / frame.height;
                 if (frame.width * zoom > slotIA[i].width) {
-                    zoom = slotIA[i].width / frame.width;
+                zoom = slotIA[i].width / frame.width;
                 }
-                
                 Vector2 animPos = { slotIA[i].x + slotIA[i].width / 2.0f, slotIA[i].y + slotIA[i].height / 2.0f };
                 
-                frame.width = -frame.width; // Flip (Oponente fica virado para a esquerda)
+                frame.width = -frame.width; 
                 
                 Rectangle destRect = { animPos.x, animPos.y, fabsf(frame.width * zoom), fabsf(frame.height * zoom) };
                 Vector2 origin = { fabsf(frame.width * zoom) / 2.0f, fabsf(frame.height * zoom) / 2.0f };
@@ -341,7 +333,6 @@ void DesenharTelaSelecao(SpriteDatabase* db, TimesBatalha* times, ModoDeJogo mod
                 DrawTexturePro(anim->textura, frame, destRect, origin, 0, WHITE);
             }
         } else {
-            // Texto do slot muda baseado no modo de jogo
             const char* slotTexto;
             if (modo == MODO_SOLO) {
                 slotTexto = TextFormat("IA%d", i + 1);
@@ -351,7 +342,6 @@ void DesenharTelaSelecao(SpriteDatabase* db, TimesBatalha* times, ModoDeJogo mod
             DrawText(slotTexto, slotIA[i].x + (slotIA[i].width - MeasureText(slotTexto, 40)) / 2, slotIA[i].y + 55, 40, DARKGRAY);
         }
         
-        // Destaque do slot ativo do J2 (apenas em modo PVP)
         if (i == etapaSelecao && !ehTurnoJogador1 && modo == MODO_PVP) {
             DrawRectangleLinesEx(slotIA[i], 4, YELLOW);
         } else {
@@ -359,7 +349,6 @@ void DesenharTelaSelecao(SpriteDatabase* db, TimesBatalha* times, ModoDeJogo mod
         }
     }
 
-    // Grid de Personagens 
     int yPosBase = 500;
     int iconSize = 64;
     int padding = 10;
@@ -372,7 +361,6 @@ void DesenharTelaSelecao(SpriteDatabase* db, TimesBatalha* times, ModoDeJogo mod
         int xPos = (SCREEN_WIDTH - larguraLinha) / 2;
         int yPos = yPosBase + c * yEspacamentoLinha;
 
-        // Cor da linha: Ativa fica branca, inativas ficam cinzas
         Color corIcone;
         if (c == etapaSelecao) {
             corIcone = WHITE; 
@@ -391,7 +379,6 @@ void DesenharTelaSelecao(SpriteDatabase* db, TimesBatalha* times, ModoDeJogo mod
                                    box, (Vector2){ 0, 0 }, 0, corIcone);
                 }
 
-                // Destaque do hover (só desenha se for a linha ativa)
                 if (personagemHover == i) {
                     DrawRectangleLinesEx(box, 3, YELLOW);
                 }
@@ -401,7 +388,6 @@ void DesenharTelaSelecao(SpriteDatabase* db, TimesBatalha* times, ModoDeJogo mod
         }
     }
 
-    // Mostra o preview se o mouse estiver sobre um personagem da linha ativa
     if (personagemHover != -1) {
         PersonagemData* pData = &db->personagens[personagemHover];
         AnimacaoData* anim = &pData->animIdle;
@@ -409,8 +395,8 @@ void DesenharTelaSelecao(SpriteDatabase* db, TimesBatalha* times, ModoDeJogo mod
         if (anim->def.numFrames > 0) {
             Vector2 previewPos = { SCREEN_WIDTH / 2.0f, 280.0f };
             
-            int frameIdx = animFrame[personagemHover]; // Usa a animação da grid
-            if (frameIdx >= anim->def.numFrames) { frameIdx = 0; } // Garante segurança
+            int frameIdx = animFrame[personagemHover]; 
+            if (frameIdx >= anim->def.numFrames) { frameIdx = 0; }
             Rectangle frame = anim->def.frames[frameIdx];
             float zoom = pData->painelZoom; 
 

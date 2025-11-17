@@ -714,14 +714,12 @@ static void AtualizarEstadoZoomOut(EstadoBatalha* estado) {
             estado->numMortosPendentes = 0;
         }
 
-        // Limpa o foco e as variáveis da animação
         estado->atacanteEmFoco = NULL;
         estado->alvoEmFoco = NULL;
         estado->alvoEmFocoIdx = -1; 
         estado->alphaOutrosPersonagens = 1.0f;
         estado->isZoomAoe = false;
         
-        // Verifica se o jogo acabou AGORA
         if (estado->timeJogador.tamanho == 0) {
             estado->estadoTurno = ESTADO_FIM_DE_JOGO;
             estado->resultadoBatalha = RESULTADO_DERROTA;
@@ -740,7 +738,6 @@ static void AtualizarEstadoIAPensando(EstadoBatalha* estado, ModoDeJogo modo) {
     
     if (estado->estadoTurno == ESTADO_AGUARDANDO_OPONENTE) {
         if (modo == MODO_SOLO) {
-            // Modo Solo: Inicia a thread da IA (ou usa ataque aleatório)
             
             IA_IniciarDecisao(estado, "config.txt"); 
             estado->estadoTurno = ESTADO_IA_PENSANDO;

@@ -5,15 +5,13 @@
 #include "database.h"
 #include "selecao.h" 
 #include "lista_personagem.h" 
-#include <stdbool.h> // <--- Adicione, pois TextoFlutuante usa 'bool'
+#include <stdbool.h> 
 
-// --- 1. EXPOR VARIÁVEIS GLOBAIS ---
-// (Adicione 'extern' para dizer que elas existem em outro .c)
+
 extern Texture2D backgroundArena;
 extern int backgroundCarregado;
 
-// --- 2. MOVER DEFINIÇÕES DE TEXTO FLUTUANTE DE .c PARA .h ---
-// (Mova o #define e a struct de 'batalha.c' para cá)
+
 #define MAX_TEXTOS_FLUTUANTES 10 
 
 typedef struct {
@@ -33,7 +31,6 @@ typedef enum {
     TURNO_IA
 } TurnoDe;
 
-// As structs da lista NÃO estão mais aqui
 
 typedef enum {
     ESTADO_INICIANDO,      
@@ -41,10 +38,8 @@ typedef enum {
     ESTADO_ZOOM_IN_ATAQUE,  
     ESTADO_ANIMACAO_ATAQUE, 
     ESTADO_ZOOM_OUT_ATAQUE, 
-    // --- MODIFICADO ---
-    ESTADO_AGUARDANDO_OPONENTE, // Renomeado de ESTADO_TURNO_IA
-    ESTADO_IA_PENSANDO,         // <-- ADICIONAR ESTE ESTADO
-    // ------------------
+    ESTADO_AGUARDANDO_OPONENTE,
+    ESTADO_IA_PENSANDO,        
     ESTADO_FIM_DE_JOGO
 } EstadoTurno;
 
@@ -116,9 +111,7 @@ typedef struct EstadoBatalha{
 
 void InicializarBatalha(EstadoBatalha *estado, TimesBatalha* timesSelecionados);
 
-// --- MODIFICADO ---
-// AtualizarTelaBatalha agora recebe o modo de jogo
 void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJogo modo);
-// ------------------ 
+
 NoPersonagem* ObterNoPorPersonagem(ListaTime* lista, PersonagemData* p);
 #endif

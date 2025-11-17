@@ -41,7 +41,7 @@
       "hpMax": 70,
       "velocidade": 4,
       "painelZoom": 2.5,
-      "batalhaZoom": 0.9,
+      "batalhaZoom": 1.1,
       "thumbnailPath": "sprites/telaPersonagem/homer_icon.png",
       "ataque1": { "nome": "Marretada do Thor", "descricao": "Da uma amrretada no oponente.", "dano": 7 },
       "ataque2": { "nome": "Vassourada Mortal", "descricao": "Uma vassourada inesperada no oponente.", "dano": 7 },
