@@ -87,7 +87,7 @@ static void DesenharAnimacao(EstadoAnimacao* anim) {
     );
 }
 
-void DesenharTelaBatalha(EstadoBatalha *estado) {
+void DesenharTelaBatalha(EstadoBatalha *estado, ModoDeJogo modo) {
     DrawText("Jogador 1", 20, 15, 20, RAYWHITE);
 
     const char* textoRound = TextFormat("Round: %d", estado->roundAtual);
@@ -179,7 +179,6 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
 
 
         if (ehFoco == false) {
-            // 1. Desenha Lápide se estiver ativa
             if (estado->animLapideJogador[i].ativo) {
                 
                 estado->animLapideJogador[i].pos = posJogador[i];
@@ -202,7 +201,6 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
                      DrawTexturePro(estado->animLapideJogador[i].anim->textura, frame, dest, orig, 0.0f, corFade);
                 }
             }
-            // 2. Se não tem lápide, verifica se tem personagem vivo na lista
             else {
                  NoPersonagem* no = ObterNoNaPosicao(&estado->timeJogador, i);
                  if (no != NULL) {
@@ -254,7 +252,6 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
 
 
         if (ehFoco == false) {
-            // 1. Lápide
             if (estado->animLapideIA[i].ativo) {
                 
                 estado->animLapideIA[i].pos = posIA[i];
@@ -275,7 +272,6 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
                      DrawTexturePro(estado->animLapideIA[i].anim->textura, frame, dest, orig, 0.0f, corFade);
                 }
             }
-            // 2. Vivo
             else {
                  NoPersonagem* no = ObterNoNaPosicao(&estado->timeIA, i);
                  if (no != NULL) {
@@ -508,29 +504,40 @@ void DesenharTelaBatalha(EstadoBatalha *estado) {
     }
 
     if (estado->estadoTurno == ESTADO_FIM_DE_JOGO)
+{
+    const char* textoResultado = "";
+    Color corResultado = BLACK;
+    int fontSize = 80;
+
+    if (estado->resultadoBatalha == RESULTADO_VITORIA) 
     {
-        const char* textoResultado = "";
-        Color corResultado = BLACK;
-        int fontSize = 80;
-
-        if (estado->resultadoBatalha == RESULTADO_VITORIA) {
-            textoResultado = "VITÓRIA";
-            corResultado = (Color){100, 255, 100, 255}; 
-        } else if (estado->resultadoBatalha == RESULTADO_DERROTA) {
-            textoResultado = "DERROTA";
-            corResultado = (Color){255, 100, 100, 255}; 
-        }
-
-        if (strlen(textoResultado) > 0)
+        textoResultado = "JOGADOR 1 VENCEU";
+        corResultado = (Color){100, 255, 100, 255}; 
+    } 
+    else if (estado->resultadoBatalha == RESULTADO_DERROTA) 
+    {
+        if (modo == MODO_PVP)
         {
-            int larguraTexto = MeasureText(textoResultado, fontSize);
-            int posX = (SCREEN_WIDTH - larguraTexto) / 2;
-            int posY = arenaY + (arenaHeight / 2) - (fontSize / 2); //
-
-            DrawText(textoResultado, posX + 4, posY + 4, fontSize, ColorAlpha(BLACK, 0.7f));
-            DrawText(textoResultado, posX, posY, fontSize, corResultado);
+            textoResultado = "JOGADOR 2 VENCEU";
+            corResultado = (Color){100, 255, 100, 255}; 
         }
+        else
+        {
+            textoResultado = "DERROTA";
+        }
+        corResultado = (Color){255, 100, 100, 255}; 
     }
+
+    if (strlen(textoResultado) > 0)
+    {
+        int larguraTexto = MeasureText(textoResultado, fontSize);
+        int posX = (SCREEN_WIDTH - larguraTexto) / 2;
+        int posY = arenaY + (arenaHeight / 2) - (fontSize / 2); //
+
+        DrawText(textoResultado, posX + 4, posY + 4, fontSize, ColorAlpha(BLACK, 0.7f));
+        DrawText(textoResultado, posX, posY, fontSize, corResultado);
+    }
+}
 
     int menuY = arenaY + arenaHeight + 10; 
     int menuHeight = 240; 

@@ -169,7 +169,7 @@ int main(void) {
                     DesenharTelaSelecao(&database, &timesSelecionados, modoDeJogoAtual);
                     break;
                 case SCREEN_BATALHA:
-                    DesenharTelaBatalha(&estadoBatalha); 
+                    DesenharTelaBatalha(&estadoBatalha, modoDeJogoAtual); 
                     break;
                 case SCREEN_PERSONAGENS:
                     DesenharTelaPersonagens(personagemSelecionado, &database); 

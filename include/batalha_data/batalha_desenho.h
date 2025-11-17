@@ -3,6 +3,6 @@
 
 #include "batalha.h" 
 
-void DesenharTelaBatalha(EstadoBatalha *estado);
+void DesenharTelaBatalha(EstadoBatalha *estado, ModoDeJogo modo);
 
 #endif

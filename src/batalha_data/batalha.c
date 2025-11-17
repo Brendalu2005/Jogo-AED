@@ -1028,12 +1028,24 @@ void AtualizarTelaBatalha(EstadoBatalha *estado, GameScreen *telaAtual, ModoDeJo
     if (estado->estadoTurno == ESTADO_ZOOM_OUT_ATAQUE) emAnimacaoAtaque = true;
 
 
-    if (emAnimacaoAtaque == false) {
-        if (estado->timeJogador.tamanho == 0 && estado->estadoTurno != ESTADO_FIM_DE_JOGO) {
+    if (emAnimacaoAtaque == false) 
+    {
+        if (estado->timeJogador.tamanho == 0 && estado->estadoTurno != ESTADO_FIM_DE_JOGO) 
+        {
             estado->estadoTurno = ESTADO_FIM_DE_JOGO;
             estado->resultadoBatalha = RESULTADO_DERROTA;
-            sprintf(estado->mensagemBatalha, "OPONENTE VENCEU! Pressione ESC para sair.");
-        } else if (estado->timeIA.tamanho == 0 && estado->estadoTurno != ESTADO_FIM_DE_JOGO) {
+
+            if (modo == MODO_PVP)
+            {
+                sprintf(estado->mensagemBatalha, "JOGADOR 2 VENCEU! Pressione ESC para sair.");
+            }
+            else
+            {
+                sprintf(estado->mensagemBatalha, "OPONENTE VENCEU! Pressione ESC para sair.");
+            }
+        } 
+        else if (estado->timeIA.tamanho == 0 && estado->estadoTurno != ESTADO_FIM_DE_JOGO) 
+        {
             estado->estadoTurno = ESTADO_FIM_DE_JOGO;
             estado->resultadoBatalha = RESULTADO_VITORIA;
             sprintf(estado->mensagemBatalha, "JOGADOR 1 VENCEU! Pressione ESC para sair.");

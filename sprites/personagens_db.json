@@ -146,11 +146,11 @@
       "batalhaZoom": 1.0,
       "thumbnailPath": "sprites/telaPersonagem/taz_icon.png",
       "ataque1": { "nome": "Tornado-Taz", "descricao": "um ataque descontrolado que arremessa tudo ao redor.", "dano": 6, "tipo": "DANO_AREA" },
-      "ataque2": { "nome": "Mordida Selvagem", "descricao": "Uma mordida selvagem que causa dano rápido e caótico.", "dano": 10 },
+      "ataque2": { "nome": "Mordida Selvagem", "descricao": "Uma festa de saliva por todo lado.", "dano": 10 },
       "anim": {
         "idle": "sprites/personagens/taz/idle",
-        "ataque1": "sprites/personagens/taz/ataque_lingua",
-        "ataque2": "sprites/personagens/taz/ataque_tornado"
+        "ataque1": "sprites/personagens/taz/ataque_tornado",
+        "ataque2": "sprites/personagens/taz/ataque_lingua"
       }
     },
     {
@@ -296,7 +296,7 @@
       "hpMax": 35,
       "velocidade": 11,
       "painelZoom": 2.5,
-      "batalhaZoom": 1.0,
+      "batalhaZoom": 0.9,
       "thumbnailPath": "sprites/telaPersonagem/sonic_icon.png",
       "ataque1": { "nome": "Spin Dash", "descricao": "Um ataque giratório que atinge o inimigo com força explosiva.", "dano": 14 },
       "ataque2": { "nome": "Martelo", "descricao": "Usa o martelo da Amy para esmagar seus inimigos.", "dano": 12 },
